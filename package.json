@@ -1,0 +1,13 @@
+{
+  "name": "showa-tokyo-3d",
+  "private": true,
+  "type": "module",
+  "description": "Procedural three.js reconstruction viewer and headless still renderer",
+  "scripts": {
+    "render:stills": "node scripts/render_stills.mjs",
+    "serve": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "three": "0.170.0"
+  }
+}
