@@ -9,10 +9,12 @@ import { analyseFacades } from './core/facades.js';
 //   station=<station id>   camera from scenes/.../cameras/<id>.json (default entrance-approach)
 //   still=1                offline-quality single frame; sets window.__renderDone when finished
 //   w, h                   output size (default window size; stills default 1920x1080)
+//   walk=<seconds>         camera from the adopted long-take walk (overrides station)
 //   look=<preset>          lighting preset from core/look.js
 //   only=<a,b>             build only the listed world modules (debugging)
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
+const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
 const stationId = params.get('station') || 'entrance-approach';
 const width = Number(params.get('w')) || (still ? 1920 : window.innerWidth);
 const height = Number(params.get('h')) || (still ? 1080 : window.innerHeight);
@@ -86,9 +88,14 @@ async function main() {
     }
   }
 
-  const cam = data.cameras[stationId];
-  if (!cam) throw new Error(`unknown station ${stationId}`);
-  setStationCamera(cam);
+  if (walkT !== null) {
+    const pose = data.walkPose(walkT);
+    setStationCamera({ position_m: pose.position_m, look_at_m: pose.look_at_m, focal_length_35mm_equivalent_mm: data.walk.focal_length_35mm_equivalent_mm });
+  } else {
+    const cam = data.cameras[stationId];
+    if (!cam) throw new Error(`unknown station ${stationId}`);
+    setStationCamera(cam);
+  }
   focusShadow(ctx, camera, 90);
 
   const composer = makeComposer(ctx, camera, width, height);

@@ -1,5 +1,5 @@
 // Headless still renderer for the six route stations (three.js + Chromium SwiftShader, CPU only).
-// Usage: node scripts/render_stills.mjs [--out renders/r02] [--stations a,b] [--w 1920 --h 1080] [--look clear-afternoon] [--only terrain,buildings]
+// Usage: node scripts/render_stills.mjs [--out renders/r04] [--walk 0,60,120] [--stations a,b] [--w 1920 --h 1080] [--look clear-afternoon] [--only terrain,buildings]
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -17,8 +17,9 @@ const args = process.argv.slice(2);
 const opt = (name, dflt) => { const i = args.indexOf(`--${name}`); return i >= 0 ? args[i + 1] : dflt; };
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const scene = JSON.parse(fs.readFileSync(path.join(ROOT, 'scenes/shinjuku/kabukicho/1976/scene.json'), 'utf8'));
-const stations = (opt('stations') ? opt('stations').split(',') : scene.route.stations.map((s) => s.id));
-const out = path.resolve(ROOT, opt('out', 'renders/r02'));
+const walkTimes = opt('walk') ? opt('walk').split(',').map(Number) : null; // seconds on the adopted walk
+const stations = walkTimes ? walkTimes.map((t) => `walk-${String(t).padStart(6, '0')}`) : (opt('stations') ? opt('stations').split(',') : scene.route.stations.map((s) => s.id));
+const out = path.resolve(ROOT, opt('out', 'renders/r04'));
 const w = Number(opt('w', 1920)), h = Number(opt('h', 1080));
 const look = opt('look', 'clear-afternoon');
 const only = opt('only');
@@ -36,6 +37,7 @@ for (const id of stations) {
   page.on('console', (m) => logs.push(`[${m.type()}] ${m.text()}`));
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
   const q = new URLSearchParams({ station: id, still: '1', w, h, look });
+  if (walkTimes) { q.delete('station'); q.set('walk', String(walkTimes[stations.indexOf(id)])); }
   if (only) q.set('only', only);
   const t0 = Date.now();
   await page.goto(`http://127.0.0.1:${port}/viewer/index.html?${q}`);

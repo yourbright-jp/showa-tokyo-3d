@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compose r02 review sheets: each station render beside its assigned colour references.
+"""Compose r04 review sheets: each station render beside its assigned colour references.
 
 Usage: python3 scripts/make_comparison.py <render_dir> [--out <dir>]
 Writes <out>/compare-<station>.jpg and <out>/contact-sheet.jpg. Diagnostic sheets only;
@@ -14,7 +14,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[1]
 SCENE = ROOT / "scenes/shinjuku/kabukicho/1976"
 REF_DIR = SCENE / "references/master-v1"
-# Mirrors docs/rounds/shinjuku-kabukicho-1976-r02-rules.md (composition ref first).
+# Mirrors docs/rounds/shinjuku-kabukicho-1976-r04-rules.md (composition ref first).
 STATION_REFS = {
     "entrance-approach": ["R01", "R08"],
     "under-gate": ["R08", "R01"],
@@ -63,7 +63,7 @@ def main():
         sheet = Image.new("RGB", (W, H + 34), (18, 18, 20))
         d = ImageDraw.Draw(sheet)
         sheet.paste(render, (0, 34))
-        d.text((8, 6), f"{sid}  render (r02)", fill=(240, 236, 228), font=font(18))
+        d.text((8, 6), f"{sid}  render (r04)", fill=(240, 236, 228), font=font(18))
         x = render.width + 12
         for rid, r in zip(STATION_REFS.get(sid, []), refs):
             sheet.paste(r, (x, 34))

@@ -74,12 +74,17 @@ export function analyseFacades(ctx) {
   const facades = [];
   const plans = new Map();
   for (const b of all) {
-    const r = ctx.rng(`plan/${b.id}`);
-    const groundFloorH = b.proxy ? 6 : r.range(3.6, 4.4);
-    const upperFloorH = r.range(2.95, 3.35);
-    const parapetH = r.range(0.6, 1.2);
-    const floors = Math.max(1, 1 + Math.floor(Math.max(0, b.height - groundFloorH - parapetH) / upperFloorH));
-    plans.set(b.id, { floors, groundFloorH, upperFloorH, parapetH, baseY: b.baseY, topY: b.topY, assumption: 'visual floor division; not surveyed' });
+    // Adopted period rule (data/derived/kabukicho-period-features.json): 3.2 m storey scale.
+    // Fascia band sits on the 2F spandrel, matching the adopted storefront sign (≈3.3–4.1 m).
+    const storeyH = 3.2;
+    const floors = Math.max(1, Math.round(b.height / storeyH));
+    const groundFloorH = b.landmark ? 6 : storeyH;
+    plans.set(b.id, {
+      floors, storeyH, groundFloorH, upperFloorH: floors > 1 ? (b.height - groundFloorH) / (floors - 1) : storeyH,
+      parapetH: 0.6, baseY: b.baseY, topY: b.topY,
+      fasciaY0: b.baseY + groundFloorH + 0.08, fasciaY1: b.baseY + groundFloorH + 0.92,
+      assumption: 'adopted 3.2 m storey scale (inferred), not surveyed',
+    });
     const fp = b.footprint; // CCW in (x,z) as stored by data.js
     for (let i = 0; i < fp.length; i++) {
       const a = fp[i], c = fp[(i + 1) % fp.length];
@@ -100,6 +105,18 @@ export function analyseFacades(ctx) {
         streetFacing: od > 3.5 && (onRoad || inPlaza || od > 8),
       });
     }
+  }
+  // Attach the adopted stable shop text (period text_nodes) to the facade it sits on.
+  for (const t of data.textNodes || []) {
+    const [tx, , tz] = t.position_m;
+    let best = null, bd = 0.6;
+    for (const f of facades) {
+      if (!t.id.startsWith(f.buildingId)) continue;
+      const d = Math.abs((tx - f.a[0]) * f.normal[0] + (tz - f.a[1]) * f.normal[1]);
+      const along = ((tx - f.a[0]) * (f.b[0] - f.a[0]) + (tz - f.a[1]) * (f.b[1] - f.a[1])) / (f.length * f.length);
+      if (d < bd && along > -0.05 && along < 1.05) { bd = d; best = f; }
+    }
+    if (best) { best.adoptedText = t; t.facadeId = best.id; }
   }
   data.facades = facades;
   data.plans = plans;
