@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-period-scene-spec",
+  "status": "complete-adopted-with-inference",
+  "target_year": 1976,
+  "historical_certification": false,
+  "decision_complete": true,
+  "completion_scope": "All imported features have adopted dispositions; gate, theatres, plaza fixtures and street context are modelled. Documentary certainty is not implied.",
+  "coordinate_system": {
+    "axes": [
+      "east",
+      "up",
+      "south"
+    ],
+    "units": "metres",
+    "origin_jgd2011": {
+      "latitude": 35.6945,
+      "longitude": 139.702,
+      "height_m": 32.0
+    }
+  },
+  "decisions": [
+    {
+      "id": "period-background-context-rule",
+      "historical_truth_status": "inferred",
+      "rule": "Retain modern footprints only as spatial scaffolds, replace height with capped period massing, add near-route authored storefronts. No inferred source building is certified to have survived in 1976.",
+      "evidence_ids": [
+        "plateau-13104-shinjuku-ku-2025",
+        "gsi-gazo1-1974-1978"
+      ]
+    },
+    {
+      "id": "period-ground-adoption-rule",
+      "historical_truth_status": "modern-reference",
+      "rule": "Source TIN retained with one 32 m datum; roads/plaza form material masks. Target-year ground continuity and colours are inferred.",
+      "evidence_ids": [
+        "plateau-13104-shinjuku-ku-2025",
+        "gsi-gazo1-1974-1978"
+      ]
+    },
+    {
+      "id": "period-site-omission-rule",
+      "historical_truth_status": "inferred",
+      "rule": "The thin modern strip and modern volume over the adopted plaza are omitted only in the period reconstruction, following the R01 aerial-led reversible removal decisions; baseline preserves both.",
+      "path": "data/kabukicho-layout-hypothesis.json",
+      "evidence_ids": [
+        "gsi-gazo1-1974-1978",
+        "shinjuku-plaza-1975"
+      ]
+    },
+    {
+      "id": "milano-facade-adoption-rule",
+      "historical_truth_status": "inferred",
+      "rule": "Retain aerial roof mass and adopt the east-facing public facade with repeated doors/windows and stable Milano name; dimensions/colours remain authored assumptions.",
+      "evidence_ids": [
+        "tokyu-milano-1971",
+        "tokyu-milano-1972",
+        "gsi-gazo1-1974-1978"
+      ]
+    },
+    {
+      "id": "kabukicho-gate-1976",
+      "path": "data/decisions/kabukicho-gate-1976.json"
+    },
+    {
+      "id": "kabukicho-koma-plaza-1976",
+      "path": "data/decisions/kabukicho-koma-plaza-1976.json"
+    },
+    {
+      "id": "kabukicho-route-surfaces-1976",
+      "path": "data/decisions/kabukicho-route-surfaces-1976.json"
+    }
+  ],
+  "facades": [
+    {
+      "id": "milano-roof-proxy",
+      "frontage_edge_pixels": [
+        [
+          146,
+          217
+        ],
+        [
+          159,
+          181
+        ]
+      ],
+      "frontage_width_m": 37.022,
+      "outward_direction_xz": [
+        0.9400675695964661,
+        0.3409882176747364
+      ],
+      "baseline_direction_xz": [
+        0.3409882176747364,
+        -0.9400675695964661
+      ],
+      "base_y_m": -1.2346,
+      "adopted_parameters": {
+        "lower_front_height_m": 10,
+        "canopy_depth_m": 1.5,
+        "upper_window_rows_m": [
+          5,
+          7.0
+        ],
+        "upper_window_columns": 10,
+        "signs": [
+          {
+            "text": "ミラノ座",
+            "fraction": 0.5,
+            "height_m": 5.4
+          }
+        ]
+      }
+    },
+    {
+      "id": "koma-south-roof-proxy",
+      "frontage_edge_pixels": [
+        [
+          211,
+          270
+        ],
+        [
+          226,
+          236
+        ]
+      ],
+      "frontage_width_m": 35.953,
+      "outward_direction_xz": [
+        -0.9142534034042551,
+        -0.4051428320527669
+      ],
+      "baseline_direction_xz": [
+        -0.4051428320527669,
+        0.9142534034042551
+      ],
+      "base_y_m": -1.3787,
+      "adopted_parameters": {
+        "main_auditorium_height_m": 20,
+        "lower_front_height_m": 8.5,
+        "lower_front_depth_m": 5.0,
+        "canopy_height_m": 3.1,
+        "canopy_depth_m": 1.8,
+        "canopy_thickness_m": 0.22,
+        "entrance_bays": 7,
+        "entrance_bay_width_m": 1.8,
+        "entrance_height_m": 2.6,
+        "entrance_span_fraction": [
+          0.15,
+          0.85
+        ],
+        "upper_window_rows_m": [
+          4.8,
+          6.3
+        ],
+        "upper_window_columns": 9,
+        "upper_window_width_m": 0.75,
+        "upper_window_height_m": 1.0,
+        "cladding_joint_spacing_m": 3.2,
+        "wall_base_color_rgb": [
+          0.69,
+          0.7,
+          0.66
+        ],
+        "metal_base_color_rgb": [
+          0.19,
+          0.2,
+          0.19
+        ],
+        "glazing_base_color_rgb": [
+          0.12,
+          0.19,
+          0.18
+        ],
+        "signs": [
+          {
+            "text": "コマ劇場",
+            "fraction": 0.38,
+            "height_m": 3.8
+          },
+          {
+            "text": "コマ東宝",
+            "fraction": 0.81,
+            "height_m": 3.9
+          }
+        ],
+        "threshold_steps_total_height_m": 0.3,
+        "threshold_step_count": 2,
+        "threshold_steps_outward_depth_m": 1.6,
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+      }
+    },
+    {
+      "id": "adjacent-theatre-roof-proxy",
+      "frontage_edge_pixels": [
+        [
+          229,
+          235
+        ],
+        [
+          239,
+          203
+        ]
+      ],
+      "frontage_width_m": 32.424,
+      "outward_direction_xz": [
+        -0.9541016306564865,
+        -0.2994830185146286
+      ],
+      "baseline_direction_xz": [
+        -0.2994830185146286,
+        0.9541016306564865
+      ],
+      "base_y_m": -1.735,
+      "adopted_parameters": {
+        "main_tower_height_m": 28,
+        "lower_front_height_m": 9.0,
+        "lower_front_depth_m": 5.5,
+        "tower_rear_setback_m": 6.0,
+        "tower_frontage_fraction": 0.48,
+        "tower_window_rows": 6,
+        "tower_window_columns": 5,
+        "entrance_bay_width_m": 2.8,
+        "entrance_height_m": 2.7,
+        "canopy_height_m": 4.15,
+        "canopy_depth_m": 1.6,
+        "emblem_center_height_m": 5.8,
+        "emblem_radius_m": 1.5,
+        "emblem_rings": 3,
+        "wall_base_color_rgb": [
+          0.72,
+          0.73,
+          0.69
+        ],
+        "metal_base_color_rgb": [
+          0.16,
+          0.17,
+          0.16
+        ],
+        "signs": [
+          {
+            "text": "プラザ劇場",
+            "fraction": 0.45,
+            "height_m": 4.95
+          },
+          {
+            "text": "クラブハイツ",
+            "fraction": 0.5,
+            "height_m": 8.0
+          }
+        ],
+        "entry_steps_total_height_m": 1.2,
+        "entry_steps_count": 6,
+        "entry_steps_width_m": 3.0,
+        "entry_steps_outward_depth_m": 2.0,
+        "canopy_height_reference": "underside height above adopted plaza grade; 1.2 m entry rise + 2.7 m door height + 0.25 m head clearance",
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+      }
+    }
+  ],
+  "gate_adopted_variant": "curved-incandescent",
+  "context_rules": {
+    "storey_height_m": 3.2,
+    "near_route_radius_m": 38,
+    "near_height_cap_m": 24,
+    "far_height_cap_m": 28,
+    "generic_shop_types": [
+      "喫茶",
+      "食堂",
+      "理容",
+      "写真",
+      "レコード",
+      "麻雀"
+    ],
+    "material_authoring_color_space": "sRGB; glTF baseColorFactor RGB is converted once to linear, alpha unchanged",
+    "tenancy_status": "Generic shop types are authored period-compatible categories, not historical named tenants."
+  },
+  "ground_rules": {
+    "source_tin_preserved": true,
+    "mask_method": "triangle-centroid road/plaza masks",
+    "ground_1976_status": "adopted-inferred"
+  },
+  "text_contract": {
+    "position_m": "absolute local east/up/south metres with common 32 m orthometric offset",
+    "baseline_direction_xz": "right-facing text baseline; local font Y points up",
+    "height_m": "actual visible glyph bounding-box height in metres",
+    "position_reference": "position_m is the physical visible-glyph bounding-box centre",
+    "extrude_m": "physical extrusion"
+  },
+  "generation": {
+    "script": "scripts/build_period_scene.py",
+    "font_meshes_included": true,
+    "font_mesh_feature_count": 45,
+    "font_triangle_count": 69888,
+    "font_mesh_file": "data/derived/kabukicho-sign-text-meshes.json",
+    "feature_count": 988,
+    "triangle_count": 143425,
+    "text_node_count": 45,
+    "obstacle_count": 16
+  }
+}

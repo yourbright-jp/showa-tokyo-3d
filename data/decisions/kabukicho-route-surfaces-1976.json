@@ -1,0 +1,265 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-route-surfaces-1976",
+  "status": "adopted-with-inference",
+  "decision_complete": true,
+  "target_year": 1976,
+  "historical_confidence": "inferred",
+  "user_authorization": "Complete the classification and historical decisions; where evidence cannot resolve a detail, adopt and label a reasoned estimate.",
+  "source_route": "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json",
+  "pixel_space": {
+    "zoom": 17,
+    "tile_x": 116399,
+    "tile_y": 51606,
+    "width": 512,
+    "height": 512
+  },
+  "horizontal_uncertainty_m_assumption": 5,
+  "coordinate_precision_note": "Stored decimals support reproducibility and do not imply a surveyed historical position.",
+  "connector_surfaces": [
+    {
+      "id": "ichibangai-plaza-paving-join",
+      "category": "adopted-connector-paving",
+      "boundary_pixels": [
+        [
+          185.5,
+          287
+        ],
+        [
+          189.5,
+          287
+        ],
+        [
+          192,
+          280
+        ],
+        [
+          188,
+          280
+        ]
+      ],
+      "boundary_m": [
+        [
+          -55.0249226,
+          -0.6285711,
+          -50.4995012
+        ],
+        [
+          -51.1406703,
+          -0.7318833,
+          -50.499478
+        ],
+        [
+          -48.7129755,
+          -0.8001064,
+          -57.2668216
+        ],
+        [
+          -52.5972249,
+          -0.7896305,
+          -57.2668437
+        ]
+      ],
+      "historical_confidence": "inferred",
+      "evidence_sources": [
+        "gsi-gazo1-1974-1978"
+      ],
+      "interpretation": "A short street-to-plaza paving join, visible as the continuation of the aerial street corridor; adopted to bridge an annotation/source-polygon seam, not a newly surveyed road."
+    },
+    {
+      "id": "koma-entrance-forecourt-paving",
+      "category": "adopted-theatre-forecourt-paving",
+      "boundary_m": [
+        [
+          -30.92598672190934,
+          -1.0417701958914893,
+          -70.37425966589153
+        ],
+        [
+          -18.690565767808483,
+          -1.2902158632348935,
+          -97.98495486859849
+        ],
+        [
+          -33.318620222276564,
+          -1.4068378566481166,
+          -104.46724018144276
+        ],
+        [
+          -45.554041176377424,
+          -1.1009183048620164,
+          -76.8565449787358
+        ]
+      ],
+      "historical_confidence": "inferred",
+      "source_decision_id": "kabukicho-koma-plaza-1976",
+      "evidence_sources": [
+        "gsi-gazo1-1974-1978",
+        "shinjuku-koma-1957",
+        "shinjuku-plaza-1975"
+      ],
+      "interpretation": "Adopt the paved apron between the plaza and the adopted theatre entrance. The inner edge remains outside the modeled steps; exact historical paving limits are inferred.",
+      "frontage_fraction_range": [
+        0.08,
+        0.92
+      ],
+      "outward_depth_range_m": [
+        2.0,
+        18.0
+      ]
+    }
+  ],
+  "theatre_arrival": {
+    "id": "theatre-arrival",
+    "name": "旧コマ劇場の採用入口前",
+    "source_decision_id": "kabukicho-koma-plaza-1976",
+    "frontage_proxy_id": "koma-south-roof-proxy",
+    "entrance_fraction": 0.48,
+    "frontage_edge_pixels": [
+      [
+        211,
+        270
+      ],
+      [
+        226,
+        236
+      ]
+    ],
+    "frontage_edge_xz_m": [
+      [
+        -30.262758101205673,
+        -66.93438398248057
+      ],
+      [
+        -15.696780774895132,
+        -99.80425922379838
+      ]
+    ],
+    "outward_unit_vector_xz": [
+      -0.9142534034042551,
+      -0.4051428320527669
+    ],
+    "stop_offset_outward_from_frontage_m": 9.0,
+    "final_gaze_frontage_fraction": 0.44,
+    "final_gaze_height_above_ground_m": 2.25,
+    "framing_choice": "Stand back in the adopted entrance forecourt so the Koma name, canopy, doors and threshold share a 35 mm frame; avoid a dark glass close-up.",
+    "entrance_edge_position_xz_m": [
+      -23.271088984576615,
+      -82.71192409831312
+    ],
+    "ground_position_m": [
+      -31.49936961521491,
+      -1.12857697189069,
+      -86.35820958678802
+    ],
+    "look_at_m": [
+      -24.077720161463077,
+      1.0350483787809948,
+      -81.49638908251333
+    ],
+    "historical_confidence": "inferred",
+    "entry_behavior": "Stop outside the physical threshold steps; do not enter the auditorium.",
+    "position_status": "Adopted from the inferred western frontage and entrance fraction, not a surveyed 1976 entrance."
+  },
+  "original_unclassified_samples": [
+    {
+      "segment_index": 2,
+      "sample_index": 154,
+      "segment_sample_count": 180,
+      "t": 0.8603351955307262,
+      "position_xz_m": [
+        -53.0746843575419,
+        -52.01711899441341
+      ],
+      "pixel": [
+        187.50837988826817,
+        285.4301675977654
+      ],
+      "nearest_road_distance_m": 0.06404869444592023,
+      "nearest_road_id": "tran_7cb82265-e4e8-43c0-bf68-d3daaed24b30",
+      "adopted_category": "adopted-connector-paving",
+      "surface_id": "ichibangai-plaza-paving-join"
+    },
+    {
+      "segment_index": 2,
+      "sample_index": 155,
+      "segment_sample_count": 180,
+      "t": 0.8659217877094972,
+      "position_xz_m": [
+        -52.93905698324022,
+        -52.49780223463688
+      ],
+      "pixel": [
+        187.64804469273744,
+        284.9329608938547
+      ],
+      "nearest_road_distance_m": 0.2156511535075562,
+      "nearest_road_id": "tran_7cb82265-e4e8-43c0-bf68-d3daaed24b30",
+      "adopted_category": "adopted-connector-paving",
+      "surface_id": "ichibangai-plaza-paving-join"
+    },
+    {
+      "segment_index": 2,
+      "sample_index": 156,
+      "segment_sample_count": 180,
+      "t": 0.8715083798882681,
+      "position_xz_m": [
+        -52.80342960893854,
+        -52.978485474860335
+      ],
+      "pixel": [
+        187.7877094972067,
+        284.43575418994413
+      ],
+      "nearest_road_distance_m": 0.29521024520997485,
+      "nearest_road_id": "tran_7cb82265-e4e8-43c0-bf68-d3daaed24b30",
+      "adopted_category": "adopted-connector-paving",
+      "surface_id": "ichibangai-plaza-paving-join"
+    },
+    {
+      "segment_index": 2,
+      "sample_index": 157,
+      "segment_sample_count": 180,
+      "t": 0.8770949720670391,
+      "position_xz_m": [
+        -52.667802234636866,
+        -53.459168715083806
+      ],
+      "pixel": [
+        187.92737430167597,
+        283.9385474860335
+      ],
+      "nearest_road_distance_m": 0.3468139185378291,
+      "nearest_road_id": "tran_7cb82265-e4e8-43c0-bf68-d3daaed24b30",
+      "adopted_category": "adopted-connector-paving",
+      "surface_id": "ichibangai-plaza-paving-join"
+    }
+  ],
+  "dependencies": [
+    "kabukicho-koma-plaza-1976"
+  ],
+  "evidence": [
+    {
+      "id": "gsi-gazo1-1974-1978",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "year_range": [
+        1974,
+        1978
+      ],
+      "what_supports": "The visually continuous street/paving band near native mosaic pixels x187.5-187.9,y283.9-285.4. The native image is approximately 1 m per pixel; no exact 1976 survey is claimed."
+    },
+    {
+      "id": "plateau-13104-shinjuku-ku-2025",
+      "url": "https://www.mlit.go.jp/plateau/open-data/",
+      "year": 2025,
+      "what_supports": "Modern source road polygons lie only 0.064-0.347 m from the four unclassified centreline points. These polygon edges are modern reference, not historical paving boundaries."
+    }
+  ],
+  "assumptions": [
+    "The short gap is paving between the street and plaza rather than a historical obstacle or building.",
+    "The adopted Koma entrance fraction and frontage define a paved forecourt; the terminal stop is 9 m outside that frontage and before the physical threshold steps.",
+    "The explicit connector is an inferred surface, not a correction to PLATEAU or a surveyed 1976 boundary.",
+    "All retained modern road corridors are adopted for route construction, with historical status inferred where the aerial does not resolve detail."
+  ],
+  "reversibility": "The R01 route, road polygons and plaza hypothesis remain unchanged; the adopted paving join is a separate polygon."
+}

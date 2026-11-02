@@ -11,3 +11,5 @@
 - Use Git LFS for the binary production formats listed in `.gitattributes`. Keep upstream bulk downloads in ignored `data/raw/` and render outputs in ignored `renders/`.
 - Before reporting a milestone, validate changed scene/metadata files and inspect representative views from the route. Report uncertainty and limitations plainly.
 - Follow the production workflow and use `docs/templates/ROUND_REPORT.md` for visual rounds. Request independent fresh-context critiques of historical/geographic evidence and visual/motion quality using `docs/templates/CRITIC_BRIEF.md`; record unperformed checks and evidence gaps explicitly.
+
+- Adopted reconstruction decisions may use reasoned estimates under the user's instruction of 2026-11-02. Complete the production choice and record evidence, counterevidence and inferred parameters; never relabel that choice as a verified historical fact. Preserve the original modern underlay and prior studies for comparison.

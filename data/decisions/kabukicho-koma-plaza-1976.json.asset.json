@@ -1,0 +1,231 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-koma-plaza-1976",
+  "path": "data/decisions/kabukicho-koma-plaza-1976.json",
+  "type": "historical-adoption-decision",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-02",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html",
+    "https://www.toho.co.jp/real-estate/kabukicho/",
+    "https://www.toho.co.jp/company/history/",
+    "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
+    "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+    "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
+    "https://www.city.shinjuku.lg.jp/content/000121601.pdf"
+  ],
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "source_creation_date": "2026-03-13",
+      "vertical_processing": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+      "road_elevation_limitations": "All selected source LOD1 road heights are 0.0 and are treated as missing elevations. Only road vertices are draped to the DEM; triangulated polygon interiors are an approximation, not a terrain-clipped road surface.",
+      "scope": "Modern source buildings, roads and terrain; not a single-date view of the current city or evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "upstream_terms": "PDL 1.0; CC BY 4.0 use selected under section 1.7(3)",
+      "upstream_terms_urls": [
+        "https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "terms_checked_at": "2026-11-02",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Approximate manual interpretation of roof outlines and street space. Raw aerial tiles and historical photographs are not embedded or redistributed."
+    },
+    {
+      "source_id": "toho-kabukicho-site-history",
+      "evidence_id": "toho-kabukicho-site-history",
+      "provider": "東宝 歌舞伎町の不動産史",
+      "source_url": "https://www.toho.co.jp/real-estate/kabukicho/",
+      "source_year": null,
+      "publication_year": null,
+      "what_supports": "Owner records Koma completion in December 1956 and closure in 2008; supports the facility identity and continuity, not 1976 facade colour or surveyed dimensions.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "undated owner webpage",
+      "represented_event_year": 1956
+    },
+    {
+      "source_id": "toho-corporate-history",
+      "evidence_id": "toho-corporate-history",
+      "provider": "toho-corporate-history",
+      "source_url": "https://www.toho.co.jp/company/history/",
+      "source_year": 1969,
+      "publication_year": null,
+      "what_supports": "Owner chronology records Shinjuku Toho Kaikan completion in October 1969; separates it chronologically and physically from the older Koma complex.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "represented completion event, not page publication date"
+    },
+    {
+      "source_id": "toho-redevelopment-2011",
+      "evidence_id": "toho-redevelopment-2011",
+      "provider": "toho-redevelopment-2011",
+      "source_url": "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
+      "source_year": 2011,
+      "publication_year": null,
+      "what_supports": "Official redevelopment announcement names both Koma Theatre and Shinjuku Toho Kaikan sites; supports treating them as separate buildings.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "release/document year, not 1976 capture evidence"
+    },
+    {
+      "source_id": "shinjuku-koma-1957",
+      "evidence_id": "shinjuku-koma-1957",
+      "provider": "shinjuku-koma-1957",
+      "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "source_year": 1957,
+      "publication_year": null,
+      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "source_id": "shinjuku-plaza-1975",
+      "evidence_id": "shinjuku-plaza-1975",
+      "provider": "劇場前広場のイベント",
+      "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "source_year": 1975,
+      "publication_year": null,
+      "what_supports": "Inspected ground photograph confirms open plaza, stepped/paved edges, multiple globe street lamps and Club Heights lettering. It does not geolocate or measure the fountain basin.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "source_id": "shinjuku-plaza-1979",
+      "evidence_id": "shinjuku-plaza-1979",
+      "provider": "shinjuku-plaza-1979",
+      "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
+      "source_year": 1979,
+      "publication_year": null,
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "evidence_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 国土画像情報1974〜1978",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_year": [
+        1974,
+        1978
+      ],
+      "publication_year": null,
+      "what_supports": "The inspected four-tile mosaic provides approximate roof positions and the oval open-space feature adopted as a fountain. Flight date, ground footprints and shadow interpretation remain approximate.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "source_id": "shinjuku-former-fountain-record",
+      "evidence_id": "shinjuku-former-fountain-record",
+      "provider": "shinjuku-former-fountain-record",
+      "source_url": "https://www.city.shinjuku.lg.jp/content/000121601.pdf",
+      "source_year": 2012,
+      "publication_year": null,
+      "what_supports": "Municipal committee record describes Cinecity Plaza as the former fountain square in front of Koma. It corroborates historical fountain existence but does not date or measure the adopted 1976 basin.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-koma-plaza-1976",
+      "year_role": "release/document year, not 1976 capture evidence"
+    }
+  ],
+  "license": "MIT",
+  "license_url": "https://opensource.org/license/mit",
+  "license_scope": "Project-authored decision/configuration. Retain the separate upstream attribution and evidence-only rights notices.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 東宝 歌舞伎町の不動産史 toho-corporate-history toho-redevelopment-2011 shinjuku-koma-1957 劇場前広場のイベント shinjuku-plaza-1979 国土地理院 国土画像情報1974〜1978 shinjuku-former-fountain-record",
+  "source_years": [
+    1957,
+    1969,
+    1975,
+    1979,
+    2011,
+    2012,
+    2025
+  ],
+  "source_periods": [
+    [
+      1974,
+      1978
+    ]
+  ],
+  "source_years_scope": "Associated source and represented-event years. Consult each component's year_role, represented_event_year, publication_year and year_range before treating a year as a photograph capture date.",
+  "target_year": 1976,
+  "processing": "Adopts distinct Koma and neighbouring theatre identities/frontage parameters plus approximate plaza props from historical photo/aerial research. Documents source dates, rejected alternatives, inferred colours and dimensions, and geometry assumptions.",
+  "dependencies": [
+    "kabukicho-r01-kabukicho-layout-hypothesis"
+  ],
+  "sha256": "1d370181d26e2d568433091433924167e640aecdf50048745fb82476c6c42105",
+  "size_bytes": 17090,
+  "format": "json",
+  "units": "metres",
+  "coordinate_system": {
+    "kind": "local-cartesian",
+    "units": "metres",
+    "handedness": "right",
+    "axes": {
+      "x": "east",
+      "y": "up",
+      "z": "south"
+    },
+    "source_crs": "EPSG:6697",
+    "origin_jgd2011": {
+      "latitude": 35.6945,
+      "longitude": 139.702,
+      "height_m": 32.0
+    },
+    "vertical_reference": "Modern source orthometric terrain/building height minus one common 32 m datum; adopted historic forms and surfaces are explicit inferences."
+  },
+  "geographic_confidence": "approximate",
+  "historical_confidence": "inferred",
+  "adoption_status": "adopted-with-inference",
+  "historical_fact_certification": false,
+  "inferred_elements": "The user authorized a complete, coherent reconstruction hypothesis. Adoption settles production choices, not historical uncertainty. Exact gate chronology, unseen facades, dimensions, paint colours, context-building survival, plaza objects and historic surface levels remain inferred as recorded in the linked decisions.",
+  "redistribution_review": "Only authored/derived geometry, configuration or rendered output is published. Cited archival photographs and source rasters are evidence only and are not republished; no photo-license grant is asserted."
+}

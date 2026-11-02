@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-entrance-render-manifest",
+  "path": "docs/previews/r03/entrance-render-manifest.json",
+  "type": "render-provenance-manifest",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-02",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html",
+    "https://toyokeizai.net/articles/photo/853639?pn=5",
+    "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+    "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+    "https://kabukicho-culture-press.jp/all/spot/4082",
+    "https://download.blender.org/release/Blender4.5/"
+  ],
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "source_creation_date": "2026-03-13",
+      "vertical_processing": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+      "road_elevation_limitations": "All selected source LOD1 road heights are 0.0 and are treated as missing elevations. Only road vertices are draped to the DEM; triangulated polygon interiors are an approximation, not a terrain-clipped road surface.",
+      "scope": "Modern source buildings, roads and terrain; not a single-date view of the current city or evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "upstream_terms": "PDL 1.0; CC BY 4.0 use selected under section 1.7(3)",
+      "upstream_terms_urls": [
+        "https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "terms_checked_at": "2026-11-02",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Approximate manual interpretation of roof outlines and street space. Raw aerial tiles and historical photographs are not embedded or redistributed."
+    },
+    {
+      "source_id": "toyokeizai-gate-1978",
+      "evidence_id": "toyokeizai-gate-1978",
+      "provider": "東洋経済新報社",
+      "source_url": "https://toyokeizai.net/articles/photo/853639?pn=5",
+      "source_year": 1978,
+      "publication_year": 2025,
+      "what_supports": "Publisher caption attributes the matching wide gate photograph to 1978; inspected pixels show the curved upturned silhouette, bulb arrays, a light central name panel and Suzuya on the left. It does not prove 1976 presence or paint colour.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "kabukicho-association-arch-2013",
+      "evidence_id": "kabukicho-association-arch-2013",
+      "provider": "歌舞伎町商店街振興組合事務局",
+      "source_url": "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+      "source_year": 2013,
+      "publication_year": 2013,
+      "what_supports": "The association retrospectively associates the distinctive red arch with 1969 and says the 2013 work retained the old design, raised the structure by 0.5 m and introduced LED/solar equipment. Dimensions refer to 2013; they are a scale prior only.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "shinjuku-museum-gate-7378",
+      "evidence_id": "shinjuku-museum-gate-7378",
+      "provider": "新宿歴史博物館",
+      "source_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+      "source_year": 1972,
+      "publication_year": null,
+      "what_supports": "Museum catalogue records a photograph named Kabukicho Ichibangai on 1972-12-23. A locally inspected exhibition-panel rephotograph labelled 1972 shows a rectangular arch, but original museum-image pixel matching remains unperformed. This is a retained counterexample, not discarded evidence.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "kabukicho-culture-arch-2021",
+      "evidence_id": "kabukicho-culture-arch-2021",
+      "provider": "歌舞伎町文化新聞",
+      "source_url": "https://kabukicho-culture-press.jp/all/spot/4082",
+      "source_year": 2021,
+      "publication_year": 2021,
+      "what_supports": "The retrospective article repeats the 1969 origin of the present-style arch while also displaying a 1972-labelled rectangular predecessor. It supports street/entrance context and makes the chronological conflict explicit; it is not independent proof of the target-year form.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "noto-cjk-blender-4-5-15",
+      "provider": "The Noto Project Authors; bundled with official Blender 4.5.15 LTS",
+      "source_url": "https://download.blender.org/release/Blender4.5/",
+      "license": "OFL-1.1",
+      "license_url": "https://openfontlicense.org/open-font-license-official-text/",
+      "font_name": "Noto Sans CJK SC Regular",
+      "font_file_sha256": "264ed9286faf7d057e44574c98bb7ea566d337095474fadb1e6fe3bcad2d982b",
+      "attribution": "Copyright 2018 The Noto Project Authors; SIL Open Font License 1.1.",
+      "scope": "Production typography for specific modelled sign strings. This is not evidence of the exact historical lettering, and no font binary is redistributed.",
+      "evidence_only": false
+    }
+  ],
+  "license": "MIT",
+  "license_url": "https://opensource.org/license/mit",
+  "license_scope": "Project-authored decision/configuration. Retain the separate upstream attribution and evidence-only rights notices.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 東洋経済新報社 歌舞伎町商店街振興組合事務局 新宿歴史博物館 歌舞伎町文化新聞 Copyright 2018 The Noto Project Authors; SIL Open Font License 1.1.",
+  "source_years": [
+    1972,
+    1978,
+    2013,
+    2021,
+    2025
+  ],
+  "source_periods": [
+    [
+      1974,
+      1978
+    ]
+  ],
+  "source_years_scope": "Associated source and represented-event years. Consult each component's year_role, represented_event_year, publication_year and year_range before treating a year as a photograph capture date.",
+  "target_year": 1976,
+  "processing": "scripts/build_entrance_detail.py records the actual Blender version, engine, render dimensions/samples, supplied font identity/hash, camera transforms and shared-terrain checks used to generate the entrance stills. This is execution provenance, not historical certification.",
+  "dependencies": [
+    "kabukicho-entrance-detail-r03",
+    "kabukicho-gate-1976",
+    "kabukicho-route-proposal"
+  ],
+  "sha256": "407b6989e3301fe87f395fe816395cb73eb17332a9d87db6901f552e75ea9ac1",
+  "size_bytes": 14415,
+  "format": "json",
+  "units": "render settings, camera metres and file hashes",
+  "coordinate_system": null,
+  "geographic_confidence": "approximate",
+  "historical_confidence": "inferred",
+  "adoption_status": "adopted-with-inference",
+  "historical_fact_certification": false,
+  "inferred_elements": "The user authorized a complete, coherent reconstruction hypothesis. Adoption settles production choices, not historical uncertainty. Exact gate chronology, unseen facades, dimensions, paint colours, context-building survival, plaza objects and historic surface levels remain inferred as recorded in the linked decisions.",
+  "redistribution_review": "Only authored/derived geometry, configuration or rendered output is published. Cited archival photographs and source rasters are evidence only and are not republished; no photo-license grant is asserted.",
+  "font_provenance": {
+    "provider": "The Noto Project Authors; font supplied in the official Blender distribution",
+    "license": "OFL-1.1",
+    "license_url": "https://openfontlicense.org/open-font-license-official-text/",
+    "source_url": "https://download.blender.org/release/Blender4.5/",
+    "bundled_license_evidence": "Blender 4.5.15 LTS license/license.md, Noto Fonts entry; license/spdx/OFL-1.1.txt",
+    "font_binary_redistributed": false,
+    "scope": "Specific sign-text outlines or rasterized glyphs only, rather than a redistributed font binary. Preserve font provenance separately from the scene's geographic-data license."
+  }
+}

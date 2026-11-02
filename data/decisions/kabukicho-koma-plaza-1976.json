@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-koma-plaza-1976",
+  "status": "adopted-with-inference",
+  "target_year": 1976,
+  "decision_complete": true,
+  "historical_confidence": "inferred",
+  "authored_at": "2026-11-02",
+  "authorization": "User requested completing classification and historical decisions and explicitly allowed inference where evidence cannot decide.",
+  "scope": "Adopted Koma / Toho Kaikan frontage and plaza construction specification. Decision completeness does not mean every historical detail is verified.",
+  "coordinate_space": {
+    "pixels": "native 512 x 512 GSI gazo1 mosaic",
+    "zoom": 17,
+    "tile_x": 116399,
+    "tile_y": 51606,
+    "units": "pixel annotations; dimensions in metres",
+    "horizontal_uncertainty_m_assumption": 5,
+    "prop_placement_uncertainty_m_assumption": 2,
+    "datum": "EPSG:3857 geographic pixels approximately mapped to JGD2011; local Y is source DEM orthometric height minus 32 m"
+  },
+  "buildings": [
+    {
+      "proxy_id": "koma-south-roof-proxy",
+      "adopted_identity": "新宿コマ劇場（コマ・スタジアム、地下映画館併設）",
+      "identity_status": "facility existence documented; exact aerial polygon/frontage correspondence inferred",
+      "frontage_edge_pixels": [
+        [
+          211,
+          270
+        ],
+        [
+          226,
+          236
+        ]
+      ],
+      "frontage_direction": "plaza-facing western edge; exact historical axis is inferred",
+      "frontage_edge_length_m_derived": 35.9527,
+      "entrance_fraction": 0.48,
+      "height_assumption_m": 20,
+      "parameters": {
+        "main_auditorium_height_m": 20,
+        "lower_front_height_m": 8.5,
+        "lower_front_depth_m": 5.0,
+        "canopy_height_m": 3.1,
+        "canopy_depth_m": 1.8,
+        "canopy_thickness_m": 0.22,
+        "entrance_bays": 7,
+        "entrance_bay_width_m": 1.8,
+        "entrance_height_m": 2.6,
+        "entrance_span_fraction": [
+          0.15,
+          0.85
+        ],
+        "upper_window_rows_m": [
+          4.8,
+          6.3
+        ],
+        "upper_window_columns": 9,
+        "upper_window_width_m": 0.75,
+        "upper_window_height_m": 1.0,
+        "cladding_joint_spacing_m": 3.2,
+        "wall_base_color_rgb": [
+          0.69,
+          0.7,
+          0.66
+        ],
+        "metal_base_color_rgb": [
+          0.19,
+          0.2,
+          0.19
+        ],
+        "glazing_base_color_rgb": [
+          0.12,
+          0.19,
+          0.18
+        ],
+        "signs": [
+          {
+            "text": "コマ劇場",
+            "fraction": 0.38,
+            "height_m": 3.8
+          },
+          {
+            "text": "コマ東宝",
+            "fraction": 0.81,
+            "height_m": 3.9
+          }
+        ],
+        "threshold_steps_total_height_m": 0.3,
+        "threshold_step_count": 2,
+        "threshold_steps_outward_depth_m": 1.6,
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+      },
+      "evidence_ids": [
+        "toho-kabukicho-site-history",
+        "shinjuku-koma-1957",
+        "gsi-gazo1-1974-1978"
+      ],
+      "inferred_elements": [
+        "Exact facade axis/entrance fractions",
+        "All dimensions and retained 20 m roof height",
+        "1957 opening/canopy/window motifs carried forward to 1976",
+        "Neutral pale concrete colour and glazing/metal colours"
+      ],
+      "excluded_elements": [
+        "No undated green facade / Koma Stadium lettering is claimed as verified 1976",
+        "No historical performance title, dated poster artwork or film still is invented as evidence"
+      ]
+    },
+    {
+      "proxy_id": "adjacent-theatre-roof-proxy",
+      "adopted_identity": "新宿東宝会館（新宿プラザ劇場の低層部とクラブハイツ側高層部）",
+      "identity_status": "Separate building adopted; west frontage and roof footprint correspondence inferred",
+      "frontage_edge_pixels": [
+        [
+          229,
+          235
+        ],
+        [
+          239,
+          203
+        ]
+      ],
+      "frontage_direction": "west-facing edge toward the plaza; distinct from Koma frontage",
+      "frontage_edge_length_m_derived": 32.4245,
+      "entrance_fraction": 0.5,
+      "height_assumption_m": 28,
+      "parameters": {
+        "main_tower_height_m": 28,
+        "lower_front_height_m": 9.0,
+        "lower_front_depth_m": 5.5,
+        "tower_rear_setback_m": 6.0,
+        "tower_frontage_fraction": 0.48,
+        "tower_window_rows": 6,
+        "tower_window_columns": 5,
+        "entrance_bay_width_m": 2.8,
+        "entrance_height_m": 2.7,
+        "canopy_height_m": 4.15,
+        "canopy_depth_m": 1.6,
+        "emblem_center_height_m": 5.8,
+        "emblem_radius_m": 1.5,
+        "emblem_rings": 3,
+        "wall_base_color_rgb": [
+          0.72,
+          0.73,
+          0.69
+        ],
+        "metal_base_color_rgb": [
+          0.16,
+          0.17,
+          0.16
+        ],
+        "signs": [
+          {
+            "text": "プラザ劇場",
+            "fraction": 0.45,
+            "height_m": 4.95
+          },
+          {
+            "text": "クラブハイツ",
+            "fraction": 0.5,
+            "height_m": 8.0
+          }
+        ],
+        "entry_steps_total_height_m": 1.2,
+        "entry_steps_count": 6,
+        "entry_steps_width_m": 3.0,
+        "entry_steps_outward_depth_m": 2.0,
+        "canopy_height_reference": "underside height above adopted plaza grade; 1.2 m entry rise + 2.7 m door height + 0.25 m head clearance",
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+      },
+      "evidence_ids": [
+        "toho-corporate-history",
+        "toho-redevelopment-2011",
+        "shinjuku-plaza-1975",
+        "shinjuku-plaza-1979",
+        "gsi-gazo1-1974-1978"
+      ],
+      "inferred_elements": [
+        "Aerial northern roof is assigned to Toho Kaikan rather than merged with Koma",
+        "Low front + setback tower interpreted from 1975/1979 photos",
+        "Exact heights, setback, staircase, sign placement and colours",
+        "1979 Plaza Theatre sign carried back three years; no 1979 film advertisement used"
+      ],
+      "excluded_elements": [
+        "Do not equate 1957 コマ東宝 with the building completed in 1969",
+        "Do not display 1979 film artwork as a 1976 programme"
+      ]
+    }
+  ],
+  "plaza_props": [
+    {
+      "id": "plaza-fountain",
+      "type": "elliptical-fountain",
+      "center_pixel": [
+        183,
+        252
+      ],
+      "radius_east_west_m": 4.8,
+      "radius_north_south_m": 8.0,
+      "rotation_deg_clockwise_from_north": 17,
+      "height_m": 0.55,
+      "rim_height_m": 0.55,
+      "rim_width_m": 0.45,
+      "water_height_above_ground_m": 0.28,
+      "central_jet_height_m": 1.2,
+      "collision_role": "solid basin footprint including rim, not walkable",
+      "evidence_ids": [
+        "gsi-gazo1-1974-1978",
+        "shinjuku-former-fountain-record"
+      ],
+      "historical_status": "inferred-placement-and-dimensions",
+      "interpretation": "Adopt the oval dark/light feature west of the Koma roof as the former fountain basin; approximate center and dimensions, not a survey."
+    },
+    {
+      "id": "plaza-lamp-north",
+      "type": "multi-globe-streetlamp",
+      "center_pixel": [
+        194,
+        246
+      ],
+      "height_m": 5.0,
+      "post_radius_m": 0.18,
+      "base_radius_m": 0.3,
+      "globe_radius_m": 0.24,
+      "globe_count": 7,
+      "crown_radius_m": 1.25,
+      "collision_role": "post/base footprint only; globe crown above pedestrian head",
+      "evidence_ids": [
+        "shinjuku-plaza-1975",
+        "shinjuku-plaza-1979"
+      ],
+      "historical_status": "observed-style-inferred-placement"
+    },
+    {
+      "id": "plaza-lamp-middle",
+      "type": "multi-globe-streetlamp",
+      "center_pixel": [
+        197,
+        260
+      ],
+      "height_m": 5.0,
+      "post_radius_m": 0.18,
+      "base_radius_m": 0.3,
+      "globe_radius_m": 0.24,
+      "globe_count": 7,
+      "crown_radius_m": 1.25,
+      "collision_role": "post/base footprint only; globe crown above pedestrian head",
+      "evidence_ids": [
+        "shinjuku-plaza-1975",
+        "shinjuku-plaza-1979"
+      ],
+      "historical_status": "observed-style-inferred-placement"
+    },
+    {
+      "id": "plaza-lamp-south",
+      "type": "multi-globe-streetlamp",
+      "center_pixel": [
+        201,
+        273
+      ],
+      "height_m": 5.0,
+      "post_radius_m": 0.18,
+      "base_radius_m": 0.3,
+      "globe_radius_m": 0.24,
+      "globe_count": 7,
+      "crown_radius_m": 1.25,
+      "collision_role": "post/base footprint only; globe crown above pedestrian head",
+      "evidence_ids": [
+        "shinjuku-plaza-1975",
+        "shinjuku-plaza-1979"
+      ],
+      "historical_status": "observed-style-inferred-placement"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "toho-kabukicho-site-history",
+      "url": "https://www.toho.co.jp/real-estate/kabukicho/",
+      "year": null,
+      "what_supports": "Owner records Koma completion in December 1956 and closure in 2008; supports the facility identity and continuity, not 1976 facade colour or surveyed dimensions.",
+      "source_kind": "owner history",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "undated owner webpage",
+      "represented_event_year": 1956,
+      "publication_year": null
+    },
+    {
+      "id": "toho-corporate-history",
+      "url": "https://www.toho.co.jp/company/history/",
+      "year": 1969,
+      "what_supports": "Owner chronology records Shinjuku Toho Kaikan completion in October 1969; separates it chronologically and physically from the older Koma complex.",
+      "source_kind": "owner chronology",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "represented completion event, not page publication date",
+      "publication_year": null
+    },
+    {
+      "id": "toho-redevelopment-2011",
+      "url": "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
+      "year": 2011,
+      "what_supports": "Official redevelopment announcement names both Koma Theatre and Shinjuku Toho Kaikan sites; supports treating them as separate buildings.",
+      "source_kind": "owner release",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "release/document year, not 1976 capture evidence"
+    },
+    {
+      "id": "shinjuku-koma-1957",
+      "url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "image_url": "https://www.kanko-shinjuku.jp/images/special/05/photo_history_07.jpg",
+      "year": 1957,
+      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "source_kind": "tourism association reproduction credited to Shinjuku History Museum",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "id": "shinjuku-plaza-1975",
+      "url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "image_url": "https://www.kanko-shinjuku.jp/images/special/05/history_shinjuku_1975.jpg",
+      "year": 1975,
+      "what_supports": "Inspected ground photograph confirms open plaza, stepped/paved edges, multiple globe street lamps and Club Heights lettering. It does not geolocate or measure the fountain basin.",
+      "source_kind": "tourism association reproduction credited to Shinjuku History Museum",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "id": "shinjuku-plaza-1979",
+      "url": "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
+      "image_url": "https://www.kanko-shinjuku.jp/images/special/05/photo_sthb1.jpg",
+      "year": 1979,
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "source_kind": "tourism association reproduction credited to Shinjuku History Museum",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "id": "gsi-gazo1-1974-1978",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "year": [
+        1974,
+        1978
+      ],
+      "what_supports": "The inspected four-tile mosaic provides approximate roof positions and the oval open-space feature adopted as a fountain. Flight date, ground footprints and shadow interpretation remain approximate.",
+      "source_kind": "historical aerial imagery",
+      "evidence_only": true,
+      "license": "CC-BY-4.0",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "id": "shinjuku-former-fountain-record",
+      "url": "https://www.city.shinjuku.lg.jp/content/000121601.pdf",
+      "year": 2012,
+      "what_supports": "Municipal committee record describes Cinecity Plaza as the former fountain square in front of Koma. It corroborates historical fountain existence but does not date or measure the adopted 1976 basin.",
+      "source_kind": "municipal meeting record",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "release/document year, not 1976 capture evidence"
+    }
+  ],
+  "assumptions": [
+    "Both buildings are assigned to the existing traced roof proxies and their plaza-facing western edges. Roof displacement and 5 m assumed georeferencing uncertainty remain; the assignment is adopted, not surveyed.",
+    "Existing 20 m / 28 m proxy roof heights remain assumed total masses. Lower frontage, tower setback, door/window modules and steps are construction choices informed by photographs.",
+    "Pale neutral mineral wall colours, dark metal and green-grey glazing are selected for a coherent full-colour reconstruction. Black-and-white photographs do not prove these colours.",
+    "Fountain shape and location are inferred from the aerial; dimensions and lamp positions remain modeling assumptions. The three lamp positions are not claimed as measured historical pole positions.",
+    "Use stable building names and neutral poster panels. No actual programme, event, or exact day in 1976 is invented.",
+    "Current DEM supplies a continuous ground datum. It is a modern terrain reference rather than a verified 1976 pavement elevation.",
+    "The seven-globe count and crown dimensions are an adopted procedural simplification of the multi-globe lamp style; no exact pole inventory or measured globe count is claimed.",
+    "Toho canopy underside is adopted at 4.15 m above plaza grade so the 1.2 m stair rise and 2.7 m door opening do not intersect it; Plaza lettering baseline 4.55 m is an authored placement.",
+    "After fitting actual CJK glyph bounds, place Koma Toho lettering centre at 3.9 m and Plaza Theatre lettering centre at 4.95 m so their 0.85 m glyph bounds clear the canopy tops; these are authored layout dimensions."
+  ],
+  "contradictions": [
+    {
+      "issue": "Koma colour/lettering in undated owner photograph",
+      "resolution": "Do not treat undated green wall and Koma Stadium sign as verified 1976; use the documented early facade motifs with inferred neutral colour."
+    },
+    {
+      "issue": "1957 Koma Toho versus 1969 Toho Kaikan",
+      "resolution": "Keep separate identities; the basement cinema name is not evidence that the later adjacent building already existed in 1957."
+    },
+    {
+      "issue": "Northern tower storey counts vary in later descriptions",
+      "resolution": "Use a 28 m assumed mass with a lower 9 m front and partial setback tower; do not claim a historically verified storey count."
+    },
+    {
+      "issue": "Museum 9073 image not accessible",
+      "resolution": "Attempted primary catalogue access returned 502. Adopt visible 1957/1975/1979 photographs instead; do not claim unviewed 1977 pixels were verified."
+    }
+  ],
+  "alternatives": [
+    {
+      "variant": "merge both proxies into Koma",
+      "adopted": false,
+      "reason": "Owner chronology, redevelopment release and photos support separate Koma and Toho Kaikan buildings."
+    },
+    {
+      "variant": "undated green Koma facade",
+      "adopted": false,
+      "reason": "Photograph is not securely dated to 1976."
+    },
+    {
+      "variant": "leave northern mass anonymous and omit plaza furniture",
+      "adopted": false,
+      "reason": "User authorizes reasoned adoption; distinct Toho/Plaza identity and historically supported furniture make a complete, traceable scene possible."
+    }
+  ],
+  "redistribution": "No historical photograph pixels, protected film artwork or museum raster are embedded in this decision file or licensed by its citations."
+}

@@ -6,9 +6,9 @@
   "district": "kabukicho",
   "target_year": 1976,
   "year_precision": "approximate",
-  "status": "provisional-blockout",
+  "status": "adopted-reconstruction",
   "geographic_confidence": "approximate",
-  "historical_confidence": "unverified",
+  "historical_confidence": "inferred",
   "coordinate_system": {
     "kind": "local-cartesian",
     "units": "metres",
@@ -34,7 +34,10 @@
   },
   "asset_ids": [
     "kabukicho-modern-baseline",
-    "kabukicho-layout-study"
+    "kabukicho-layout-study",
+    "kabukicho-reconstruction-adopted",
+    "kabukicho-feature-classification",
+    "kabukicho-adopted-walk"
   ],
   "camera_proposal": {
     "height_m": 1.6,
@@ -50,7 +53,8 @@
       "plaza-reveal": 24,
       "koma-front": 24
     },
-    "lens_scope": "Default proposal with per-station geometry diagnostic overrides; continuous film lens and turns remain unapproved."
+    "lens_scope": "Default proposal with per-station geometry diagnostic overrides; continuous film lens and turns remain unapproved.",
+    "active_plan_file": "cameras/adopted-walk.json"
   },
   "route": {
     "status": "provisional-from-period-aerial",
@@ -330,14 +334,16 @@
     },
     "source": "gsi-gazo1-1974-1978",
     "camera_file": "cameras/route-proposal.json",
-    "distance_status": "computed-proposal-not-historical-measurement"
+    "distance_status": "computed-proposal-not-historical-measurement",
+    "role": "preserved-six-station-diagnostic; active walk is active_reconstruction.walk_file"
   },
   "notes": [
-    "Modern source geometry and a provisional historical-layout study are present; neither certifies 1976 appearance.",
-    "Gate, intermediate facades, precise theatre frontage and historical street obstacles remain unresolved.",
-    "Proxy heights and plaza boundary are assumptions; source TIN is modern terrain, not verified 1976 ground.",
-    "The source dataset mixes survey epochs; 380 selected buildings report 2021 and 43 report unknown.",
-    "Approved colour targets remain separate from historical evidence."
+    "The adopted 1976 reconstruction completes production decisions while retaining inferred historical truth status.",
+    "Curved incandescent gate is extrapolated from the attributed 1978 photograph; the 1972 rectangular counterevidence remains recorded.",
+    "Koma and Toho Kaikan have separate adopted frontages, entrances, materials and plaza fixtures. Unknown dimensions and colours are explicit estimates.",
+    "The original modern reference and prior R01 studies remain separate; inferred period context is not proof of historical building survival.",
+    "The active walk follows the shared terrain and reaches the adopted Koma entrance forecourt. Only modeled static geometry is covered by its clearance audit.",
+    "Approved colour masters remain immutable appearance targets, distinct from archival evidence."
   ],
   "appearance_references": {
     "index": "references/approved-colour-index.json",
@@ -354,5 +360,31 @@
       "R09"
     ],
     "role": "visual-targets-only; historical source evidence and georeferencing remain separate"
+  },
+  "production_stage": "adopted-layout-and-colour-studies",
+  "active_reconstruction": {
+    "id": "kabukicho-reconstruction-adopted",
+    "status": "complete-adopted-with-inference",
+    "target_year": 1976,
+    "model_file": "models/reconstruction-adopted.gltf",
+    "specification_file": "reconstruction/period-scene-spec.json",
+    "classification_file": "data/derived/kabukicho-feature-classification.json",
+    "walk_file": "cameras/adopted-walk.json",
+    "completion_report_file": "data/derived/kabukicho-route-completion.json",
+    "reference_path_base": "scene-relative for model/specification/walk; repository-relative for data paths",
+    "decision_files": [
+      "data/decisions/kabukicho-gate-1976.json",
+      "data/decisions/kabukicho-koma-plaza-1976.json",
+      "data/decisions/kabukicho-route-surfaces-1976.json"
+    ],
+    "inference_authorized": true,
+    "historical_certification": false,
+    "completion_scope": [
+      "All source-feature dispositions",
+      "Concrete adopted gate/theatre/plaza parameters",
+      "Physical scene and stable sign meshes",
+      "Fully classified terrain-following route and modeled-static-body clearance"
+    ],
+    "visual_scope": "Colour architectural studies and sparse camera samples; final photographic movie quality is a separate production stage."
   }
 }
