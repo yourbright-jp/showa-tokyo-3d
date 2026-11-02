@@ -89,14 +89,19 @@ export async function loadData() {
   const roads = [];
   for (const f of layout.features) {
     if (f.kind === 'building') {
-      if (f.footprint_xz) {
-        const baseY = (f.base_orthometric_height_m_assumption ?? 32) - 32;
-        buildings.push({ id: f.id, name: f.name, footprint: f.footprint_xz, baseY, topY: baseY + f.height_m, height: f.height_m, status: f.historical_status, proxy: true, heightVerified: !!f.height_verified, surveyYear: null });
-      } else if (f.polygons) {
-        const fp = bottomFootprint(f.polygons);
-        if (!fp) continue;
-        buildings.push({ id: f.id, name: f.name, footprint: fp.ring, baseY: fp.minY, topY: fp.maxY, height: fp.maxY - fp.minY, status: f.historical_status, proxy: false, heightVerified: false, surveyYear: f.source_survey_year });
+      // Every building feature carries both footprint_xz and LOD1 polygons; vertical extent comes
+      // from the polygons (common 32 m datum). Proxies are the aerial-interpreted theatre roofs.
+      const proxy = f.historical_status === 'inferred-roof-proxy';
+      const fp = f.polygons ? bottomFootprint(f.polygons) : null;
+      let footprint = f.footprint_xz || (fp && fp.ring);
+      if (!footprint) continue;
+      if (footprint.length > 3) {
+        const a = footprint[0], z = footprint[footprint.length - 1];
+        if (Math.abs(a[0] - z[0]) < 1e-6 && Math.abs(a[1] - z[1]) < 1e-6) footprint = footprint.slice(0, -1);
       }
+      const baseY = fp ? fp.minY : (f.base_orthometric_height_m_assumption ?? 32) - 32;
+      const topY = fp ? fp.maxY : baseY + f.height_m;
+      buildings.push({ id: f.id, name: f.name, footprint, baseY, topY, height: topY - baseY, status: f.historical_status, proxy, heightVerified: !!f.height_verified, surveyYear: f.source_survey_year ?? null });
     } else if (f.kind === 'road' && f.polygons) {
       for (const poly of f.polygons) roads.push({ id: f.id, polygon: poly });
     }
