@@ -20,7 +20,7 @@ r04 = three.js + headless Chromium による手続き的な高精細化ラウン
 | buildings | 完了 | 419 棟を 4 段 LOD（<40 / 40–88 / 88–140 / >140 m）、店内、窓リビール、雨だれ、屋上の水槽とアンテナ。約 0.82M tris |
 | signage | 完了 | 1,100 枚。adopted text node 35 件は位置誤差 0、字高 ±2%。縦書き組版、袖看板、屋上ビルボード、ネオン（夜のみ発光） |
 | people | 完了 | 581 人。15 の服装タイプ、安定 id（動きは未実装）。約 1.83M tris |
-| landmarks | 作業中のまま止まっている可能性あり | ゲート、コマ劇場、東宝会館、噴水、街灯。下記 §3 参照 |
+| landmarks | 完了 | ゲート（決定値どおり、3D 文字は両面、電球 318 個、夜は発光）、コマ劇場（扉 7 枚と照明付きロビー、キャノピー 3.1 m）、東宝会館（プラザ劇場、クラブハイツ）、ミラノ座、噴水、7 灯街灯 3 基。約 209k tris |
 | streetprops | 完了 | 電柱 13 本、架線 68 スパン（うち 26 本は障害物で省略）、一番街の街灯 12 基、標識、信号、自転車 41 台、車 17 台（大通りのみ）。約 268k tris。足元のフットプリントを `ctx.streetprops` に公開 |
 
 - 各モジュールのログは `ctx.tag()` で `provenance` に出る。
@@ -52,8 +52,9 @@ npm run serve   # → http://127.0.0.1:<port>/?station=under-gate （対話モ�
 
 ## 3. 次にやること（優先順）
 
-1. **landmarks の仕上げ確認**
-   - 未コミット差分を確認し、全モジュール 1080p でエラーが無いことを確かめる（`render-report.json` の `moduleErrors`）。
+1. **統合確認**（全 6 モジュール完了、ビルダーは全員停止済み）
+   - 全モジュールを 1080p で描画し、エラーが無いことを確かめる（`render-report.json` の `moduleErrors`）。
+   - 人物が噴水の中に立っていないか確認する（`plaza-fountain` obstacle）。
    - signage の屋上ビルボードは `b.topY`（パラペット上端）基準。屋根スラブ（`ctx.buildingsInfo.roofY`）と合っているか確認する。
    - 大通りの縁石と横断歩道は terrain と streetprops が別々に推定している。共有レイアウト（data か terrain が公開）に統一する。
    - 配置は先に読み込んだモジュールのジオメトリに依存する。そのため `--only` の部分レンダと全体レンダでは小物や人の位置が少しずれる。共有の予約レジストリ（`ctx.reserve(box)` 等）にすると一致する。
@@ -75,6 +76,12 @@ npm run serve   # → http://127.0.0.1:<port>/?station=under-gate （対話モ�
      - 夜景で地面が暗すぎる（発光が地面を照らさない）。
      - 歩道が段差なし（フラットな縁石）。
      - 人物は他モジュールのジオメトリを走査して配置しているので、他モジュールを変えると人が消える場合がある（id は安定）。
+   - landmarks の要望
+     - AgX トーンマップで赤（#A92B1D）が鮭色（約 150, 95, 95）になる。トーンマップ後の彩度補正を入れるか、ACES に変える。
+     - `core/textures.js` の `canvasTexture` で `getContext('2d', { willReadFrequently: true })` を使う。landmarks ではこれで描画時間が 37–45 s から 23–28 s に下がった。
+     - コマ講堂と東宝タワーの大きな淡い壁が平板に見える。
+     - 噴水の水が静止している。
+     - ゲート背面とミラノ座のキャノピー、扉、段の寸法は推測（decision ファイルに無い）。
    - 性能
      - signage と neon-night の build は高負荷時に 15 s 予算を超えた。
      - 大きな 2D canvas が多いと Chromium が遅くなる。canvas を 1 枚使い回し、`renderer.initTexture` でアップロードする方式が速い。
