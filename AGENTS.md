@@ -10,3 +10,4 @@
 - Add source/provenance metadata before adding distributable assets. Do not store private links, credentials or account identifiers in the public repository.
 - Use Git LFS for the binary production formats listed in `.gitattributes`. Keep upstream bulk downloads in ignored `data/raw/` and render outputs in ignored `renders/`.
 - Before reporting a milestone, validate changed scene/metadata files and inspect representative views from the route. Report uncertainty and limitations plainly.
+- Follow the production workflow and use `docs/templates/ROUND_REPORT.md` for visual rounds. Request independent fresh-context critiques of historical/geographic evidence and visual/motion quality using `docs/templates/CRITIC_BRIEF.md`; record unperformed checks and evidence gaps explicitly.
