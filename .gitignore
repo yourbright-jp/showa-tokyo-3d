@@ -1,0 +1,23 @@
+# Local credentials and tools
+.env
+.env.*
+!.env.example
+.venv/
+node_modules/
+__pycache__/
+.DS_Store
+
+# Reproducible upstream downloads and temporary work
+data/raw/
+downloads/
+tmp/
+cache/
+
+# Large generated outputs
+renders/
+output/
+dist/
+
+# Blender recovery files
+*.blend1
+*.blend2

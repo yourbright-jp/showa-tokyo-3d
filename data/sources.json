@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "plateau",
+      "name": "Project PLATEAU",
+      "catalog_url": "https://www.mlit.go.jp/plateau/open-data/",
+      "purpose": "Modern geospatial and building-layout reference for scene construction",
+      "target_area": "Shinjuku, Tokyo",
+      "dataset_id": null,
+      "source_year": null,
+      "license": null,
+      "license_url": null,
+      "status": "dataset-selection-pending",
+      "downloaded": false,
+      "redistribution_review": "pending",
+      "notes": "Select the actual district dataset, record its year and terms, and distinguish modern geometry from the approximately1976 reconstruction."
+    },
+    {
+      "id": "openstreetmap",
+      "name": "OpenStreetMap",
+      "catalog_url": "https://www.openstreetmap.org/",
+      "purpose": "Modern road connectivity and place-name reference",
+      "target_area": "Kabukicho, Shinjuku, Tokyo",
+      "dataset_id": null,
+      "source_year": null,
+      "license": "ODbL-1.0",
+      "license_url": "https://www.openstreetmap.org/copyright",
+      "attribution": "OpenStreetMap contributors",
+      "status": "extract-pending",
+      "downloaded": false,
+      "redistribution_review": "pending-for-selected-extract",
+      "notes": "Record extraction date, bounds and processing. Road locations must be checked against historical evidence."
+    },
+    {
+      "id": "historical-photographs",
+      "name": "Historical photographs and maps",
+      "catalog_url": "https://www.regasu-shinjuku.or.jp/photodb/",
+      "purpose": "Historical building, street and sign research",
+      "dataset_id": null,
+      "source_year": null,
+      "license": null,
+      "license_url": null,
+      "status": "reference-selection-pending",
+      "downloaded": false,
+      "redistribution_review": "pending",
+      "notes": "Record each photograph or map independently. Citation of a source is not a claim of redistribution permission."
+    }
+  ]
+}
