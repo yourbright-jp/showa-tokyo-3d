@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "R01",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R01-ichibangai-entrance.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://toyokeizai.net/articles/photo/853639?pn=5"
+  ],
+  "source_year_label": "1978",
+  "target_year": 1976,
+  "source_date_status": "原資料の掲載元が1978年・吉野純治撮影と明記",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "01f6804a812e2cac601bd04f5d5ae816454cdb1523019928427452a1bf8b3b23",
+  "format": "PNG",
+  "native_size_px": [
+    1672,
+    940
+  ],
+  "size_bytes": 2679915,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished.",
+  "source_author": "吉野純治（掲載元のクレジット）"
+}

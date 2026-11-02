@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "id": "R06",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R06-club-usa.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [],
+  "source_year_label": "1976",
+  "target_year": 1976,
+  "source_date_status": "原資料のラベルのみ・原典の書誌未回収",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "02f6a057c782fa748311a9c74c4ddcb6753597ff74a2df65e65dd738bae1d4f3",
+  "format": "PNG",
+  "native_size_px": [
+    1531,
+    1027
+  ],
+  "size_bytes": 2684295,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "R03",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R03-milano-1972.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"
+  ],
+  "source_year_label": "1972",
+  "target_year": 1976,
+  "source_date_status": "所有者の一次目録で1972年を確認",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "eec63409a882e0e6293d00effb5e85b70379fc45bc3c9768bab64495ae9a6fa7",
+  "format": "PNG",
+  "native_size_px": [
+    1113,
+    1414
+  ],
+  "size_bytes": 2755369,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "R07",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R07-golden-gai.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://jpca.gr.jp/wp-content/uploads/JPCA_NEWS_vol41.pdf"
+  ],
+  "source_year_label": "1976",
+  "target_year": 1976,
+  "source_date_status": "JPCA NEWS41 p5で1976年と中谷吉隆のクレジットを確認",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "0620d66b0adb2fe6e6bc758a919c8e6bc6aa65101180faae40680fbc2739bf12",
+  "format": "PNG",
+  "native_size_px": [
+    1567,
+    1004
+  ],
+  "size_bytes": 2902799,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}
