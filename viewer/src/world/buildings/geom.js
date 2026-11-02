@@ -46,7 +46,8 @@ export class Batch {
   /** Quad from 4 world points in cyclic order; winding is fixed so the face points along n. */
   quad(v, n, uvs, col, exs) {
     const b = this.vc;
-    for (let k = 0; k < 4; k++) this.vert(v[k], n, uvs[k], col, exs ? exs[k] : null);
+    const pv = Array.isArray(col[0]);
+    for (let k = 0; k < 4; k++) this.vert(v[k], n, uvs[k], pv ? col[k] : col, exs ? exs[k] : null);
     const ax = v[1][0] - v[0][0], ay = v[1][1] - v[0][1], az = v[1][2] - v[0][2];
     const bx = v[2][0] - v[0][0], by = v[2][1] - v[0][1], bz = v[2][2] - v[0][2];
     const cx = ay * bz - az * by, cy = az * bx - ax * bz, cz = ax * by - ay * bx;
@@ -180,24 +181,21 @@ export function wallWithHoles(B, F, u0, u1, y0, y1, holes, col, opts = {}) {
   const n = [F.nx, 0, F.nz];
   const ou = opts.uvo ? opts.uvo[0] : 0, ov = opts.uvo ? opts.uvo[1] : 0;
   const ex = opts.ex || null;
-  // merge cells horizontally when no break line from a hole interrupts them (keeps vertex counts low)
+  // every grid cell outside the holes is emitted; rows share the same vertical break lines so edges match
   for (let j = 0; j < Y.length - 1; j++) {
     const ya = Y[j], yb = Y[j + 1];
     if (yb - ya < 1e-4) continue;
     const ym = (ya + yb) / 2;
-    let start = null;
     for (let i = 0; i < U.length - 1; i++) {
       const ua = U[i], ub = U[i + 1];
       if (ub - ua < 1e-4) continue;
       const um = (ua + ub) / 2;
       const inHole = hs.some((h) => um > h[0] && um < h[1] && ym > h[2] && ym < h[3]);
       if (!inHole) {
-        // emit each grid cell; neighbouring rows share the same vertical break lines so edges match
         const pts = [[ua, ya], [ub, ya], [ub, yb], [ua, yb]];
         B.quad(pts.map((q) => W(F, q[0], q[1], 0)), n, pts.map((q) => [q[0] + ou, q[1] + ov]), col, ex ? pts.map((q) => ex(q[0], q[1], 0)) : null);
       }
     }
-    void start;
   }
 }
 

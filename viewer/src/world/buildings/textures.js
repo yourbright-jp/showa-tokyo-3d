@@ -258,10 +258,14 @@ export function curtainAtlas(rand) {
         if (v > 0.52) { c = [226, 212, 168]; a = 250; } else if (v > 0.5) { c = [120, 110, 90]; a = 255; }
       } else if (k === 5) { // frosted / paper-covered glass
         c = [222 + 10 * f, 226 + 10 * f, 224 + 10 * f]; a = 225;
-      } else if (k === 6) { // one-side curtain, patterned (period floral, muted)
-        if (u < 0.55) { const p = (Math.sin(u * 40) * Math.sin(v * 30) > 0.3) ? 0.82 : 1; c = [196 * p, 150 * p, 120 * p]; a = 255; }
+      } else if (k === 6) { // one-side curtain, patterned (period floral print on cream, muted)
+        if (u < 0.55) {
+          const fold = 0.82 + 0.18 * Math.sin(u * 55);
+          const dot = (Math.sin(u * 26 + Math.sin(v * 9) * 2) * Math.sin(v * 21) > 0.55);
+          c = dot ? [200 * fold, 150 * fold, 110 * fold] : [226 * fold, 214 * fold, 182 * fold]; a = 255;
+        }
       } else if (k === 7) { // stacked boxes / storage against glass on lower half
-        if (v < 0.45) { const bx = Math.floor(u * 3 + Math.floor(v * 4) * 0.5); const t = 0.6 + 0.4 * ((bx * 37) % 7) / 7; c = [170 * t, 140 * t, 100 * t]; a = 255; }
+        if (v < 0.38) { const bx = Math.floor(u * 2.2 + Math.floor(v * 2.6) * 0.5); const t = 0.55 + 0.45 * ((bx * 37) % 7) / 7; c = [150 * t, 132 * t, 104 * t]; a = 255; }
       }
       set(gx, y, c.map(clamp255), a);
     }
