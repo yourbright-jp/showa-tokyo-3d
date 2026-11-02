@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-gate-1976",
+  "status": "adopted-with-inference",
+  "target_year": 1976,
+  "adopted_variant": "curved-incandescent",
+  "decision_complete": true,
+  "historical_confidence": "inferred",
+  "authorization": {
+    "date": "2026-11-02",
+    "instruction": "分類、考証も含めて全部完成させよ。どうしてもわからなければ、お前が推測してよい",
+    "scope": "Select and implement a coherent reconstruction hypothesis; this does not turn inference into a verified historical fact."
+  },
+  "adoption_reason": "Use the curved form visible in the publisher-attributed 1978 photograph, extrapolated two years backward to the target year. The association recalls the distinctive red arch from 1969, but its chronology conflicts with the rectangular 1972-labelled photograph. This is the preferred production hypothesis, not a resolution of that chronological contradiction.",
+  "parameters": {
+    "units": "metres",
+    "coordinate_system": "local right-handed X east, Y up, Z south; common orthometric datum 32 m",
+    "anchor_station_id": "under-gate",
+    "anchor_local_m": [
+      -88.5278,
+      0.9021,
+      70.3468
+    ],
+    "anchor_status": "adopted aerial-interpreted station; not a surveyed historical column coordinate",
+    "forward_xz": [
+      0.288526854,
+      -0.957471804
+    ],
+    "right_xz": [
+      0.957471804,
+      0.288526854
+    ],
+    "forward_bearing_degrees_local_north": 16.769781,
+    "center_u_m": 0.525,
+    "post_center_u_m": [
+      -4.6,
+      5.65
+    ],
+    "post_positions_local_m": [
+      {
+        "u_m": -4.6,
+        "position_local_m": [
+          -92.9322,
+          0.9358,
+          69.0196
+        ]
+      },
+      {
+        "u_m": 5.65,
+        "position_local_m": [
+          -83.1181,
+          0.9257,
+          71.977
+        ]
+      }
+    ],
+    "post_center_span_m": 10.25,
+    "overall_width_m": 10.64,
+    "overall_height_m": 7.8,
+    "minimum_clearance_m": 5.4,
+    "post_height_m": 6.5,
+    "post_radius_m": 0.11,
+    "post_base_radius_m": 0.17,
+    "post_base_height_m": 0.32,
+    "body_depth_m": 0.42,
+    "oval_width_m": 9.2,
+    "oval_height_m": 1.82,
+    "oval_center_height_m": 6.45,
+    "oval_ring_thickness_m": 0.28,
+    "tail_start_relative_u_m": 3.9,
+    "tail_end_relative_u_m": 5.1,
+    "tail_start_height_m": 5.9,
+    "tail_end_height_m": 7.58,
+    "tail_points_right_relative_uh_m": [
+      [
+        3.9,
+        5.9
+      ],
+      [
+        4.2,
+        6.005
+      ],
+      [
+        4.5,
+        6.32
+      ],
+      [
+        4.8,
+        6.845
+      ],
+      [
+        5.1,
+        7.58
+      ]
+    ],
+    "tail_mirror_left": true,
+    "tail_section_radius_m": 0.22,
+    "central_plate_width_m": 7.15,
+    "central_plate_height_m": 0.79,
+    "central_plate_depth_m": 0.21,
+    "sign_text": "歌舞伎町一番街",
+    "reverse_text": "歌舞伎町一番街",
+    "reverse_text_status": "inferred repeated readable name; no historical reverse-face photograph inspected",
+    "body_color_srgb": "#A92B1D",
+    "plate_color_srgb": "#E9E6DC",
+    "letter_color_srgb": "#9F2519",
+    "paint_color_status": "inferred vermilion/red using association description and approved colour target; not sampled from a 1976 colour photograph",
+    "light_type": "incandescent-bulb",
+    "light_color_temperature_k": 2400,
+    "bulb_diameter_m": 0.09,
+    "bulb_rows": 3,
+    "bulbs_per_oval_row": 90,
+    "tail_bulbs_per_side": 24,
+    "bulb_count_status": "authored layout density, not a counted historical inventory; do not use the 2013 LED count as a 1976 count",
+    "depth_and_rear_status": "inferred metal cabinet and steel braces; unseen construction details are authored",
+    "dimension_status": "all dimensions are reconstruction assumptions, not verified 1976 measurements",
+    "dimension_basis": {
+      "horizontal": "Calibrated to the existing entrance facade/street study frame; old 10.25 m support span retained as an authored assumption. The association reports 8.0 m width for the 2013 arch, which is not substituted as a 1976 measurement.",
+      "vertical": "7.8 m is an explicit scale prior calculated from the 2013 report of 8.3 m after a 0.5 m raising. Continuity of this pre-2013 height back to 1976 is assumed, not evidenced. Oval, clearance, posts and thickness are authored to fit the 1978 silhouette."
+    },
+    "assumed_dimension_uncertainty_m": {
+      "overall_width": 2.0,
+      "overall_height": 1.5,
+      "placement_horizontal": 5.0
+    },
+    "uncertainty_note": "These are modelling allowances, not statistically measured error bounds.",
+    "excluded_modern_features": [
+      "LED lamps",
+      "solar panels",
+      "emergency power equipment introduced in 2013",
+      "modern logo typography",
+      "modern adjacent tenant advertisements"
+    ],
+    "overall_width_basis": "Outer tail tube span: 2 x (5.1 m tail endpoint offset + 0.22 m tube radius) = 10.64 m; column-base outer span is 10.59 m. Both are authored reconstruction assumptions.",
+    "tail_height_reference": "tail heights are tube centreline heights; 0.22 m section radius makes the outer tip 7.80 m above ground",
+    "post_base_outer_span_m": 10.59
+  },
+  "evidence": [
+    {
+      "id": "toyokeizai-gate-1978",
+      "url": "https://toyokeizai.net/articles/photo/853639?pn=5",
+      "year": 1978,
+      "source_year": 1978,
+      "publication_year": 2025,
+      "provider": "東洋経済新報社",
+      "creator": "吉野純治（掲載者による帰属）",
+      "evidence_only": true,
+      "license": null,
+      "what_supports": "Publisher caption attributes the matching wide gate photograph to 1978; inspected pixels show the curved upturned silhouette, bulb arrays, a light central name panel and Suzuya on the left. It does not prove 1976 presence or paint colour."
+    },
+    {
+      "id": "kabukicho-association-arch-2013",
+      "url": "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+      "year": 2013,
+      "source_year": 2013,
+      "publication_year": 2013,
+      "provider": "歌舞伎町商店街振興組合事務局",
+      "evidence_only": true,
+      "license": null,
+      "what_supports": "The association retrospectively associates the distinctive red arch with 1969 and says the 2013 work retained the old design, raised the structure by 0.5 m and introduced LED/solar equipment. Dimensions refer to 2013; they are a scale prior only."
+    },
+    {
+      "id": "shinjuku-museum-gate-7378",
+      "url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+      "year": 1972,
+      "source_year": 1972,
+      "publication_year": null,
+      "provider": "新宿歴史博物館",
+      "evidence_only": true,
+      "license": null,
+      "what_supports": "Museum catalogue records a photograph named Kabukicho Ichibangai on 1972-12-23. A locally inspected exhibition-panel rephotograph labelled 1972 shows a rectangular arch, but original museum-image pixel matching remains unperformed. This is a retained counterexample, not discarded evidence."
+    },
+    {
+      "id": "kabukicho-culture-arch-2021",
+      "url": "https://kabukicho-culture-press.jp/all/spot/4082",
+      "year": 2021,
+      "source_year": 2021,
+      "publication_year": 2021,
+      "provider": "歌舞伎町文化新聞",
+      "evidence_only": true,
+      "license": null,
+      "what_supports": "The retrospective article repeats the 1969 origin of the present-style arch while also displaying a 1972-labelled rectangular predecessor. It supports street/entrance context and makes the chronological conflict explicit; it is not independent proof of the target-year form."
+    }
+  ],
+  "assumptions": [
+    "The curved form documented in 1978 is used for 1976 because it is the closer dated image and fits the association retrospective, while the contradictory 1972 evidence remains visible in the decision record.",
+    "The south-facing entrance near the current under-gate route station is adopted as the filming location. Exact historical post coordinates and the Suzuya relocation chronology are not known.",
+    "Red paint, an off-white central plate, red letters, warm incandescent bulbs and concealed steel braces are the adopted period-compatible appearance.",
+    "No exact gate replacement year is invented. The rectangular form is kept as an alternative preset, but the production default is curved.",
+    "The reverse repeats the street name for a coherent walk-through model. It does not combine a rectangular front with a curved back to explain the dates."
+  ],
+  "alternatives": [
+    {
+      "variant": "straight-1972",
+      "adopted": false,
+      "reason": "Supported by the 1972-labelled exhibition image, but farther from the target year and the precise museum image has not been matched. Retained as an alternative rather than fused into the adopted gate."
+    },
+    {
+      "variant": "none",
+      "adopted": false,
+      "reason": "Omitting the gate no longer satisfies the user-authorized completed entrance reconstruction."
+    },
+    {
+      "variant": "hybrid-straight-front-curved-back",
+      "adopted": false,
+      "reason": "No evidence supports this construction; it would conceal a chronology problem as invented rear geometry."
+    },
+    {
+      "variant": "modern-2013-led",
+      "adopted": false,
+      "reason": "The 2013 LED/solar retrofit is later than the target year."
+    }
+  ],
+  "contradictions": [
+    {
+      "id": "gate-chronology-1972-versus-1969",
+      "status": "retained-in-adopted-hypothesis",
+      "description": "The association dates the distinctive present-style/red form to 1969, while a 1972-labelled photograph shows a rectangular gate. The current evidence does not establish whether this is an intermediate installation, another entrance, a date mismatch or another explanation. None is asserted as fact.",
+      "effect_on_production": "Select the curved 1978-derived model with inferred historical confidence; do not block production or mark this contradiction historically solved."
+    },
+    {
+      "id": "gate-width-2013-versus-study",
+      "status": "explicit-assumed-scale-difference",
+      "description": "The 2013 association width is 8.0 m, while the retained entrance study support span is 10.25 m. The study span is an authored placement assumption, not a measurement or a claimed unchanged historical size."
+    }
+  ],
+  "verification": {
+    "decision_scope_complete": true,
+    "historical_fact_certification": false,
+    "photos_republished": false,
+    "adopted_geometry_requires_render_and_collision_validation": true,
+    "reviewed_at": "2026-11-02"
+  }
+}

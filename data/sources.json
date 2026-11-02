@@ -50,7 +50,10 @@
         "note": "Release year, feature creation date and survey year are distinct. Per-feature survey years are retained; an unknown year is null."
       },
       "terrain_member": "udx/dem/533945_dem_6697_op.gml",
-      "terrain_asset_id": "plateau-13104-2025-terrain-crop"
+      "terrain_asset_id": "plateau-13104-2025-terrain-crop",
+      "decision_records": [
+        "kabukicho-route-surfaces-1976"
+      ]
     },
     {
       "id": "openstreetmap",
@@ -105,7 +108,16 @@
         "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
       ],
       "terms_checked_at": "2026-11-02",
-      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。"
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976",
+        "kabukicho-route-surfaces-1976"
+      ],
+      "year_range": [
+        1974,
+        1978
+      ],
+      "year_role": "captioned capture year or capture-year range"
     },
     {
       "id": "tokyu-milano-1971",
@@ -135,7 +147,11 @@
       "related_catalogue_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071",
       "source_year": 1975,
       "status": "tourism-reproduction-matched-museum-catalogue-index",
-      "redistribution_review": "Original image not redistributed"
+      "redistribution_review": "Original image not redistributed",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "year_role": "captioned capture year or capture-year range"
     },
     {
       "id": "toho-kabukicho-site-history",
@@ -143,7 +159,12 @@
       "catalog_url": "https://www.toho.co.jp/real-estate/kabukicho/",
       "additional_url": "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
       "status": "theatre-sites-distinguished",
-      "notes": "Koma and adjacent Toho Kaikan are separate historical buildings. Northern roof identity remains provisional."
+      "notes": "Koma and adjacent Toho Kaikan are separate documented facilities. The adopted 1976 reconstruction assigns the northern roof to Toho Kaikan / Plaza; the exact aerial footprint and facade dimensions remain explicitly inferred in kabukicho-koma-plaza-1976.",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "year_role": "undated owner webpage",
+      "represented_event_year": 1956
     },
     {
       "id": "metropolitan-library-1976-maps",
@@ -156,6 +177,215 @@
       ],
       "status": "catalogue-inspected-map-pages-not-inspected",
       "downloaded": false
+    },
+    {
+      "id": "toyokeizai-gate-1978",
+      "name": "toyokeizai-gate-1978",
+      "catalog_url": "https://toyokeizai.net/articles/photo/853639?pn=5",
+      "provider": "東洋経済新報社",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-gate-1976"
+      ],
+      "source_year": 1978,
+      "publication_year": 2025,
+      "year_role": "See decision evidence record: may be capture year, publication year or retrospective event year.",
+      "what_supports": "Publisher caption attributes the matching wide gate photograph to 1978; inspected pixels show the curved upturned silhouette, bulb arrays, a light central name panel and Suzuya on the left. It does not prove 1976 presence or paint colour.",
+      "limitations": null
+    },
+    {
+      "id": "kabukicho-association-arch-2013",
+      "name": "kabukicho-association-arch-2013",
+      "catalog_url": "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+      "provider": "歌舞伎町商店街振興組合事務局",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-gate-1976"
+      ],
+      "source_year": 2013,
+      "publication_year": 2013,
+      "year_role": "See decision evidence record: may be capture year, publication year or retrospective event year.",
+      "what_supports": "The association retrospectively associates the distinctive red arch with 1969 and says the 2013 work retained the old design, raised the structure by 0.5 m and introduced LED/solar equipment. Dimensions refer to 2013; they are a scale prior only.",
+      "limitations": null
+    },
+    {
+      "id": "shinjuku-museum-gate-7378",
+      "name": "shinjuku-museum-gate-7378",
+      "catalog_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+      "provider": "新宿歴史博物館",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-gate-1976"
+      ],
+      "source_year": 1972,
+      "year_role": "See decision evidence record: may be capture year, publication year or retrospective event year.",
+      "what_supports": "Museum catalogue records a photograph named Kabukicho Ichibangai on 1972-12-23. A locally inspected exhibition-panel rephotograph labelled 1972 shows a rectangular arch, but original museum-image pixel matching remains unperformed. This is a retained counterexample, not discarded evidence.",
+      "limitations": null
+    },
+    {
+      "id": "kabukicho-culture-arch-2021",
+      "name": "kabukicho-culture-arch-2021",
+      "catalog_url": "https://kabukicho-culture-press.jp/all/spot/4082",
+      "provider": "歌舞伎町文化新聞",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-gate-1976"
+      ],
+      "source_year": 2021,
+      "publication_year": 2021,
+      "year_role": "See decision evidence record: may be capture year, publication year or retrospective event year.",
+      "what_supports": "The retrospective article repeats the 1969 origin of the present-style arch while also displaying a 1972-labelled rectangular predecessor. It supports street/entrance context and makes the chronological conflict explicit; it is not independent proof of the target-year form.",
+      "limitations": null
+    },
+    {
+      "id": "toho-corporate-history",
+      "name": "toho-corporate-history",
+      "catalog_url": "https://www.toho.co.jp/company/history/",
+      "provider": "Publisher linked at catalog_url",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "source_year": 1969,
+      "year_role": "represented completion event, not page publication date",
+      "what_supports": "Owner chronology records Shinjuku Toho Kaikan completion in October 1969; separates it chronologically and physically from the older Koma complex.",
+      "limitations": null
+    },
+    {
+      "id": "toho-redevelopment-2011",
+      "name": "toho-redevelopment-2011",
+      "catalog_url": "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
+      "provider": "Publisher linked at catalog_url",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "source_year": 2011,
+      "year_role": "release/document year, not 1976 capture evidence",
+      "what_supports": "Official redevelopment announcement names both Koma Theatre and Shinjuku Toho Kaikan sites; supports treating them as separate buildings.",
+      "limitations": null
+    },
+    {
+      "id": "shinjuku-koma-1957",
+      "name": "shinjuku-koma-1957",
+      "catalog_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "provider": "Publisher linked at catalog_url",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "source_year": 1957,
+      "year_role": "captioned capture year or capture-year range",
+      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "limitations": null
+    },
+    {
+      "id": "shinjuku-plaza-1979",
+      "name": "shinjuku-plaza-1979",
+      "catalog_url": "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
+      "provider": "Publisher linked at catalog_url",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "source_year": 1979,
+      "year_role": "captioned capture year or capture-year range",
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "limitations": null
+    },
+    {
+      "id": "shinjuku-former-fountain-record",
+      "name": "shinjuku-former-fountain-record",
+      "catalog_url": "https://www.city.shinjuku.lg.jp/content/000121601.pdf",
+      "provider": "Publisher linked at catalog_url",
+      "purpose": "Historical research evidence for an adopted reconstruction; not source imagery redistribution",
+      "license": null,
+      "license_url": null,
+      "evidence_only": true,
+      "redistribution_review": "Evidence citation only; archival raster/page assets are not redistributed.",
+      "status": "evidence-inspected-or-catalogued-as-recorded-in-decision",
+      "retrieved_at": "2026-11-02",
+      "decision_records": [
+        "kabukicho-koma-plaza-1976"
+      ],
+      "source_year": 2012,
+      "year_role": "release/document year, not 1976 capture evidence",
+      "what_supports": "Municipal committee record describes Cinecity Plaza as the former fountain square in front of Koma. It corroborates historical fountain existence but does not date or measure the adopted 1976 basin.",
+      "limitations": null
+    },
+    {
+      "id": "noto-cjk-blender-4-5-15",
+      "name": "Noto Sans CJK SC Regular",
+      "provider": "The Noto Project Authors",
+      "catalog_url": "https://download.blender.org/release/Blender4.5/",
+      "source_url": "https://fonts.google.com/noto",
+      "license": "OFL-1.1",
+      "license_url": "https://openfontlicense.org/open-font-license-official-text/",
+      "copyright": "Copyright 2018 The Noto Project Authors (github.com/googlei18n/noto-fonts)",
+      "status": "loaded-from-official-Blender-4.5.15-LTS-bundle",
+      "redistribution_review": "Font binary not included in this repository; derived sign outlines and rendered lettering are recorded with font provenance.",
+      "verification": "Bundled Blender license/license.md identifies Noto Fonts as SIL Open Font License 1.1; bpy.data.fonts.load loads the bundled WOFF2 successfully.",
+      "retrieved_at": "2026-11-02"
+    },
+    {
+      "id": "period-background-context-rule",
+      "name": "Project-authored inferred period context rule",
+      "provider": "yourbright-jp/showa-tokyo-3d",
+      "catalog_url": "https://github.com/yourbright-jp/showa-tokyo-3d/blob/main/scenes/shinjuku/kabukicho/1976/reconstruction/period-scene-spec.json",
+      "license": "MIT",
+      "license_url": "https://opensource.org/license/mit",
+      "authored_at": "2026-11-02",
+      "target_year": 1976,
+      "status": "adopted-inference-not-proven-historical-survival",
+      "purpose": "Concrete per-feature decisions for buildings lacking period identification; explicit massing and generic facade assumptions avoid representing modern context as verified 1976 architecture."
     }
   ]
 }

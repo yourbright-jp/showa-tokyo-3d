@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-gate-1976",
+  "path": "data/decisions/kabukicho-gate-1976.json",
+  "type": "historical-adoption-decision",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-02",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://toyokeizai.net/articles/photo/853639?pn=5",
+    "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+    "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+    "https://kabukicho-culture-press.jp/all/spot/4082"
+  ],
+  "source_components": [
+    {
+      "source_id": "toyokeizai-gate-1978",
+      "evidence_id": "toyokeizai-gate-1978",
+      "provider": "東洋経済新報社",
+      "source_url": "https://toyokeizai.net/articles/photo/853639?pn=5",
+      "source_year": 1978,
+      "publication_year": 2025,
+      "what_supports": "Publisher caption attributes the matching wide gate photograph to 1978; inspected pixels show the curved upturned silhouette, bulb arrays, a light central name panel and Suzuya on the left. It does not prove 1976 presence or paint colour.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "kabukicho-association-arch-2013",
+      "evidence_id": "kabukicho-association-arch-2013",
+      "provider": "歌舞伎町商店街振興組合事務局",
+      "source_url": "https://kabukichojimukyoku.seesaa.net/article/2013-12-18.html",
+      "source_year": 2013,
+      "publication_year": 2013,
+      "what_supports": "The association retrospectively associates the distinctive red arch with 1969 and says the 2013 work retained the old design, raised the structure by 0.5 m and introduced LED/solar equipment. Dimensions refer to 2013; they are a scale prior only.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "shinjuku-museum-gate-7378",
+      "evidence_id": "shinjuku-museum-gate-7378",
+      "provider": "新宿歴史博物館",
+      "source_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378",
+      "source_year": 1972,
+      "publication_year": null,
+      "what_supports": "Museum catalogue records a photograph named Kabukicho Ichibangai on 1972-12-23. A locally inspected exhibition-panel rephotograph labelled 1972 shows a rectangular arch, but original museum-image pixel matching remains unperformed. This is a retained counterexample, not discarded evidence.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    },
+    {
+      "source_id": "kabukicho-culture-arch-2021",
+      "evidence_id": "kabukicho-culture-arch-2021",
+      "provider": "歌舞伎町文化新聞",
+      "source_url": "https://kabukicho-culture-press.jp/all/spot/4082",
+      "source_year": 2021,
+      "publication_year": 2021,
+      "what_supports": "The retrospective article repeats the 1969 origin of the present-style arch while also displaying a 1972-labelled rectangular predecessor. It supports street/entrance context and makes the chronological conflict explicit; it is not independent proof of the target-year form.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-gate-1976"
+    }
+  ],
+  "license": "MIT",
+  "license_url": "https://opensource.org/license/mit",
+  "license_scope": "Project-authored decision/configuration. Retain the separate upstream attribution and evidence-only rights notices.",
+  "attribution": "東洋経済新報社 歌舞伎町商店街振興組合事務局 新宿歴史博物館 歌舞伎町文化新聞",
+  "source_years": [
+    1972,
+    1978,
+    2013,
+    2021
+  ],
+  "source_periods": [],
+  "source_years_scope": "Associated source and represented-event years. Consult each component's year_role, represented_event_year, publication_year and year_range before treating a year as a photograph capture date.",
+  "target_year": 1976,
+  "processing": "Selects the curved incandescent gate for the circa-1976 reconstruction by extrapolating the attributed 1978 photograph, retains the rectangular-1972 chronology conflict and records assumed dimensions, paint, reverse face and placement. No source image is embedded.",
+  "dependencies": [
+    "kabukicho-route-proposal",
+    "R01",
+    "R08"
+  ],
+  "sha256": "aa55d6e26bdb23ba85251f3ae7d1760805f9885eb78f941c7430920f2c924cde",
+  "size_bytes": 10625,
+  "format": "json",
+  "units": "metres",
+  "coordinate_system": {
+    "kind": "local-cartesian",
+    "units": "metres",
+    "handedness": "right",
+    "axes": {
+      "x": "east",
+      "y": "up",
+      "z": "south"
+    },
+    "source_crs": "EPSG:6697",
+    "origin_jgd2011": {
+      "latitude": 35.6945,
+      "longitude": 139.702,
+      "height_m": 32.0
+    },
+    "vertical_reference": "Modern source orthometric terrain/building height minus one common 32 m datum; adopted historic forms and surfaces are explicit inferences."
+  },
+  "geographic_confidence": "approximate",
+  "historical_confidence": "inferred",
+  "adoption_status": "adopted-with-inference",
+  "historical_fact_certification": false,
+  "inferred_elements": "The user authorized a complete, coherent reconstruction hypothesis. Adoption settles production choices, not historical uncertainty. Exact gate chronology, unseen facades, dimensions, paint colours, context-building survival, plaza objects and historic surface levels remain inferred as recorded in the linked decisions.",
+  "redistribution_review": "Only authored/derived geometry, configuration or rendered output is published. Cited archival photographs and source rasters are evidence only and are not republished; no photo-license grant is asserted."
+}

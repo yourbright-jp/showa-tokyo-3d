@@ -1,0 +1,384 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-period-render-manifest",
+  "source_render": {
+    "blender": "4.5.15 LTS",
+    "model_sha256": "46687c706d2514155e6a7879d4d9c6a2f8dc87e1198a64d5f5cc8ade211428db",
+    "render_engine": "cycles",
+    "samples": 32,
+    "resolution": [
+      1280,
+      720
+    ],
+    "images": [
+      {
+        "camera": "entrance-approach",
+        "file": "entrance-approach.png",
+        "seconds": 24.66
+      },
+      {
+        "camera": "under-gate",
+        "file": "under-gate.png",
+        "seconds": 26.24
+      },
+      {
+        "camera": "ichibangai-middle",
+        "file": "ichibangai-middle.png",
+        "seconds": 26.54
+      },
+      {
+        "camera": "towards-koma-corner",
+        "file": "towards-koma-corner.png",
+        "seconds": 22.46
+      },
+      {
+        "camera": "plaza-reveal",
+        "file": "plaza-reveal.png",
+        "seconds": 18.46
+      },
+      {
+        "camera": "koma-front",
+        "file": "koma-front.png",
+        "seconds": 19.68
+      },
+      {
+        "camera": "walk-00",
+        "file": "walk-00.png",
+        "seconds": 22.14,
+        "time_s": 0.0,
+        "phase": "walk",
+        "position_m": [
+          -90.4701,
+          2.4967878,
+          80.9813
+        ],
+        "look_at_m": [
+          -88.1987431,
+          7.0073277,
+          71.2426688
+        ]
+      },
+      {
+        "camera": "walk-01",
+        "file": "walk-01.png",
+        "seconds": 26.41,
+        "time_s": 36.8762492,
+        "phase": "walk",
+        "position_m": [
+          -81.4444306,
+          1.7873938,
+          46.8407506
+        ],
+        "look_at_m": [
+          -78.559162,
+          1.7873938,
+          37.2660325
+        ]
+      },
+      {
+        "camera": "walk-02",
+        "file": "walk-02.png",
+        "seconds": 26.02,
+        "time_s": 73.609777,
+        "phase": "walk",
+        "position_m": [
+          -71.0296313,
+          1.4988248,
+          11.6178377
+        ],
+        "look_at_m": [
+          -68.3141014,
+          1.4988248,
+          1.9936028
+        ]
+      },
+      {
+        "camera": "walk-03",
+        "file": "walk-03.png",
+        "seconds": 23.22,
+        "time_s": 110.5101842,
+        "phase": "walk",
+        "position_m": [
+          -61.0102043,
+          1.1259286,
+          -23.8924764
+        ],
+        "look_at_m": [
+          -58.2946744,
+          1.1259286,
+          -33.5167112
+        ]
+      },
+      {
+        "camera": "walk-04",
+        "file": "walk-04.png",
+        "seconds": 20.99,
+        "time_s": 147.4026529,
+        "phase": "walk",
+        "position_m": [
+          -50.993113,
+          0.770242,
+          -59.3945123
+        ],
+        "look_at_m": [
+          -48.2775831,
+          0.770242,
+          -69.0187472
+        ]
+      },
+      {
+        "camera": "walk-05",
+        "file": "walk-05.png",
+        "seconds": 23.3,
+        "time_s": 184.1431756,
+        "phase": "walk",
+        "position_m": [
+          -64.3578578,
+          0.6747852,
+          -76.7121422
+        ],
+        "look_at_m": [
+          -64.7162625,
+          0.6747852,
+          -86.7057175
+        ]
+      },
+      {
+        "camera": "walk-06",
+        "file": "walk-06.png",
+        "seconds": 23.26,
+        "time_s": 221.0354315,
+        "phase": "walk",
+        "position_m": [
+          -60.7361179,
+          0.3247824,
+          -98.8544239
+        ],
+        "look_at_m": [
+          -51.5408207,
+          0.3247824,
+          -94.9242193
+        ]
+      },
+      {
+        "camera": "walk-07",
+        "file": "walk-07.png",
+        "seconds": 27.02,
+        "time_s": 257.8330119,
+        "phase": "arrival-hold",
+        "position_m": [
+          -31.4993696,
+          0.471423,
+          -86.3582096
+        ],
+        "look_at_m": [
+          -24.0777202,
+          1.0350484,
+          -81.4963891
+        ]
+      }
+    ],
+    "historical_status": "Adopted reconstruction with documented inferences; not a historical photograph"
+  },
+  "images": [
+    {
+      "camera": "entrance-approach",
+      "file": "entrance-approach.png",
+      "seconds": 24.66,
+      "path": "docs/previews/r03/period-entrance-approach.png",
+      "sha256": "0b0bc3b274e0563fb6b826d4d49279a2f9d0e27e4533bdd8fb10af47f3af9e60"
+    },
+    {
+      "camera": "under-gate",
+      "file": "under-gate.png",
+      "seconds": 26.24,
+      "path": "docs/previews/r03/period-under-gate.png",
+      "sha256": "2d9befb0b5497f4499be5d3a94a9c6401809982d55db3292d8f9da2edee1c613"
+    },
+    {
+      "camera": "ichibangai-middle",
+      "file": "ichibangai-middle.png",
+      "seconds": 26.54,
+      "path": "docs/previews/r03/period-ichibangai-middle.png",
+      "sha256": "3be433a03aaf0b1337b8ee28cd2bc437ef0a473968110ed432a50cca499fa9c4"
+    },
+    {
+      "camera": "towards-koma-corner",
+      "file": "towards-koma-corner.png",
+      "seconds": 22.46,
+      "path": "docs/previews/r03/period-towards-koma-corner.png",
+      "sha256": "86fb77eea962e5cf9fbb7c0bba79a7f62c2b56c8e9b7228667918e1a55b3ebb2"
+    },
+    {
+      "camera": "plaza-reveal",
+      "file": "plaza-reveal.png",
+      "seconds": 18.46,
+      "path": "docs/previews/r03/period-plaza-reveal.png",
+      "sha256": "abe6172eb3b48d0e1b5c4acb73da6644f29d43bc30b80d66ce0be4414871857c"
+    },
+    {
+      "camera": "koma-front",
+      "file": "koma-front.png",
+      "seconds": 19.68,
+      "path": "docs/previews/r03/period-koma-front.png",
+      "sha256": "2c383a102934e3bbbb5c2a38edc5c96625b9b72b5414c5a113d6adff0cd86e57"
+    },
+    {
+      "camera": "walk-00",
+      "file": "walk-00.png",
+      "seconds": 22.14,
+      "time_s": 0.0,
+      "phase": "walk",
+      "position_m": [
+        -90.4701,
+        2.4967878,
+        80.9813
+      ],
+      "look_at_m": [
+        -88.1987431,
+        7.0073277,
+        71.2426688
+      ],
+      "path": "docs/previews/r03/period-walk-00.png",
+      "sha256": "899432d6005e711907c20f23c21a691851a7c19a219297b9a6bf8fbd82ecf6a0"
+    },
+    {
+      "camera": "walk-01",
+      "file": "walk-01.png",
+      "seconds": 26.41,
+      "time_s": 36.8762492,
+      "phase": "walk",
+      "position_m": [
+        -81.4444306,
+        1.7873938,
+        46.8407506
+      ],
+      "look_at_m": [
+        -78.559162,
+        1.7873938,
+        37.2660325
+      ],
+      "path": "docs/previews/r03/period-walk-01.png",
+      "sha256": "751ec46a651ec5733ca850ba8b4169f5bd9e47387aa443fec4e77d716748fc98"
+    },
+    {
+      "camera": "walk-02",
+      "file": "walk-02.png",
+      "seconds": 26.02,
+      "time_s": 73.609777,
+      "phase": "walk",
+      "position_m": [
+        -71.0296313,
+        1.4988248,
+        11.6178377
+      ],
+      "look_at_m": [
+        -68.3141014,
+        1.4988248,
+        1.9936028
+      ],
+      "path": "docs/previews/r03/period-walk-02.png",
+      "sha256": "9808b31b0a60d874e3e2aa33d99a6c0468c072075ff751a4a44e32a74ff61823"
+    },
+    {
+      "camera": "walk-03",
+      "file": "walk-03.png",
+      "seconds": 23.22,
+      "time_s": 110.5101842,
+      "phase": "walk",
+      "position_m": [
+        -61.0102043,
+        1.1259286,
+        -23.8924764
+      ],
+      "look_at_m": [
+        -58.2946744,
+        1.1259286,
+        -33.5167112
+      ],
+      "path": "docs/previews/r03/period-walk-03.png",
+      "sha256": "46c2734fd80bd3ae9280d597a0b7ddb3f0a78561c89913d80b2fb401a08ffa73"
+    },
+    {
+      "camera": "walk-04",
+      "file": "walk-04.png",
+      "seconds": 20.99,
+      "time_s": 147.4026529,
+      "phase": "walk",
+      "position_m": [
+        -50.993113,
+        0.770242,
+        -59.3945123
+      ],
+      "look_at_m": [
+        -48.2775831,
+        0.770242,
+        -69.0187472
+      ],
+      "path": "docs/previews/r03/period-walk-04.png",
+      "sha256": "73662e4007667549200505d823537cf0f5caeb30d310e09762f7ff9643eae3c8"
+    },
+    {
+      "camera": "walk-05",
+      "file": "walk-05.png",
+      "seconds": 23.3,
+      "time_s": 184.1431756,
+      "phase": "walk",
+      "position_m": [
+        -64.3578578,
+        0.6747852,
+        -76.7121422
+      ],
+      "look_at_m": [
+        -64.7162625,
+        0.6747852,
+        -86.7057175
+      ],
+      "path": "docs/previews/r03/period-walk-05.png",
+      "sha256": "59657e9ec6be8ad68cbfb8e8743b6ee4ec181970d12a2ccd6f617dab54d7a5f1"
+    },
+    {
+      "camera": "walk-06",
+      "file": "walk-06.png",
+      "seconds": 23.26,
+      "time_s": 221.0354315,
+      "phase": "walk",
+      "position_m": [
+        -60.7361179,
+        0.3247824,
+        -98.8544239
+      ],
+      "look_at_m": [
+        -51.5408207,
+        0.3247824,
+        -94.9242193
+      ],
+      "path": "docs/previews/r03/period-walk-06.png",
+      "sha256": "33c12a7624521c9a925fe3d5da709a96c8aab64284084c6d57576a2451ac4472"
+    },
+    {
+      "camera": "walk-07",
+      "file": "walk-07.png",
+      "seconds": 27.02,
+      "time_s": 257.8330119,
+      "phase": "arrival-hold",
+      "position_m": [
+        -31.4993696,
+        0.471423,
+        -86.3582096
+      ],
+      "look_at_m": [
+        -24.0777202,
+        1.0350484,
+        -81.4963891
+      ],
+      "path": "docs/previews/r03/period-walk-07.png",
+      "sha256": "7bb98b6481b75e0f8ff254b423ea27f764ba9a0233b65e99eb91aaf3b3326e1c"
+    }
+  ],
+  "sparse_walk_scope": "Sampled frames from the computed continuous camera trajectory; not a full video render or proof that every intervening frame is visually approved.",
+  "sheet_paths": [
+    "docs/previews/r03/period-contact-sheet.png",
+    "docs/previews/r03/walk-contact-sheet.png"
+  ]
+}

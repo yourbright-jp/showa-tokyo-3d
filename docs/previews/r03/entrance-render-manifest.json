@@ -1,0 +1,352 @@
+{
+  "id": "kabukicho-entrance-render-manifest",
+  "script": "scripts/build_entrance_detail.py",
+  "role": "adopted-reconstruction-with-inference",
+  "target_year": 1976,
+  "gate": "curved",
+  "gate_source_year_label": "1978",
+  "gate_verified_for1976": false,
+  "gate_adopted_for_1976": true,
+  "gate_decision_id": "kabukicho-gate-1976",
+  "common_orthometric_datum_m": 32.0,
+  "terrain_relative_authored_geometry": true,
+  "font_family": "Noto Sans CJK SC Regular",
+  "font_license": "OFL-1.1",
+  "font_copyright": "Copyright 2018 The Noto Project Authors (github.com/googlei18n/noto-fonts)",
+  "font_source": "Official Blender 4.5.15 LTS bundle; license/license.md Fonts table",
+  "blender_version": "4.5.15 LTS",
+  "engine": "cycles",
+  "samples": 48,
+  "resolution": [
+    1600,
+    900
+  ],
+  "colour_management": {
+    "palette_input": "sRGB converted to scene-linear",
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": -0.800000011920929,
+    "gamma": 1.0
+  },
+  "camera_pose_source": "Shared route cameras preserved; calibration and gate-study are separate explicitly named framing studies.",
+  "random_seed": 1976,
+  "objects": 3079,
+  "materials": 35,
+  "baseline_context": {
+    "included": true,
+    "visible_feature_ids": [
+      "bldg_8476fc96-5086-45e6-8122-639b1afb7100",
+      "bldg_e026d5d1-b2d3-4b11-bf8b-bd91c06f2a64",
+      "bldg_2be9d42c-f0cb-4527-8fd8-fdd270e6bdfd",
+      "bldg_af2ede05-36c6-4470-b3b1-67d8e03bfebf",
+      "bldg_4780b9eb-87d1-4ce0-90fb-7542ba20f715",
+      "bldg_51ec52d3-1793-4072-bb4e-f1c61efebfcb",
+      "bldg_ebbc19eb-0467-475e-a5e8-8cf52d475e70",
+      "bldg_cb05e83e-b9f7-4a91-a219-65010cb70297",
+      "bldg_88e84463-e7bf-41df-931d-b4aa29b6af9e",
+      "bldg_c3e1cc1f-4544-4452-9699-72ae8f413db4",
+      "bldg_d924bfed-ee42-415a-a207-dc24c296afbc",
+      "bldg_a9fbe13a-b461-41d8-9f51-43ac0b8438dc",
+      "bldg_72e4e7c4-a3be-4cfb-ad1f-de389004ca8f",
+      "bldg_23f7c899-ea12-4736-ab19-4ac86e650dd8",
+      "bldg_8377b6a7-5630-4bbb-8cff-2393b9bfca2b",
+      "bldg_0e70d064-d049-4cc0-8b6b-38c6363aad6b",
+      "bldg_8bcd0809-5f26-4d4f-9f0b-d23308a6134b",
+      "bldg_75bf34ae-e9ec-4ea7-b2ce-b158ffbd1b42",
+      "bldg_a1030385-63b9-4a92-a9eb-878d3e1088d9",
+      "bldg_ebf80e97-8ae7-48ef-af41-c5a2cf89fc88",
+      "bldg_b38aff24-9e05-4b6b-abf3-1279518b0041",
+      "bldg_8545fbf2-2db8-4221-92eb-8bf099e4e7b1",
+      "bldg_fe516533-dfc2-4709-8b2f-7f3b0729c574",
+      "bldg_fe4886f3-a607-4b82-acb2-7d3ae99bdc6a",
+      "bldg_fe69408a-75bb-4f4a-9001-cbb90bace879",
+      "bldg_8a89481b-fa5b-4ce0-99e7-11266d8a193c",
+      "bldg_8585795c-3e32-4913-8da1-37cde022047c",
+      "bldg_633da0a7-4e30-4b93-9411-d960c96d2649",
+      "bldg_87070d9e-cc7d-4318-95af-787c356f81ff",
+      "bldg_865a948e-f92c-49f8-92af-00e0a37265e4",
+      "bldg_89adc557-f436-4977-a1aa-34d72ce5397d",
+      "bldg_d702be9a-afbc-4951-9026-912479c0c53c",
+      "bldg_3a40f154-2a2c-4511-9336-7d9bdf8e53f1",
+      "bldg_077aab78-3fe2-415f-9f5c-c3dafbae4af3",
+      "bldg_19e748e2-36e6-422d-9400-1b7e93c5af1e",
+      "bldg_d6a4dfe4-3bba-4b7f-b332-d565fa33a51e",
+      "bldg_5f7df381-b6b7-478e-bf9d-049d94f3b431",
+      "bldg_54eb09d6-aa23-4a6e-9aee-69cd079872a0",
+      "bldg_ac82369b-fb56-4e9f-8d8f-6b6cf957df5e",
+      "bldg_38188131-ab22-4702-aa9b-f6b1d387945c",
+      "bldg_f2663ecf-1ac1-4e68-8ca9-2510d946bb3a",
+      "bldg_3228a194-5690-40e2-964e-b2928391c59e",
+      "bldg_fa98bd72-ccfe-44b2-b546-8895e40b908c",
+      "bldg_1ddffcee-d3c5-4de4-868b-30b018d89ade",
+      "bldg_143487f7-8694-4c49-8654-c5a9e93fba0f",
+      "bldg_2008ecb3-594d-4993-85b4-6c216765aac0",
+      "bldg_69af30e5-d085-4ad9-8c42-ae24c064b7be",
+      "bldg_94d79e58-846a-4f7a-92ae-32adade3bbeb",
+      "bldg_2404c1be-f17e-4972-9c16-aad603f478a3",
+      "bldg_1b3595c8-a762-4b8e-b262-6aaead658fc5",
+      "bldg_6f9f2d61-a976-4743-9ed7-9feadf65d5f2",
+      "bldg_c9711ab3-3eba-4d9c-a816-d7d0066ddf45",
+      "bldg_ca4c5c55-be42-4aba-8081-5d415bcdeb35",
+      "bldg_5998514f-e972-4182-90ac-3e608f8db25f",
+      "bldg_e7bec864-8a5b-42b1-b940-3ed4fe90b154",
+      "bldg_233eda8e-c46d-4e89-9b86-3325fe8a846a",
+      "bldg_dc031ba6-6a62-4d4b-bb15-e4abd5265a5a",
+      "bldg_33219efd-417c-43f0-82bc-5279ac074c00",
+      "bldg_8bf21a10-c567-469f-ba18-de50ff7d33b5",
+      "bldg_9c42d066-2650-4ca8-8a73-7c2dd824d970",
+      "bldg_2fc7fa47-45a5-45c7-aa01-907031a01aff",
+      "bldg_d4b3cef2-fb52-49ca-bc5f-4592b4b85585",
+      "bldg_ceeebef2-4335-4b04-ac0f-04881f490b60",
+      "bldg_d4a9c007-0dd9-47d8-9226-e2b852f036cf",
+      "bldg_f221d2d3-44e9-4e0e-8f8a-11bd0fa95c90",
+      "bldg_8bf3ff13-686c-4aae-8f18-507343c2ae3d",
+      "bldg_12bda564-1343-4720-94a7-7ed6bc67b146",
+      "bldg_1b68a05c-797f-4884-abaf-13b816463ead",
+      "bldg_0649bd94-a4b6-426c-b46e-149a1095fcdb",
+      "bldg_622cbf20-16d9-4f72-b488-743dfb0b905d",
+      "bldg_f7ae80dd-5f2d-4c12-a353-c5370be2cb16",
+      "bldg_c35f1134-68fa-4a00-9404-587edc1a23e1",
+      "bldg_932b9425-c30f-41ef-a153-4876a3b19c6f",
+      "bldg_7ecd2cbf-e3cb-4069-88d9-5b849dc8a406",
+      "bldg_314be3ac-d820-4281-aa1d-36494ad1bb75",
+      "bldg_28bc92c1-a615-417a-8818-87cf1265841c",
+      "bldg_2198f501-7b70-480a-b9a1-8938df6a89f5",
+      "bldg_5666d8f6-94c2-448d-a02c-d18ebc241eda",
+      "bldg_b5adc13f-c8d5-4c4e-9e8d-78f16cb60950",
+      "bldg_68b626bf-d997-4226-8cda-ba20385ba4e1",
+      "bldg_a9fd106c-43d2-4b1a-961b-551085b57118",
+      "bldg_970b1d74-9b24-460b-b6de-7766b87aa4aa",
+      "bldg_f603a7ad-aeea-4c1a-ade0-112685228f8e",
+      "bldg_6b31ee9a-ff37-4559-9680-b3f85b505c55",
+      "bldg_b17f1bc4-6dac-43c0-9f17-7a4b05b93b7e",
+      "bldg_345df874-533b-431b-8f94-47af584ebb69",
+      "bldg_e3e35e6b-08c5-4421-a4c6-e18989a77eeb",
+      "bldg_24eacca9-44ad-48e3-95ea-801a4e67e802",
+      "bldg_9e3863dc-7c2c-4524-8dab-06245199e5f1",
+      "bldg_68706bca-1dec-4e9b-9690-e9b7c696f89b",
+      "bldg_1cc9afe9-edc2-4ea8-9430-cf9938d5d7ed",
+      "bldg_f8aefcd9-c90d-47c4-8eb5-de21a813cfc4",
+      "bldg_3af20d8e-9394-4ca3-bfca-c524aede3653",
+      "bldg_883ceddb-fe3c-4295-97a3-180f75a2871b",
+      "bldg_d702aad4-1bf6-4f0f-bcb0-b9e8ae61fdd5",
+      "bldg_963031c1-2ed3-4515-9399-a46765c74650",
+      "bldg_cd9121f7-0344-44ce-ab1e-71d2f6d93cb4",
+      "bldg_952c3753-934c-43e0-b271-d5f1bcec1ef9",
+      "bldg_e737fcd3-180c-4140-80bd-961d92fe8c82",
+      "bldg_9d3497c7-e7a8-48c2-b28e-21c65f0378bd",
+      "bldg_9e2da190-a885-4a62-97f7-4400d0983236",
+      "bldg_96b5576f-63e5-44f9-a9e7-5cb47f3da000",
+      "bldg_db958df7-a8c8-423c-bbe2-82b268d51eb1",
+      "bldg_1dc471cf-5025-489b-9d5f-9b4676b5ce1c",
+      "bldg_0ca08dd4-46b6-4689-a10a-b45fd6cff04e",
+      "bldg_26bfe8ec-db28-4a81-8506-cbe0809b17e2",
+      "bldg_89c07131-1022-4a22-931d-0989ac2cb1b6",
+      "bldg_0cf87f57-f622-4362-8567-6351b9145589",
+      "bldg_3dc127a9-0700-48fd-971a-2e68ec6b23cf",
+      "bldg_3e01ae12-899a-4ea9-aa6a-8f3e5205eaf7",
+      "bldg_22d5e309-339e-4ab0-80f0-cfc4f2ae55c7",
+      "bldg_f9955bd4-5a52-4037-b7ed-668164d917b3",
+      "bldg_f7d8cb31-a1ac-487d-99c3-011b33c79910",
+      "bldg_e6db3688-3ef8-4856-9fca-4957033a7c80"
+    ],
+    "hidden_overlapping_feature_ids": [
+      "bldg_de16801e-27a5-4793-879a-d1024c0104a5",
+      "bldg_c09343e4-c41b-4aa7-94fd-b29836530a6c",
+      "bldg_d8715a64-7b3b-4661-9dd7-61f9bbb3633b",
+      "bldg_550dd79c-93cb-4568-9797-ed84a6820aad",
+      "bldg_9281fe68-5e06-47d7-bc3c-8560b78f650c",
+      "bldg_e8f50a2a-517c-486e-8d48-0565a6f0a728",
+      "bldg_72383d24-cf2e-4029-aaaf-0cff84475053",
+      "bldg_11c7b980-8011-40d4-84a5-49eb18123dd8",
+      "bldg_a267fd65-d706-4604-94f7-5040166e078a",
+      "bldg_d48a56ee-3fba-4ce8-91e4-de44421c3ac9",
+      "bldg_582c6a79-a91f-424e-b216-b0aaf5f79962",
+      "bldg_3b40b036-0dee-4acb-9d1e-adcc43e2b2bd",
+      "bldg_49a7b43c-02bc-476e-b401-4457f13aa8cf",
+      "bldg_1f6e8d9c-75c7-4ea0-ac93-6bc3c2f1dc9f",
+      "bldg_77045ede-9e6f-4baf-8c73-cd96aec00de6",
+      "bldg_5f948612-c173-49d5-972f-c858c2cb3921",
+      "bldg_71eae9e6-5c1e-4d3e-be9f-8406b7600b47",
+      "bldg_cb7b1f85-f162-487f-be7f-19325f288b38",
+      "bldg_0760dbac-d8de-4b26-b57d-4a819cc31976",
+      "bldg_942623fd-645b-43ae-9cb3-965976afc822",
+      "bldg_203ce11f-abdb-4179-8411-91b428a355f5",
+      "bldg_65c44c2d-e390-4523-9aa6-40816891d1c8",
+      "bldg_b4f079d1-46ec-492f-bfd6-d34eae0f544c",
+      "bldg_0f2d5765-a926-45c3-b8af-ce5037a9689a",
+      "bldg_4ec1636f-e048-4798-8d8d-0b656bcb37f9",
+      "bldg_7fd47a7e-5e29-457f-8632-d31f74d1a291",
+      "bldg_dc115d9a-2678-416a-8f71-238d63f47e07"
+    ],
+    "geometry_unchanged": true,
+    "license": "CC BY 4.0",
+    "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成"
+  },
+  "font_filename": "Noto Sans CJK Regular.woff2",
+  "font_sha256": "264ed9286faf7d057e44574c98bb7ea566d337095474fadb1e6fe3bcad2d982b",
+  "spec_sha256": "1b614e5a0d073c5f4ca822b7e4b14d7cfbd7554e695502a66f83a651a3f0b55d",
+  "blend_filename": "entrance-detail-curved.blend",
+  "renders": [
+    "entrance-calibration-gate-curved.png",
+    "entrance-gate-study-gate-curved.png",
+    "entrance-approach-gate-curved.png",
+    "under-gate-gate-curved.png"
+  ],
+  "validation": {
+    "renders_inspected": false,
+    "independent_historical_critique": "not-performed-by-script",
+    "independent_visual_critique": "not-performed-by-script"
+  },
+  "cameras": {
+    "entrance-approach": {
+      "role": "shared-route-proposal",
+      "blender_position_m": [
+        -90.47010040283203,
+        -80.9813003540039,
+        2.496799945831299
+      ],
+      "position_interchange_m": [
+        -90.47010040283203,
+        2.496799945831299,
+        80.9813003540039
+      ],
+      "look_at_interchange_m": [
+        -88.52780151367188,
+        2.5020999908447266,
+        70.3468017578125
+      ],
+      "lens_mm": 35.0
+    },
+    "under-gate": {
+      "role": "shared-route-proposal",
+      "blender_position_m": [
+        -88.52780151367188,
+        -70.3468017578125,
+        2.5020999908447266
+      ],
+      "position_interchange_m": [
+        -88.52780151367188,
+        2.5020999908447266,
+        70.3468017578125
+      ],
+      "look_at_interchange_m": [
+        -73.9613037109375,
+        1.5591000318527222,
+        22.008100509643555
+      ],
+      "lens_mm": 35.0
+    },
+    "entrance-calibration": {
+      "role": "separate-reference-framing-calibration; not a route replacement",
+      "blender_position_m": [
+        -105.24950408935547,
+        -115.43986511230469,
+        2.7150628566741943
+      ],
+      "position_interchange_m": [
+        -105.24950408935547,
+        2.7150628566741943,
+        115.43986511230469
+      ],
+      "look_at_interchange_m": [
+        -86.60771942138672,
+        14.745155334472656,
+        66.74773406982422
+      ],
+      "lens_mm": 24.0
+    },
+    "entrance-gate-study": {
+      "role": "separate upward gate and ground composition; not a route replacement",
+      "blender_position_m": [
+        -93.66358184814453,
+        -87.38980102539062,
+        2.6020333766937256
+      ],
+      "position_interchange_m": [
+        -93.66358184814453,
+        2.6020333766937256,
+        87.38980102539062
+      ],
+      "look_at_interchange_m": [
+        -87.76053619384766,
+        6.96743106842041,
+        69.5335922241211
+      ],
+      "lens_mm": 30.0
+    },
+    "near-facade": {
+      "role": "separate-oblique-depth-inspection; not a route replacement",
+      "blender_position_m": [
+        -86.541015625,
+        -59.24803161621094,
+        2.0149033069610596
+      ],
+      "position_interchange_m": [
+        -86.541015625,
+        2.0149033069610596,
+        59.24803161621094
+      ],
+      "look_at_interchange_m": [
+        -80.18475341796875,
+        6.382711410522461,
+        70.0409927368164
+      ],
+      "lens_mm": 32.0
+    }
+  },
+  "authored_asset_license": "MIT",
+  "third_party_rasters_embedded": false,
+  "license_notes": "Modern context PLATEAU CC BY 4.0; packed CJK font has its own license. Check both before distributing blend.",
+  "published_previews": [
+    {
+      "camera_id": "entrance-calibration",
+      "path": "docs/previews/r03/entrance-calibration.png",
+      "sha256": "14a7e5b56cddeca23d43fad5acfdadb1e0a36d63066af66bfb6d3674bb631839"
+    },
+    {
+      "camera_id": "entrance-gate-study",
+      "path": "docs/previews/r03/entrance-gate-study.png",
+      "sha256": "e87aafcfd076b55a4a293e5f91f5e0776dabac31f8c63139f842843dfb83e268"
+    },
+    {
+      "camera_id": "entrance-approach",
+      "path": "docs/previews/r03/entrance-approach.png",
+      "sha256": "857397df46fe31a90dd773e2e31052299c536a84a5f5d2bcb9d93f1d124871ef"
+    },
+    {
+      "camera_id": "under-gate",
+      "path": "docs/previews/r03/entrance-under-gate.png",
+      "sha256": "71060fc67c4a0d6b7ef9853eed8d1ec4f4faaaa764cdc8d683d533ea9e5488a3"
+    }
+  ],
+  "blend_distributed": false,
+  "font_binary_distributed": false,
+  "gate_decision_path": "data/decisions/kabukicho-gate-1976.json",
+  "gate_decision_sha256": "aa55d6e26bdb23ba85251f3ae7d1760805f9885eb78f941c7430920f2c924cde",
+  "spec_path": "scenes/shinjuku/kabukicho/1976/detail/entrance-detail-spec.json",
+  "inspection_status": "See the reconstruction round report; this renderer does not self-certify visual quality.",
+  "gate_dimensions_adopted_m": {
+    "post_center_span": 10.25,
+    "post_base_outer_span": 10.59,
+    "outer_tail_span": 10.64,
+    "outer_height": 7.8
+  },
+  "gate_width_record_note": "Outer tail span includes 0.22 m tube radii; correcting a prior 10.59 m overall-width label did not alter geometry.",
+  "timing_seconds_by_camera": {
+    "entrance-calibration": 34.83,
+    "entrance-gate-study": 55.2,
+    "entrance-approach": 58.41,
+    "under-gate": 65.52
+  },
+  "local_inspection": {
+    "performed": true,
+    "independent": false,
+    "scope": "All four PNGs decoded and inspected; native CJK glyphs, full-building calibration, gate framing and terrain-relative route views checked. Architectural look development, not a photorealism or historical-certainty certification."
+  },
+  "spec_metadata_correction": {
+    "rendered_source_spec_sha256": "39b058fb50da4dbc5d9a575bc561b583b18f67fb89462a8a54b724ea037dfae1",
+    "current_equivalent_geometry_spec_sha256": "1b614e5a0d073c5f4ca822b7e4b14d7cfbd7554e695502a66f83a651a3f0b55d",
+    "scope": "English spacing in human-readable historical-status and license text only; geometry, material, camera and lighting parameters are unchanged."
+  }
+}
