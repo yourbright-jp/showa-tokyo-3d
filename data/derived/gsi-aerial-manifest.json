@@ -1,0 +1,45 @@
+{
+  "source": "国土地理院 地理院タイル gazo1",
+  "source_period": [
+    1974,
+    1978
+  ],
+  "exact_flight_date": null,
+  "retrieved_at": "2026-11-02",
+  "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+  "tiles": [
+    {
+      "z": 17,
+      "x": 116399,
+      "y": 51606,
+      "url": "https://cyberjapandata.gsi.go.jp/xyz/gazo1/17/116399/51606.jpg",
+      "sha256": "8b6295cf38552a0b7814735bcb875320417a582eeb8b5ab252f4092a59a58b79",
+      "file_size_bytes": 19852
+    },
+    {
+      "z": 17,
+      "x": 116400,
+      "y": 51606,
+      "url": "https://cyberjapandata.gsi.go.jp/xyz/gazo1/17/116400/51606.jpg",
+      "sha256": "9cad41effaa72200f91cc560fcdd7aa512cae649685b690b166b9d5afaf74755",
+      "file_size_bytes": 22767
+    },
+    {
+      "z": 17,
+      "x": 116399,
+      "y": 51607,
+      "url": "https://cyberjapandata.gsi.go.jp/xyz/gazo1/17/116399/51607.jpg",
+      "sha256": "a19fa0a78eade7404fe37e7f0ef767ae8de94a303475f515262d0aeceed7cf31",
+      "file_size_bytes": 21764
+    },
+    {
+      "z": 17,
+      "x": 116400,
+      "y": 51607,
+      "url": "https://cyberjapandata.gsi.go.jp/xyz/gazo1/17/116400/51607.jpg",
+      "sha256": "6447cc7e318715e5c5b3cff3503f280e5b16a087244a0f156e794385a08185ed",
+      "file_size_bytes": 22616
+    }
+  ],
+  "redistribution": "Raw imagery not included in public repository; internal evidence only; confirm reuse conditions before distributing imagery."
+}

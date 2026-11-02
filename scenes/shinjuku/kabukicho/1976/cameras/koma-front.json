@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "koma-front",
+  "status": "proposal",
+  "position_m": [
+    -36.0891,
+    1.6,
+    -70.8015
+  ],
+  "look_at_m": [
+    -21.5232,
+    1.6,
+    -81.4358
+  ],
+  "height_m": 1.6,
+  "focal_length_35mm_equivalent_mm": 35,
+  "source": "aerial-interpreted-proposal"
+}

@@ -1,0 +1,12 @@
+{
+  "validation": {
+    "spacing_m_at_most": 0.5,
+    "samples": 335,
+    "samples_on_modern_road": 335,
+    "building_interior_collisions": 0,
+    "collision_feature_ids": [],
+    "minimum_sampled_building_edge_clearance_m": 1.523,
+    "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, props, slope, dynamic objects or historical street survey"
+  },
+  "collisions": []
+}

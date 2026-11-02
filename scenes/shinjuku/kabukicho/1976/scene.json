@@ -6,43 +6,150 @@
   "district": "kabukicho",
   "target_year": 1976,
   "year_precision": "approximate",
-  "status": "planning",
-  "geographic_confidence": "unverified",
+  "status": "provisional-blockout",
+  "geographic_confidence": "approximate",
   "historical_confidence": "unverified",
   "coordinate_system": {
     "kind": "local-cartesian",
     "units": "metres",
     "handedness": "right",
-    "axes": {"x": "east", "y": "up", "z": "south"},
+    "axes": {
+      "x": "east",
+      "y": "up",
+      "z": "south"
+    },
     "origin_wgs84": null,
-    "source_crs": null,
-    "conversion": null
+    "source_crs": "EPSG:6697",
+    "conversion": "GRS80 ECEF horizontal projection to local tangent east/north; Z=-north; individual building bases flattened, roads flat. Historical tile lat/lon treated approximately JGD2011-equivalent, no epoch transformation.",
+    "origin_jgd2011": {
+      "latitude": 35.6945,
+      "longitude": 139.702,
+      "height_m": 0
+    }
   },
-  "environment": {"season": null, "time_of_day": null, "weather": null},
-  "asset_ids": [],
+  "environment": {
+    "season": null,
+    "time_of_day": null,
+    "weather": null
+  },
+  "asset_ids": [
+    "kabukicho-modern-baseline",
+    "kabukicho-layout-study"
+  ],
   "camera_proposal": {
     "height_m": 1.6,
     "focal_length_35mm_equivalent_mm": 35,
     "speed_m_per_second": 1.0,
     "pilot_duration_seconds": 15,
-    "final_output_target": {"width": 3840, "height": 2160, "fps": 30}
+    "final_output_target": {
+      "width": 3840,
+      "height": 2160,
+      "fps": 30
+    }
   },
   "route": {
-    "status": "needs-historical-georeferencing",
-    "distance_m": null,
-    "geometry": null,
+    "status": "provisional-from-period-aerial",
+    "distance_m": 163.645,
+    "geometry": {
+      "type": "LineString",
+      "coordinate_space": "local-east-up-south-metres",
+      "coordinates": [
+        [
+          -90.4701,
+          0,
+          80.9813
+        ],
+        [
+          -88.5278,
+          0,
+          70.3468
+        ],
+        [
+          -73.9613,
+          0,
+          22.0081
+        ],
+        [
+          -57.4527,
+          0,
+          -32.1309
+        ],
+        [
+          -49.684,
+          0,
+          -58.2336
+        ],
+        [
+          -36.0891,
+          0,
+          -70.8015
+        ]
+      ]
+    },
     "stations": [
-      {"id": "entrance-approach", "name": "一番街入口の手前", "position_m": null},
-      {"id": "under-gate", "name": "門の直下", "position_m": null},
-      {"id": "ichibangai-middle", "name": "一番街の中ほど", "position_m": null},
-      {"id": "towards-koma-corner", "name": "コマ劇場へ向かう曲がり角", "position_m": null},
-      {"id": "plaza-reveal", "name": "劇場前広場への出口", "position_m": null},
-      {"id": "koma-front", "name": "旧コマ劇場正面", "position_m": null}
-    ]
+      {
+        "id": "entrance-approach",
+        "name": "一番街入口の手前",
+        "position_m": [
+          -90.4701,
+          1.6,
+          80.9813
+        ]
+      },
+      {
+        "id": "under-gate",
+        "name": "門の直下付近・位置未確定",
+        "position_m": [
+          -88.5278,
+          1.6,
+          70.3468
+        ]
+      },
+      {
+        "id": "ichibangai-middle",
+        "name": "一番街の中ほど",
+        "position_m": [
+          -73.9613,
+          1.6,
+          22.0081
+        ]
+      },
+      {
+        "id": "towards-koma-corner",
+        "name": "コマ劇場へ向かう曲がり角の候補",
+        "position_m": [
+          -57.4527,
+          1.6,
+          -32.1309
+        ]
+      },
+      {
+        "id": "plaza-reveal",
+        "name": "劇場前広場への出口候補",
+        "position_m": [
+          -49.684,
+          1.6,
+          -58.2336
+        ]
+      },
+      {
+        "id": "koma-front",
+        "name": "旧コマ劇場前の候補",
+        "position_m": [
+          -36.0891,
+          1.6,
+          -70.8015
+        ]
+      }
+    ],
+    "distance_status": "computed-proposal-not-historical-measurement",
+    "source": "gsi-gazo1-1974-1978",
+    "camera_file": "cameras/route-proposal.json"
   },
   "notes": [
-    "No verified coordinates or 3D models have been added yet.",
-    "The six station labels describe the intended production sequence, not a verified walking route.",
-    "Keep source years and inferred colour separate from the target year."
+    "Modern source geometry and a provisional historical-layout study are present; neither certifies1976 appearance.",
+    "Gate, intermediate facades, precise theatre frontage and historical street obstacles remain unresolved.",
+    "Proxy heights are assumptions and source terrain was flattened.",
+    "Approved colour targets remain separate from historical evidence."
   ]
 }
