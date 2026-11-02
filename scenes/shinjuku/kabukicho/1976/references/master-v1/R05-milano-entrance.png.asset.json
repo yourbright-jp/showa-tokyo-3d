@@ -26,5 +26,15 @@
   "generation_model_version": "not-recorded",
   "license": null,
   "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
-  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished. Owner re-confirmed publication in the public repository on 2026-11-02 (rights_review).",
+  "rights_review": {
+    "date": "2026-11-02",
+    "reviewer_role": "project owner",
+    "decision": "publication-confirmed",
+    "statement": "参照画像９枚は問題ない（2026-11-02）。リポジトリは公開とする。",
+    "scope": "Keeping this generated colour master published in the public repository as a project reference.",
+    "license_name": null,
+    "license_name_status": "Not specified by the owner; left null rather than inferred. Project code MIT license does not apply to this raster.",
+    "third_party_sources": "Archival source photographs remain unpublished; no rights in them are asserted."
+  }
 }
