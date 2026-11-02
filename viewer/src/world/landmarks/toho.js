@@ -167,7 +167,7 @@ export function buildToho(ctx, kit) {
   }
   const tsills = twin.map((h) => ({ x0: h.x0, x1: h.x1, y: h.y0 - 0.06 }));
   const tjy = []; for (let r = 1; r < P.tower_window_rows; r++) tjy.push(r * TH / P.tower_window_rows - 0.1);
-  const tPainter = paintFacade(tfb, -TW / 2, TW / 2, 0, TH + 0.1, { key: 'tower-west', baseRgb: wallRgb.map((v) => v * 0.97), ppm: 48, joints: { xs: [-TW / 2 + 0.6, TW / 2 - 0.6], ys: tjy }, sills: tsills, coping: TH, dirtH: 0.5, stains: 16, age: 1.5 });
+  const tPainter = paintFacade(tfb, -TW / 2, TW / 2, 0, TH + 0.1, { key: 'tower-west', baseRgb: wallRgb.map((v) => v * 0.95), ppm: 48, jointW: 0.03, joints: { xs: [-TW / 2 + 0.6, TW / 2 - 0.6], ys: tjy }, sills: tsills, coping: TH, dirtH: 0.5, stains: 16, age: 1.5 });
   tfb.add('towerWall', wallWithHoles(-TW / 2, 0, TW / 2, TH, twin, WALL_Z, tPainter));
   edgeQuadReturns(tfb, TW, TH);
   let k = 0;

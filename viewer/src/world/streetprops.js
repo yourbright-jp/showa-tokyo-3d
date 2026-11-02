@@ -20,14 +20,14 @@ import { placeFrontage, placeSingletons } from './streetprops/front.js';
 /** Soft contact-shadow decals (ground AO) under props; vertex alpha carries the strength. */
 class DecalBatch {
   constructor() { this.p = []; this.uv = []; this.c = []; this.i = []; }
-  add(site, x, z, hx, hz, ry, alpha, lift = 0.012) {
+  add(site, x, z, hx, hz, ry, alpha, lift = 0.012, rgb = [0, 0, 0]) {
     const c = Math.cos(ry), s = Math.sin(ry);
     const b = this.p.length / 3;
     for (const [u, v, tu, tv] of [[-hx, -hz, 0, 0], [hx, -hz, 1, 0], [hx, hz, 1, 1], [-hx, hz, 0, 1]]) {
       const wx = x + u * c + v * s, wz = z - u * s + v * c;
       this.p.push(wx, site.groundAt(wx, wz) + lift, wz);
       this.uv.push(tu, tv);
-      this.c.push(0, 0, 0, alpha);
+      this.c.push(rgb[0], rgb[1], rgb[2], alpha);
     }
     this.i.push(b, b + 2, b + 1, b, b + 3, b + 2);
   }
@@ -51,10 +51,12 @@ export function build(ctx) {
   const t0 = performance.now();
   const log = ctx.log || console.log;
   const group = new THREE.Group();
-  const site = makeSite(ctx);
+  const timings = {};
+  const step = (name, fn) => { const t = performance.now(); const r = fn(); timings[name] = Math.round(performance.now() - t); return r; };
+  const site = step('site', () => makeSite(ctx));
   const streets = makeStreets(ctx, site);
-  const atlasTex = makeAtlas(ctx);
-  const mats = makeMaterials(ctx, atlasTex);
+  const atlasTex = step('atlas', () => makeAtlas(ctx));
+  const mats = step('materials', () => makeMaterials(ctx, atlasTex));
   mats.decal.vertexColors = true;
 
   const B = new Batch();            // opaque props that cast shadows
@@ -66,8 +68,6 @@ export function build(ctx) {
   const D = new DecalBatch();
   const kit = { B, BS, BW, BA, BF, BG, D, site, streets, mats };
   const footprints = [];
-  const timings = {};
-  const step = (name, fn) => { const t = performance.now(); const r = fn(); timings[name] = Math.round(performance.now() - t); return r; };
 
   const poles = step('poles', () => buildPoleNetwork(ctx, site, streets, B, BW, BA));
   footprints.push(...poles.footprints);
@@ -85,6 +85,7 @@ export function build(ctx) {
   footprints.push(...cars.footprints);
 
   // ---- assemble meshes ----
+  const tMesh = performance.now();
   const add = (batch, mat, name, cast) => {
     if (!batch.triCount) return;
     const m = batch.toMesh(mat, name);
@@ -98,7 +99,20 @@ export function build(ctx) {
   add(BF, mats.foliage, 'streetprops-foliage', true);
   if (BG.triCount) { const g = BG.toMesh(mats.glass, 'streetprops-glass'); g.castShadow = false; g.userData.noShadow = true; g.renderOrder = 2; group.add(g); }
   if (D.i.length) group.add(D.toMesh(mats.decal));
+  // neon-night only: additive light pools on the ground under lit lamps (no real lights, cheap)
+  if (ctx.look && ctx.look.name === 'neon-night') {
+    const L = new DecalBatch();
+    for (const f of lamps.footprints) L.add(site, f.x, f.z, 4.6, 4.6, 0, 0.16, 0.02, [1.0, 0.72, 0.42]);
+    for (const p of poles.poles) if (p.lamp) L.add(site, p.lamp[0], p.lamp[2], 4.2, 4.2, 0, 0.12, 0.022, [0.75, 0.85, 1.0]);
+    for (const p of traffic.lights || []) L.add(site, p[0], p[2], 7, 7, 0, 0.14, 0.022, [0.85, 0.95, 1.0]);
+    if (L.i.length) {
+      const m = L.toMesh(new THREE.MeshBasicMaterial({ map: mats.poolTex, vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -6 }));
+      m.name = 'streetprops-lightpools';
+      group.add(m);
+    }
+  }
 
+  timings.meshes = Math.round(performance.now() - tMesh);
   ctx.streetprops = { footprints };
   const tris = B.triCount + BS.triCount + BW.triCount + BA.triCount + BF.triCount + BG.triCount;
   log(`streetprops: site ${JSON.stringify(site.stats)}`);

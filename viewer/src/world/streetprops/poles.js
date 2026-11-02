@@ -189,12 +189,12 @@ function serviceDrop(site, BW, B, a, f, t, h, rng) {
   return true;
 }
 
-function spanWires(site, BW, aPts, bPts, r, sagK, col = WIRE, stats) {
+function spanWires(site, BW, aPts, bPts, r, sagK, col = WIRE, stats, label = '') {
   for (let i = 0; i < Math.min(aPts.length, bPts.length); i++) {
     const a = aPts[i], b = bPts[i];
     const L = Math.hypot(b[0] - a[0], b[2] - a[2]);
     const pts = sagWire(a, b, 0.05 + sagK * L * L, Math.max(10, Math.ceil(L / 1.0)));
-    if (!site.pathFree(pts, 0, 0.75, 0.75)) { stats.blockedSpans++; continue; }
+    if (!site.pathFree(pts, 0, 0.75, 0.75)) { stats.blockedSpans++; const key = `${label.replace(/\d+$/, '')}:${site.lastBlock}`; stats.blocked = stats.blocked || {}; stats.blocked[key] = (stats.blocked[key] || 0) + 1; continue; }
     BW.tube(mat4(), pts, r, col, MAT.rubber, r > 0.015 ? 5 : 3, { ao: false });
     site.markPath(pts);
     stats.spans++;
@@ -259,7 +259,7 @@ export function buildPoleNetwork(ctx, site, streets, B, BW, A) {
       transformer: east.length === 1 || east.length === 3 ? 1 : 0, lamp: true, lampY: 4.9 + prng.range(-0.2, 0.3),
       ad: east.length !== 2 && prng.chance(0.75) ? adPool[east.length % adPool.length] : null, hydrant: east.length === 2,
     });
-    site.markBox(pl.x, pl.z, 0.25, 0.25, 0, pl.gy, pl.gy + H);
+    site.markBox(pl.x, pl.z, 0.25, 0.25, 0, pl.gy, pl.gy + H, 'wire');
     footprints.push({ x: pl.x, z: pl.z, r: 0.3, kind: 'utility-pole' });
     east.push({ ...pl, ...res });
     stats.poles++;
@@ -277,7 +277,7 @@ export function buildPoleNetwork(ctx, site, streets, B, BW, A) {
       lv: [1.05 + k, 1.6 + k], rack: true, tel: pl.wallD < 1 ? 0.95 : 0.35, lamp: true, lampY: 4.8 + prng.range(-0.2, 0.3),
       ad: prng.chance(0.6) ? adPool[(west.length + 2) % adPool.length] : null,
     });
-    site.markBox(pl.x, pl.z, 0.25, 0.25, 0, pl.gy, pl.gy + H);
+    site.markBox(pl.x, pl.z, 0.25, 0.25, 0, pl.gy, pl.gy + H, 'wire');
     footprints.push({ x: pl.x, z: pl.z, r: 0.3, kind: 'utility-pole' });
     west.push({ ...pl, ...res });
     stats.poles++;
@@ -286,7 +286,7 @@ export function buildPoleNetwork(ctx, site, streets, B, BW, A) {
   // ---- main road north kerb line ----
   const M = streets.main;
   const mains = [];
-  for (const E of [-46, -17, 17, 45]) {
+  for (const E of [-46, -17, -6.3, 17, 45]) {
     const [x, z] = M.toWorld(E, M.kerbS - 0.45);
     if (site.wallDistance(x, z, 1) < 0.5 || site.routeDistance(x, z) < 2) { stats.skipped++; continue; }
     const gy = site.groundAt(x, z);
@@ -295,35 +295,46 @@ export function buildPoleNetwork(ctx, site, streets, B, BW, A) {
     const ry = Math.atan2(M.S[0], M.S[1]);
     const res = buildUtilityPole(B, A, {
       x, z, gy, ry, H, rng: prng, wireBatch: BW,
-      hv: [-0.9, 0.0001, 0.9], lv: [-0.75, 0.0001, 0.75], rack: true, tel: -0.45, transformer: E === 17 ? 2 : 0,
+      hv: [-0.9, 0.0001, 0.9], lv: [-0.75, 0.0001, 0.75], rack: true, tel: -0.45, transformer: E === 17 ? 2 : E === -6.3 ? 1 : 0,
       ad: prng.chance(0.5) ? adPool[(mains.length + 1) % adPool.length] : null,
     });
-    site.markBox(x, z, 0.25, 0.25, 0, gy, gy + H);
+    site.markBox(x, z, 0.25, 0.25, 0, gy, gy + H, 'wire');
     footprints.push({ x, z, r: 0.3, kind: 'utility-pole' });
     mains.push({ x, z, gy, H, ry, E, ...res });
     stats.poles++;
   }
 
   // ---- wires ----
-  const chain = (list, key, r, sag) => { for (let i = 0; i + 1 < list.length; i++) spanWires(site, BW, list[i][key], list[i + 1][key], r, sag, WIRE, stats); };
-  chain(east, 'hv', 0.0105, 0.0006);
-  chain(east, 'lv', 0.0105, 0.0008);
-  chain(mains, 'hv', 0.011, 0.0005);
-  chain(mains, 'lv', 0.011, 0.0007);
-  west.length && chain(west, 'lv', 0.0095, 0.0008);
-  const telChain = (list) => { for (let i = 0; i + 1 < list.length; i++) if (list[i].tel && list[i + 1].tel) spanWires(site, BW, [list[i].tel], [list[i + 1].tel], 0.021, 0.0009, CABLE, stats); };
+  const chain = (list, key, r, sag, name) => { for (let i = 0; i + 1 < list.length; i++) spanWires(site, BW, list[i][key], list[i + 1][key], r, sag, WIRE, stats, `${name}${i}`); };
+  chain(east, 'hv', 0.0105, 0.0006, 'eHV');
+  chain(east, 'lv', 0.0105, 0.0008, 'eLV');
+  chain(mains, 'hv', 0.011, 0.0005, 'mHV');
+  chain(mains, 'lv', 0.011, 0.0007, 'mLV');
+  west.length && chain(west, 'lv', 0.0095, 0.0008, 'wLV');
+  const telChain = (list) => { for (let i = 0; i + 1 < list.length; i++) if (list[i].tel && list[i + 1].tel) spanWires(site, BW, [list[i].tel], [list[i + 1].tel], 0.021, 0.0009, CABLE, stats, 'tel'); };
   telChain(east); telChain(west); telChain(mains);
-  // main road -> Ichibangai feeder (LV + telephone) over the entrance, above the gate
-  const feed = mains.find((m) => m.E === 17);
-  if (feed && east[0]) {
-    spanWires(site, BW, feed.lv.slice(0, 2), east[0].lv.slice(0, 2), 0.0105, 0.0007, WIRE, stats);
-    if (feed.tel && east[0].tel) spanWires(site, BW, [feed.tel], [east[0].tel], 0.02, 0.0008, CABLE, stats);
+  // main road -> Ichibangai feeders (LV + telephone) over the entrance, above the gate
+  const trySpan = (opts, r, sag, col, label) => {
+    for (const [a, b] of opts) {
+      if (!a || !b || !a.length || !b.length) continue;
+      const before = stats.spans;
+      spanWires(site, BW, a, b, r, sag, col, stats, label);
+      if (stats.spans > before) return true;
+    }
+    return false;
+  };
+  for (const feed of mains.filter((m) => m.E === -6.3 || m.E === 17)) {
+    for (const tgt of [east[0], west[0]]) {
+      if (!tgt) continue;
+      trySpan([[feed.lv.slice(0, 2), tgt.lv.slice(0, 2)], [feed.rack.slice(0, 2), tgt.lv.slice(0, 2)], [feed.lv.slice(1, 3), tgt.rack.slice(0, 2)]], 0.0105, 0.0007, WIRE, 'feed');
+      trySpan([[[feed.tel], [tgt.tel]], [[feed.rack[2]], [tgt.rack[1]]]], 0.02, 0.0008, CABLE, 'feedTel');
+    }
   }
   // street crossings: each west pole takes LV from the nearest east pole
   for (const w of west) {
     let best = null, bd = Infinity;
     for (const e of east) { const d = Math.hypot(e.x - w.x, e.z - w.z); if (d < bd) { bd = d; best = e; } }
-    if (best && bd < 26) spanWires(site, BW, best.rack.slice(0, 2), w.lv.slice(0, 2), 0.009, 0.0009, WIRE, stats);
+    if (best && bd < 26) trySpan([[best.rack.slice(0, 2), w.lv.slice(0, 2)], [best.lv.slice(0, 2), w.lv.slice(0, 2)], [best.lv.slice(1, 3), w.rack.slice(0, 2)]], 0.009, 0.0009, WIRE, 'cross');
   }
 
   // ---- service drops to facades ----

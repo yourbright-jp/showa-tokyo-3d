@@ -288,9 +288,9 @@ export function buildGate(ctx, kit) {
 
   // ---------------- materials
   const redTex = redPaintTexture(ctx.rng('landmarks/gate/paint'), P.body_color_srgb);
-  const red = weather(new THREE.MeshStandardMaterial({ map: redTex, color: new THREE.Color(0.8, 0.6, 0.6), roughness: 0.66, metalness: 0.0 }), kit.macro, { baseY: posts[0].y0, dirtH: 0.9, dirt: 0.3, streak: 0.14, mottle: 0.14, streakScale: 2 });
+  const red = weather(new THREE.MeshStandardMaterial({ map: redTex, color: new THREE.Color(0.7, 0.5, 0.5), roughness: 0.62, metalness: 0.0 }), kit.macro, { baseY: posts[0].y0, dirtH: 0.9, dirt: 0.3, streak: 0.14, mottle: 0.14, streakScale: 2 });
   const plateMat = new THREE.MeshStandardMaterial({ map: plateTexture(ctx.rng('landmarks/gate/plate'), P.plate_color_srgb, pw, ph), roughness: 0.38, metalness: 0.0 });
-  const letterMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(P.letter_color_srgb).multiply(new THREE.Color(0.85, 0.7, 0.7)), roughness: 0.42, metalness: 0.0 });
+  const letterMat = new THREE.MeshStandardMaterial({ color: new THREE.Color(P.letter_color_srgb).multiply(new THREE.Color(0.62, 0.5, 0.5)), roughness: 0.42, metalness: 0.0 });
   const letterSide = new THREE.MeshStandardMaterial({ color: new THREE.Color(P.letter_color_srgb).multiplyScalar(0.8), roughness: 0.5, metalness: 0.1 });
   const steel = new THREE.MeshStandardMaterial({ color: 0x3b3936, roughness: 0.62, metalness: 0.55 });
   const grey = new THREE.MeshStandardMaterial({ color: 0x7c7b74, roughness: 0.55, metalness: 0.4 });

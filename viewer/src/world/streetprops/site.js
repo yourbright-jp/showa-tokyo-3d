@@ -160,6 +160,7 @@ export function makeSite(ctx) {
 
   // ---- occupancy voxels ----
   const occ = new Set();
+  const occWire = new Set(); // own poles and wires: block props and lamps, but not other wires
   // ROI mask (1 m cells) near the route and the entrance/main road
   const RM = 1, rx0 = -175, rz0 = -175, rnx = 230, rnz = 330;
   const roi = new Uint8Array(rnx * rnz);
@@ -196,7 +197,10 @@ export function makeSite(ctx) {
   }
   stats.probed = probed; stats.occVoxels = occ.size; stats.samples = sampled;
 
-  function occupied(x, y, z) { return occ.has(vkey(Math.floor(x / VOX), Math.floor(y / VOX), Math.floor(z / VOX))); }
+  function occupied(x, y, z, withWires = true) {
+    const k = vkey(Math.floor(x / VOX), Math.floor(y / VOX), Math.floor(z / VOX));
+    return occ.has(k) || (withWires && occWire.has(k));
+  }
   /** Rotated box (half extents hx,hz around centre, heading ry) between absolute y0..y1. */
   function boxFree(cx, cz, hx, hz, ry, y0, y1, pad = 0.05) {
     const c = Math.cos(ry), s = Math.sin(ry);
@@ -209,16 +213,18 @@ export function makeSite(ctx) {
     }
     return true;
   }
-  function markBox(cx, cz, hx, hz, ry, y0, y1) {
+  function markBox(cx, cz, hx, hz, ry, y0, y1, layer = 'prop') {
+    const set = layer === 'wire' ? occWire : occ;
     const c = Math.cos(ry), s = Math.sin(ry);
     const nx = Math.max(1, Math.ceil((2 * hx) / 0.2)), nz = Math.max(1, Math.ceil((2 * hz) / 0.2)), ny = Math.max(1, Math.ceil((y1 - y0) / 0.2));
     for (let i = 0; i <= nx; i++) for (let j = 0; j <= nz; j++) {
       const u = -hx + (2 * hx * i) / nx, v = -hz + (2 * hz * j) / nz;
       const x = cx + u * c + v * s, z = cz - u * s + v * c;
-      for (let k = 0; k <= ny; k++) markPoint(x, y0 + ((y1 - y0) * k) / ny, z);
+      for (let k = 0; k <= ny; k++) { const y = y0 + ((y1 - y0) * k) / ny; set.add(vkey(Math.floor(x / VOX), Math.floor(y / VOX), Math.floor(z / VOX))); }
     }
   }
   /** Polyline of world points free (with radius r)? */
+  let lastBlock = null;
   function pathFree(pts, r = 0.05, skipStart = 0, skipEnd = 0) {
     let total = 0;
     for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1], pts[i + 1][2] - pts[i][2]);
@@ -232,8 +238,9 @@ export function makeSite(ctx) {
         const x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t, z = a[2] + (b[2] - a[2]) * t;
         acc += L / n;
         if (acc < skipStart || acc > total - skipEnd) continue;
-        if (insideBuilding3D(x, y, z, 0.08)) return false;
-        if (occupied(x, y, z) || (r > VOX * 0.5 && (occupied(x + r, y, z) || occupied(x - r, y, z) || occupied(x, y, z + r) || occupied(x, y, z - r)))) return false;
+        if (insideBuilding3D(x, y, z, 0.08)) { lastBlock = 'building'; return false; }
+        lastBlock = 'occupied';
+        if (occupied(x, y, z, false) || (r > VOX * 0.5 && (occupied(x + r, y, z, false) || occupied(x - r, y, z, false) || occupied(x, y, z + r, false) || occupied(x, y, z - r, false)))) return false;
       }
     }
     return true;
@@ -243,7 +250,7 @@ export function makeSite(ctx) {
       const a = pts[i], b = pts[i + 1];
       const L = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]);
       const n = Math.max(1, Math.ceil(L / 0.2));
-      for (let k = 0; k <= n; k++) { const t = k / n; markPoint(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t); }
+      for (let k = 0; k <= n; k++) { const t = k / n; occWire.add(vkey(Math.floor((a[0] + (b[0] - a[0]) * t) / VOX), Math.floor((a[1] + (b[1] - a[1]) * t) / VOX), Math.floor((a[2] + (b[2] - a[2]) * t) / VOX))); }
     }
   }
 
@@ -273,6 +280,6 @@ export function makeSite(ctx) {
   return {
     groundAt, groundUnder, wallDistance, obstacleDistance, inPlaza, nearBuildings, insideBuilding3D,
     occupied, boxFree, markBox, pathFree, markPath, footprintClear, stats,
-    routeDistance: data.routeDistance, CORRIDOR,
+    routeDistance: data.routeDistance, CORRIDOR, get lastBlock() { return lastBlock; },
   };
 }

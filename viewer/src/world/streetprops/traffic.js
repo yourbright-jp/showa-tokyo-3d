@@ -145,6 +145,7 @@ export function buildTraffic(ctx, kit) {
   const rng = ctx.rng('streetprops/traffic');
   const footprints = [];
   const stats = { signals: 0, signs: 0, barricades: 0, lights: 0 };
+  const lights = [];
   const yaw = (dx, dz) => Math.atan2(dx, dz);
   const S = M.S, e = M.e;
 
@@ -209,7 +210,8 @@ export function buildTraffic(ctx, kit) {
     const [x, z] = M.toWorld(E, s);
     if (site.wallDistance(x, z, 1) < 0.5 || site.routeDistance(x, z) < 1.6) continue;
     const gy = site.groundAt(x, z);
-    buildArmStreetLight(kit.B, { x, z, gy, ry: yaw(S[0] * dir, S[1] * dir), rng: ctx.rng(`streetprops/armlight/${E}`) });
+    const al = buildArmStreetLight(kit.B, { x, z, gy, ry: yaw(S[0] * dir, S[1] * dir), rng: ctx.rng(`streetprops/armlight/${E}`) });
+    lights.push(al.lamp);
     site.markBox(x, z, 0.2, 0.2, 0, gy, gy + 8.5);
     footprints.push({ x, z, r: 0.25, kind: 'street-light' });
     kit.D.add(site, x, z, 0.5, 0.5, 0, 0.5);
@@ -218,5 +220,5 @@ export function buildTraffic(ctx, kit) {
   for (const f of footprints) if (f.kind === 'signal-pole' || f.kind === 'sign-post') kit.D.add(site, f.x, f.z, 0.4, 0.4, 0, 0.45);
 
   ctx.tag({ id: 'streetprops/traffic', module: 'streetprops', tier: 'period-plausible-generic', note: 'Signalised crossing in front of the gate, 1970s three-lamp vehicle and two-box pedestrian signals, pedestrian-only sign + plate (R08), vehicle no-entry (R01), speed-limit 40 (R01), barricades (R08), guard rails and arm street lights. Positions, kerb line (s≈12 m from the gate line) and lane layout are production estimates.' });
-  return { footprints, stats };
+  return { footprints, stats, lights };
 }

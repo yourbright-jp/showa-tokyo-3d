@@ -71,12 +71,12 @@ export function buildVending(kit, W, rng, type) {
 export function buildBin(kit, W, rng, type) {
   const { B, BA } = kit;
   if (type === 'concreteBox') {
-    const c = jitter(lin('#8f8b84'), rng, 0.06);
+    const c = jitter(lin('#77736c'), rng, 0.06);
     B.box(W, 0, 0.38, 0, 0.6, 0.76, 0.6, c, MAT.concrete);
     B.box(W, 0, 0.765, 0, 0.44, 0.02, 0.44, lin('#151412'), MAT.rubber);
     BA.quad(W, 0, 0.6, 0.302, 0.42, 0.14, ATLAS.binLabel, [1, 1, 1], MAT.concrete);
   } else if (type === 'concreteCyl') {
-    const c = jitter(lin('#94918a'), rng, 0.06);
+    const c = jitter(lin('#7b7871'), rng, 0.06);
     B.cyl(W, 0, 0, 0, 0.3, 0.72, c, MAT.concrete, 16);
     B.cyl(W, 0, 0.705, 0, 0.25, 0.02, lin('#141312'), MAT.rubber, 16);
     B.cyl(W, 0, 0.5, 0, 0.305, 0.07, lin('#2b2b29'), MAT.metalPaint, 16);

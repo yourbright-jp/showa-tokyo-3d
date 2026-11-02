@@ -183,6 +183,9 @@ export function periodicNoise(rand, size = 512) {
 export function makeCanvas(w, h) {
   const c = document.createElement('canvas');
   c.width = w; c.height = h;
+  // CPU-backed 2D context: avoids queuing raster work in the (SwiftShader) GPU process, where a
+  // later readback would otherwise synchronise with every module's deferred canvas drawing.
+  c.getContext('2d', { willReadFrequently: true });
   return c;
 }
 

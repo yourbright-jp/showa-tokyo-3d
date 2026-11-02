@@ -15,14 +15,14 @@ function traceString(text, { px = 150, weight = 'bold', stroke = 0, font = JP_FO
   const key = `${text}|${px}|${weight}|${stroke}|${font}|${spacing}`;
   if (cache.has(key)) return cache.get(key);
   const pad = Math.ceil(px * 0.25 + stroke);
-  const probe = document.createElement('canvas').getContext('2d');
+  const probe = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
   probe.font = `${weight} ${px}px ${font}`;
   let w = 0;
   const adv = [];
   for (const ch of text) { const m = probe.measureText(ch).width; adv.push(m); w += m + spacing * px; }
   const W = Math.ceil(w + pad * 2), H = Math.ceil(px * 1.5 + pad * 2);
   const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const g = c.getContext('2d');
+  const g = c.getContext('2d', { willReadFrequently: true }); // CPU-backed: no GPU readback/sync with other modules' canvases
   g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
   g.font = `${weight} ${px}px ${font}`;
   g.textBaseline = 'alphabetic';

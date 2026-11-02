@@ -17,7 +17,7 @@ import {
 const ITEMS = {
   bikes: { w: 0, d: 1.95, h: 1.15, gap: 0.3, wt: { street: 4.6, entrance: 6, plaza: 1.6, main: 4 } },
   bikeParallel: { w: 1.85, d: 0.62, h: 1.15, gap: 0.42, wt: { street: 1.4, entrance: 1.5, plaza: 0.8, main: 1.5 } },
-  motorbike: { w: 1.95, d: 0.72, h: 1.3, gap: 0.42, wt: { street: 0.9, entrance: 1.0, plaza: 0.4, main: 1.2 } },
+  motorbike: { w: 1.95, d: 0.72, h: 1.3, gap: 0.42, wt: { street: 1.8, entrance: 1.8, plaza: 0.6, main: 1.8 } },
   crates: { w: 0.98, d: 0.4, h: 1.5, gap: 0.4, wt: { street: 1.6, entrance: 0.8, plaza: 0.6, main: 0.6 } },
   bins: { w: 0.62, d: 0.6, h: 0.75, gap: 0.4, wt: { street: 1.5, entrance: 1.0, plaza: 1.0, main: 0.8 } },
   plants: { w: 1.3, d: 0.5, h: 1.4, gap: 0.4, wt: { street: 1.4, entrance: 0.7, plaza: 0.8, main: 0.5 } },
@@ -115,9 +115,11 @@ export function placeFrontage(ctx, kit) {
       if (type === 'bikes') {
         // perpendicular to the wall, front wheel towards the shop, slight random angles
         for (let i = 0; i < nb; i++) {
-          const a0 = along - w / 2 + 0.31 + i * 0.62;
-          const bx = f.a[0] + tx * a0 + nx * (it.gap + 0.92), bz = f.a[1] + tz * a0 + nz * (it.gap + 0.92);
-          const heading = Math.atan2(nz, -nx) + irng.range(-0.22, 0.22); // local +x -> -normal
+          const a0 = along - w / 2 + 0.31 + i * 0.62 + irng.range(-0.07, 0.07);
+          const rev = irng.chance(0.22); // some parked rear-wheel first
+          const depth = it.gap + (rev ? 1.02 : 0.92) + irng.range(-0.08, 0.1);
+          const bx = f.a[0] + tx * a0 + nx * depth, bz = f.a[1] + tz * a0 + nz * depth;
+          const heading = Math.atan2(nz, -nx) + (rev ? Math.PI : 0) + irng.range(-0.26, 0.26); // local +x -> -normal
           const W = groundedFrame(site, bx, bz, heading, 0.55, irng.range(-0.025, 0.025));
           buildBicycle(B, kit.BA, W, irng, {});
           counts.bikes++;

@@ -89,7 +89,7 @@ export function theatreShared(ctx, kit) {
       g.globalAlpha = 0.22; g.globalCompositeOperation = 'overlay'; { const p = g.createPattern(nStreak, 'repeat'); g.fillStyle = p; g.fillRect(cx, cy, 256, 384); }
       g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
       // paper ageing and sun fading
-      g.globalAlpha = 0.32; g.fillStyle = '#d9d2c0'; g.fillRect(cx, cy, 256, 384);
+      g.globalAlpha = 0.12; g.fillStyle = '#d9d2c0'; g.fillRect(cx, cy, 256, 384);
       g.globalAlpha = 0.18; g.globalCompositeOperation = 'multiply'; const p = g.createPattern(nMottle, 'repeat'); g.fillStyle = p; g.fillRect(cx, cy, 256, 384);
       g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
       g.restore();
@@ -106,6 +106,7 @@ export function theatreShared(ctx, kit) {
       const x0 = (k % 2) * 512, y0 = Math.floor(k / 2) * 256; const pal = pals[k];
       g.save(); g.beginPath(); g.rect(x0, y0, 512, 256); g.clip();
       g.fillStyle = pal[0]; g.fillRect(x0, y0, 512, 256);
+      g.globalAlpha = 0.35; g.fillStyle = pal[2]; g.fillRect(x0, y0, 512, 256); g.globalAlpha = 1;
       for (let i = 0; i < 5; i++) {
         const gx = x0 + rng() * 420, gy = y0 + rng() * 200, gw = 120 + rng() * 260, gh = 60 + rng() * 160;
         const gr = g.createLinearGradient(gx, gy, gx + gw, gy + gh); gr.addColorStop(0, pal[1 + (i % 3)]); gr.addColorStop(1, 'rgba(0,0,0,0)');
@@ -404,8 +405,9 @@ export function paintFacade(fb, x0, x1, y0, y1, o) {
       const v = rng();
       P.rect(xs[i], ys[j], xs[i + 1], ys[j + 1], v < 0.5 ? `rgba(70,66,58,${0.012 + rng() * 0.03})` : `rgba(255,252,240,${0.012 + rng() * 0.025})`);
     }
-    for (const x of o.joints.xs) { P.line(x, y0, x, y1, [96, 94, 86], 0.75, 0.016); P.line(x + 0.012, y0, x + 0.012, y1, [255, 255, 248], 0.25, 0.006); }
-    for (const y of o.joints.ys) { P.line(x0, y, x1, y, [96, 94, 86], 0.7, 0.016); P.line(x0, y - 0.012, x1, y - 0.012, [255, 255, 248], 0.22, 0.006); }
+    const jw = o.jointW ?? 0.016;
+    for (const x of o.joints.xs) { P.line(x, y0, x, y1, [96, 94, 86], 0.75, jw); P.line(x + jw * 0.8, y0, x + jw * 0.8, y1, [255, 255, 248], 0.25, jw * 0.4); }
+    for (const y of o.joints.ys) { P.line(x0, y, x1, y, [96, 94, 86], 0.7, jw); P.line(x0, y - jw * 0.8, x1, y - jw * 0.8, [255, 255, 248], 0.22, jw * 0.4); }
   }
   const dirtRgb = o.dirtRgb || [88, 82, 70];
   const age = o.age ?? 1;

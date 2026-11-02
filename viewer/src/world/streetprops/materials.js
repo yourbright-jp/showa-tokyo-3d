@@ -1,5 +1,33 @@
 import * as THREE from 'three';
-import { canvasTexture, makeValueNoise, paintPixels, JP_FONT } from '../../core/textures.js';
+import { makeValueNoise, JP_FONT } from '../../core/textures.js';
+
+// Textures are built off the GPU: per-pixel data goes into DataTextures and the sign atlas is drawn
+// on a CPU-backed canvas (willReadFrequently), so the build does not stall on shared GPU canvases.
+function dataTexture(w, h, fn, { srgb = false, repeat = false } = {}) {
+  const d = new Uint8Array(w * h * 4);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const c = fn(x / w, y / h, x, y);
+    const i = (y * w + x) * 4;
+    d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = c.length > 3 ? c[3] : 255;
+  }
+  const t = new THREE.DataTexture(d, w, h, THREE.RGBAFormat);
+  t.colorSpace = srgb ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+  t.generateMipmaps = true; t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter;
+  if (repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = 4;
+  t.needsUpdate = true;
+  return t;
+}
+function cpuCanvasTexture(w, h, draw) {
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const g = canvas.getContext('2d', { willReadFrequently: true });
+  draw(g, w, h);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 8;
+  tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
+  return tex;
+}
 
 // Shared materials for street props. Weathering (grime, rain streaks, dust on top faces, rust
 // on metal) is computed in the fragment shader from world position, so merged props never
@@ -9,15 +37,13 @@ let NOISE = null;
 function noiseTexture(rng) {
   if (NOISE) return NOISE;
   const N = makeValueNoise(rng, 256);
-  NOISE = canvasTexture(256, 256, (g, w, h) => {
-    paintPixels(g, w, h, (u, v) => {
-      const a = N.fbm(u * 8, v * 8, 5, 8);
-      const b = N.fbm(u * 16 + 7.3, v * 16 + 1.1, 4, 16);
-      const c = N.fbm(u * 32 + 3.7, v * 4 + 9.2, 3, 32); // anisotropic (streak) channel
-      const d = N.fbm(u * 24 + 11.1, v * 24 + 5.5, 4, 24);
-      return [a * 255, b * 255, c * 255, d * 255];
-    });
-  }, { srgb: false, repeat: [1, 1] });
+  NOISE = dataTexture(256, 256, (u, v) => {
+    const a = N.fbm(u * 8, v * 8, 5, 8);
+    const b = N.fbm(u * 16 + 7.3, v * 16 + 1.1, 4, 16);
+    const c = N.fbm(u * 32 + 3.7, v * 4 + 9.2, 3, 32); // anisotropic (streak) channel
+    const d = N.fbm(u * 24 + 11.1, v * 24 + 5.5, 4, 24);
+    return [a * 255, b * 255, c * 255, d * 255];
+  }, { repeat: true });
   NOISE.premultiplyAlpha = false;
   return NOISE;
 }
@@ -88,18 +114,20 @@ export function makeMaterials(ctx, atlasTex) {
   const foliage = patchWeathering(new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0, side: THREE.DoubleSide }), ctx, { key: 'foliage', grime: 0.5 });
   const glass = new THREE.MeshStandardMaterial({ color: 0x4f5c60, roughness: 0.05, metalness: 0.0, transparent: true, opacity: 0.2, depthWrite: false, envMapIntensity: 1.0 });
   const decal = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, depthWrite: false, map: contactTexture(), polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, fog: true });
-  return { opaque, atlas, foliage, glass, decal };
+  const poolTex = dataTexture(64, 64, (u, v) => {
+    const dx = (u - 0.5) * 2, dy = (v - 0.5) * 2;
+    const r2 = dx * dx + dy * dy;
+    return [255, 255, 255, Math.max(0, Math.exp(-r2 * 3.2) - Math.exp(-3.2)) * 255];
+  });
+  return { opaque, atlas, foliage, glass, decal, poolTex };
 }
 
 function contactTexture() {
-  return canvasTexture(64, 64, (g, w, h) => {
-    paintPixels(g, w, h, (u, v) => {
-      const dx = (u - 0.5) * 2, dy = (v - 0.5) * 2;
-      const r = Math.min(1, Math.sqrt(dx * dx + dy * dy));
-      const a = Math.pow(1 - r, 1.6) * 255;
-      return [255, 255, 255, a];
-    });
-  }, { srgb: false });
+  return dataTexture(64, 64, (u, v) => {
+    const dx = (u - 0.5) * 2, dy = (v - 0.5) * 2;
+    const r = Math.min(1, Math.sqrt(dx * dx + dy * dy));
+    return [255, 255, 255, Math.pow(1 - r, 1.6) * 255];
+  });
 }
 
 // ---- sign / panel atlas -----------------------------------------------------------------------
@@ -136,7 +164,7 @@ function drawPerson(g, cx, top, s, fill) {
 
 export function makeAtlas(ctx) {
   const rng = ctx.rng('streetprops/atlas');
-  const tex = canvasTexture(1024, 1024, (g) => {
+  const tex = cpuCanvasTexture(1024, 1024, (g) => {
     g.fillStyle = '#808080'; g.fillRect(0, 0, 1024, 1024);
     // 1) pedestrian-only (blue disc, white adult + child, holding hands)
     {
@@ -369,7 +397,7 @@ export function makeAtlas(ctx) {
       }
       region('leafBig', x + 10, y + 10, w - 20, h - 20);
     }
-  }, { anisotropy: 8 });
+  });
   return tex;
 }
 

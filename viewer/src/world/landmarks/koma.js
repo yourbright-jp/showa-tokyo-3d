@@ -133,7 +133,7 @@ export function buildKoma(ctx, kit) {
   const ribs = []; for (let x = -Math.floor(UW / 2 / 6.4) * 6.4; x <= UW / 2 - 1; x += 6.4) ribs.push(x);
   const louvreY0 = UH - 2.3, louvreY1 = UH - 0.9;
   const upPainter = paintFacade(ufb, -UW / 2, UW / 2, 0, UH + 0.1, {
-    key: 'upper', baseRgb: wallRgb.map((v) => v * 0.97), ppm: 40, joints: { xs: ujx, ys: ujy }, coping: UH, dirtH: 0.6, stains: 30, age: 1.8,
+    key: 'upper', baseRgb: wallRgb.map((v) => v * 0.94), ppm: 40, jointW: 0.032, joints: { xs: ujx, ys: ujy }, coping: UH, dirtH: 0.6, stains: 30, age: 1.8,
     extra: (Pn, r) => {
       for (const x of ribs) { Pn.streak(x - 0.45, louvreY0, 3 + r() * 5, 0.16, [80, 76, 66], 0.32); Pn.streak(x + 0.45, louvreY0, 2 + r() * 5, 0.14, [80, 76, 66], 0.28); }
       Pn.streakRun(r, -UW / 2, UW / 2, louvreY0, 0.4, 4.5, 2.4, [80, 76, 66], 0.3);
