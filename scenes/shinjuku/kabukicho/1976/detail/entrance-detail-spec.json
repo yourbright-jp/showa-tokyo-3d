@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-entrance-detail-r02",
+  "title": "一番街入口・推定のカラー立体スタディ",
+  "target_reconstruction_year": 1976,
+  "status": "inferred-look-development-not-historical-certification",
+  "historical_confidence": "unverified",
+  "geographic_confidence": "approximate",
+  "units": "metres",
+  "coordinate_system": {
+    "interchange": "right-handed local X=east Y=up Z=south",
+    "blender": "X=east Y=north Z=up; (x,y,z)_interchange maps to (x,-z,y)_blender",
+    "origin_jgd2011": {"latitude": 35.6945, "longitude": 139.702, "height_m": 0},
+    "source_crs": "EPSG:6697",
+    "entrance_anchor_interchange_m": [-88.5278, 0, 70.3468],
+    "forward_from_route_stations": ["under-gate", "ichibangai-middle"],
+    "new_survey_or_epoch_transformation": false,
+    "dimensions_status": "Visual assumptions from oblique photographs and modern footprint context; not measured historical dimensions."
+  },
+  "scope": {
+    "detailed_street_depth_m": 20,
+    "background_street_depth_m": 58,
+    "role": "Near-field entrance corner and material/lighting method trial. Outside the first20m, simple restrained context only.",
+    "baseline_files_preserved": true,
+    "modern_context": "Read-only layout-feature geometry is retained in a separate collection. Context within the entrance study envelope is hidden to avoid superimposing incompatible2025 and inferred period volumes."
+  },
+  "references": [
+    {
+      "id": "R01",
+      "source_year_label": "1978",
+      "source_date_status": "Toyo Keizai photo archive caption attributes the matching wide daylight composition to1978, Junji Yoshino; exact day and negative record not recovered. The local filename night is misleading.",
+      "source_creator": "吉野純治 / Junji Yoshino, as attributed by Toyo Keizai",
+      "source_urls": ["https://toyokeizai.net/articles/photo/853639?pn=5", "https://toyokeizai.net/articles/-/853639?page=2"],
+      "source_sha256": "5ba8b6d8521abd86b226967e21391f4b1d64ff4b1091c247ac665f06b84bd681",
+      "approved_colour_sha256": "01f6804a812e2cac601bd04f5d5ae816454cdb1523019928427452a1bf8b3b23",
+      "use": "Entrance massing contrast; narrow pale tiled left facade, tall finned right corner, large separate analog sign cabinets, three-dimensional awnings, long sidewall with repeated structural bays. Colour target only: warm ivory tile, neutral concrete, vermilion paint, cobalt blue enamel, blue daylight.",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "raster_embedded_or_redistributed": false
+    },
+    {
+      "id": "R08",
+      "source_year_label": "1972",
+      "source_date_status": "Photograph label; museum ID7378 remains a comparison candidate",
+      "source_sha256": "687aae196182cbf6cbcb8117293c91874b1a093a0c632f1a2f0f7d265b4abe07",
+      "approved_colour_sha256": "64109fd6f3d79c3cdedab6ddffcc52b5f88dd73198835dd54b4e80561aa1d246",
+      "source_urls": ["https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378"],
+      "use": "Material/depth lessons from deep left-front shop glazing, distinct structural mullions and lantern fittings; straight gate as explicitly dated optional study. The1972/1978 left facades are not proven to be the same structure. Warm lamps and tile surface relief are inferred from approved colour reference.",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "raster_embedded_or_redistributed": false
+    }
+  ],
+  "gate": {
+    "default": "none",
+    "variants": {
+      "none": {"meaning": "No gate hypothesis selected; absence in this render is not evidence of historical absence."},
+      "curved": {"source": "R01", "source_year_label": "1978", "verified_for1976": false, "geometry": "Inferred curved red illuminated cabinet; dimensions, rear and fixing details unresolved."},
+      "straight": {"source": "R08", "source_year_label": "1972", "verified_for1976": false, "geometry": "Inferred horizontal gate; pole positions, rear and dimensions unresolved."}
+    }
+  },
+  "frontages": [
+    {"id": "left-suzuya-study", "source": ["R01", "R08"], "width_m": 7.6, "height_m": 23.6, "depth_m": 18.5, "street_edge_u_m": -5.0, "features": "Pale tile piers, different floor-specific window divisions, restaurant sign panels, ground-floor glass recessed behind columns, striped canvas awning, sidewall glazing and shop interiors.", "historic_identity_status": "Readable suzuya sign source-based; facade dimensions and1976 configuration inferred."},
+    {"id": "right-finned-corner-study", "source": ["R01"], "width_m": 7.0, "height_m": 30.4, "depth_m": 20.0, "street_edge_u_m": 6.2, "features": "Exposed vertical concrete fins, separate upper glazing, deep dark ground-floor portal, narrow individual lightboxes, blue pub fascia, curved metal service trim, open sidewall window bays.", "historic_identity_status": "Likely Komatsu building; owner interview dates eight-floor replacement to1973. Photographic match/dimensions, signs retained in1976 and unseen interior remain inferred.", "building_history_url": "https://kabukicho-culture-press.jp/all/kabukimono/6072"},
+    {"id": "left-adjacent-study", "source": ["R01"], "features": "Darker terracotta concrete facade with continuous horizontal glazing and separate deep enamel bands.", "historic_identity_status": "Peripheral composition proxy; no verified business identity assigned."},
+    {"id": "right-adjacent-study", "source": ["R01"], "features": "Pale concrete bank-like frontage with individual window openings; excludes movie titles/programmes and human poster art.", "historic_identity_status": "Peripheral composition proxy; no verified1976 frontage assigned."}
+  ],
+  "sign_text": [
+    {"text": "すずや", "source": ["R01", "R08"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "レストラン", "source": ["R01", "R08"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "インドネシアラヤ", "source": ["R01"], "reading_status": "legible source reading;1976 presence unverified", "colour_status": "inferred"},
+    {"text": "6F", "source": ["R01"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "4階", "source": ["R01"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "簿記", "source": ["R01"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "本陣", "source": ["R01"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "ろばた本陣", "source": ["R01"], "reading_status": "legible sign fragment", "colour_status": "inferred"},
+    {"text": "居酒屋 ポテト", "source": ["R01"], "reading_status": "clearly legible", "colour_status": "inferred"},
+    {"text": "歌舞伎町一番街", "source": ["R01", "R08"], "reading_status": "gate wording; optional variant only", "colour_status": "inferred"},
+    {"text": "娯楽センター", "source": ["R08"], "reading_status": "straight gate header; optional variant only", "colour_status": "inferred"}
+  ],
+  "materials": {
+    "authored": "Node-based PBR materials and modeled surface relief; no photograph textures or external mesh assets.",
+    "palette": "Ivory glazed tile and grout; aged off-white painted concrete; pale grey concrete fins; muted russet tile; vermilion painted steel; cobalt enamel; dark bronze window frames; smoky blue-grey glazing; dry fine aggregate asphalt.",
+    "light": "Blue-sky daylight with soft sun and warm incandescent shop fittings, selected for look development; exact weather, season and time unverified.",
+    "unseen_details": "Interior bars, shades, shelves, drain covers, rooftop rails, service wiring, fixings and weathering are restrained period-compatible inventions. They do not establish a historical shop layout."
+  },
+  "cameras": {
+    "entrance-approach": "Exact existing proposal position, look target and35mm lens, world origin unchanged.",
+    "under-gate": "Exact existing proposal position, look target and35mm lens, world origin unchanged.",
+    "entrance-calibration": "Separate study camera, not a replacement route station: farther south,1.6m high,32mm lens, tilted upward to compare the two entrance facades with R01.",
+    "near-facade": "Separate oblique1.6m detail camera inside the first20m; for depth and material inspection only."
+  },
+  "limitations": [
+    "This is an inferred look-development scene, not a verified1976 reconstruction or an approved milestone.",
+    "No1976 gate shape is selected.1972 and1978 variants remain explicitly dated hypotheses.",
+    "Building widths/heights, source-camera positions, interiors, rear elevations and street fittings are not survey measurements.",
+    "The1972 and1978 left-front facades differ; the older photograph is used for depth/material lessons only. Exact shared building/entrance coordinates remain unresolved, including the reported earlier relocation of Suzuya.",
+    "The modern PLATEAU blockout is a placement reference; it is not evidence of1976 buildings.",
+    "Uncertain small sign text and all cinema programmes/poster art are omitted. No generated raster is used as facade geometry or lettering.",
+    "No people, vehicles or crowd motion are included. They require separately sourced period assets and motion validation.",
+    "Visual QA and independent historical/visual critique must be recorded after Blender renders; script creation alone is not a passed visual round."
+  ],
+  "distribution": {"new_code_and_spec_license": "MIT", "third_party_rasters_included": false, "baseline_context_license": "PLATEAU modified data: CC BY4.0; retain baseline attribution when distributing scene exports.", "font_license": "Supplied CJK font must carry its own license. Script packs the selected font in the blend; check its redistribution terms."}
+}
