@@ -100,6 +100,15 @@ async function main() {
 
   const composer = makeComposer(ctx, camera, width, height);
   scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; } /* castShadow is opt-in: three.js defaults it to false, so each module sets it explicitly */ });
+  // three.js (r163+) replaces material.envMapIntensity with scene.environmentIntensity whenever a
+  // material has no envMap of its own. Bind the scene environment explicitly to materials that ask
+  // for a non-default intensity so recesses/interiors that dim their sky fill keep that choice.
+  scene.traverse((o) => {
+    if (!o.isMesh) return;
+    for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+      if (m && m.isMeshStandardMaterial && !m.envMap && m.envMapIntensity !== 1 && scene.environment) { m.envMap = scene.environment; m.needsUpdate = true; }
+    }
+  });
 
   window.__stats = () => {
     let meshes = 0, tris = 0;

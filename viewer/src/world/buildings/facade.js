@@ -245,14 +245,14 @@ export function buildFrontFacade(env, b, S, lv, F, meta, corner, r) {
       const h = S.band === 'slab' ? S.bandH : 0.08, d = S.band === 'slab' ? S.bandD : 0.035;
       const ya = y - h * 0.55, yb = y + h * 0.45;
       if (wins.some((w) => w.y1 > ya && w.y0 < yb)) continue;
-      box(Bp, F, extA * d / 0.3, L + extB * d / 0.3, ya, yb, 0, d, S.bandColour, { ex: fc.ex, skip: new Set(['back']) });
+      box(Bp, F, -extA * d / 0.3, L + extB * d / 0.3, ya, yb, 0, d, S.bandColour, { ex: fc.ex, skip: new Set(['back']) });
       if (region) for (let u = r.range(0, 1); u < L; u += r.range(0.3, 1.4)) region.streak(u, ya, r.range(0.3, 2.2) * dirt, r.range(0.03, 0.12), DIRT, r.range(0.15, 0.4) * dirt);
     }
   }
   // cornice / coping
   const cd = S.corniceD;
-  box(Bp, F, extA * cd / 0.3, L + extB * cd / 0.3, lv.topY - 0.22, lv.topY + 0.02, 0, cd, S.trimColour, { ex: fc.ex });
-  if (S.cornice === 'stepped') box(Bp, F, extA * cd / 0.6, L + extB * cd / 0.6, lv.topY - 0.42, lv.topY - 0.22, 0, cd * 0.5, mulCol(S.trimColour, 0.95), { ex: fc.ex, skip: new Set(['back']) });
+  box(Bp, F, -extA * cd / 0.3, L + extB * cd / 0.3, lv.topY - 0.22, lv.topY + 0.02, 0, cd, S.trimColour, { ex: fc.ex });
+  if (S.cornice === 'stepped') box(Bp, F, -extA * cd / 0.6, L + extB * cd / 0.6, lv.topY - 0.42, lv.topY - 0.22, 0, cd * 0.5, mulCol(S.trimColour, 0.95), { ex: fc.ex, skip: new Set(['back']) });
   if (S.cornice === 'deep') box(Bwall, F, 0, L, lv.roofY - 0.4, lv.topY - 0.22, 0, 0.05, mulCol(S.colour, 1.04), { ex: fc.ex, uvo: S.uvo, skip: new Set(['back']) });
 
   // drainpipe at one end of the main front
