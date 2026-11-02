@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "dataset_id": "plateau-13104-shinjuku-ku-2025",
+  "source_year": 2025,
+  "archive_sha256": "342863921264251218d0246ab9f830ccf80d0924403acd72201d1813f64fe7d8",
+  "creation_date": "2026-03-13",
+  "archive_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+  "catalog_url": "https://api.plateauview.mlit.go.jp/datacatalog/citygml/r:139.7005,35.6935,139.7045,35.6966",
+  "source_crs": "EPSG:6697",
+  "source_axis_order": ["latitude", "longitude", "orthometric_height_m"],
+  "origin_jgd2011": {"latitude": 35.6945, "longitude": 139.702, "height_m": 0},
+  "selection_bounds": {"west": 139.7000, "south": 35.6933, "east": 139.7045, "north": 35.6967},
+  "selection_rule": "mean of LOD1 polygon vertices lies inside bounds; preserve each selected feature whole",
+  "mesh_code": "53394536",
+  "members": ["README.md", "metadata/udx_13104_2025_resource_op.csv", "metadata/udx_13104_pref_2025_op.xml", "udx/bldg/53394536_bldg_6697_op.gml", "udx/tran/53394536_tran_6697_op.gml"],
+  "license_selected": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+  "geometry_role": "modern-reference-only",
+  "vertical_mode": "flatten each building base to y=0, preserve within-building relative heights; roads flattened to y=0.02; not terrain-accurate"
+}

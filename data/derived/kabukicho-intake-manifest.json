@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "dataset_id": "plateau-13104-shinjuku-ku-2025",
+  "source_year": 2025,
+  "archive_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+  "archive_sha256": "342863921264251218d0246ab9f830ccf80d0924403acd72201d1813f64fe7d8",
+  "archive_size_bytes": 772891910,
+  "files": [
+    {
+      "archive_member": "README.md",
+      "sha256": "ef8ab0df9a0f4e2677739dbea319991cf21fb5ad40242ebe5e6d12f2303f2fa9",
+      "size_bytes": 4864
+    },
+    {
+      "archive_member": "metadata/udx_13104_2025_resource_op.csv",
+      "sha256": "a8b711e89e5a5e515998b4e2d11ce9d5aa7d8e23f38ceb20b7c335ae53a07d5f",
+      "size_bytes": 48740
+    },
+    {
+      "archive_member": "metadata/udx_13104_pref_2025_op.xml",
+      "sha256": "284e3eacaaed6a7f246cbbf9e9d9191bc24e2f24b93f48c80f492b2bf20c7be8",
+      "size_bytes": 36428
+    },
+    {
+      "archive_member": "udx/bldg/53394536_bldg_6697_op.gml",
+      "sha256": "a5de4cd723119dd97b2c578db6247bba99a1ed2fb0f29824879d5ad5ab97009d",
+      "size_bytes": 138190372
+    },
+    {
+      "archive_member": "udx/tran/53394536_tran_6697_op.gml",
+      "sha256": "b6732ec989aebb843e71c9707efee32686980d0f51244e25cc691d0e4f84a019",
+      "size_bytes": 25412513
+    }
+  ],
+  "counts": {
+    "building": {
+      "source": 3024,
+      "selected": 423
+    },
+    "road": {
+      "source": 918,
+      "selected": 176
+    }
+  },
+  "triangles": 10048,
+  "geometry_role": "modern-reference-only",
+  "source_crs": "EPSG:6697",
+  "origin_jgd2011": {
+    "latitude": 35.6945,
+    "longitude": 139.702,
+    "height_m": 0
+  },
+  "vertical_mode": "flatten each building base to y=0, preserve within-building relative heights; roads flattened to y=0.02; not terrain-accurate",
+  "license": "CC-BY-4.0"
+}

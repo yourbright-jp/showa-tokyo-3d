@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "plaza-reveal",
+  "status": "proposal",
+  "position_m": [
+    -49.684,
+    1.6,
+    -58.2336
+  ],
+  "look_at_m": [
+    -21.5232,
+    1.6,
+    -78.5355
+  ],
+  "height_m": 1.6,
+  "focal_length_35mm_equivalent_mm": 35,
+  "source": "aerial-interpreted-proposal"
+}

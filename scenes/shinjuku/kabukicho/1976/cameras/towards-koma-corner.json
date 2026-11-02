@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "id": "towards-koma-corner",
+  "status": "proposal",
+  "position_m": [
+    -57.4527,
+    1.6,
+    -32.1309
+  ],
+  "look_at_m": [
+    -49.684,
+    1.6,
+    -58.2336
+  ],
+  "height_m": 1.6,
+  "focal_length_35mm_equivalent_mm": 35,
+  "source": "aerial-interpreted-proposal"
+}

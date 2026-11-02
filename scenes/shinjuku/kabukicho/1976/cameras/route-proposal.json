@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "status": "provisional-from-period-aerial",
+  "historical_confidence": "unverified",
+  "source_period": [
+    1974,
+    1978
+  ],
+  "exact_capture_date": null,
+  "distance_m": 163.645,
+  "nominal_speed_m_s": 1,
+  "nominal_duration_s": 163.645,
+  "eye_height_m": 1.6,
+  "focal_length_35mm_equivalent_mm": 35,
+  "stations": [
+    {
+      "id": "entrance-approach",
+      "name": "一番街入口の手前",
+      "pixel": [
+        149,
+        423
+      ],
+      "latlon_jgd2011_approx": [
+        35.693770127731625,
+        139.70100045204163
+      ],
+      "position_m": [
+        -90.4701,
+        1.6,
+        80.9813
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -88.5278,
+        1.6,
+        70.3468
+      ]
+    },
+    {
+      "id": "under-gate",
+      "name": "門の直下付近・位置未確定",
+      "pixel": [
+        151,
+        412
+      ],
+      "latlon_jgd2011_approx": [
+        35.69386597498289,
+        139.70102190971375
+      ],
+      "position_m": [
+        -88.5278,
+        1.6,
+        70.3468
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -73.9613,
+        1.6,
+        22.0081
+      ]
+    },
+    {
+      "id": "ichibangai-middle",
+      "name": "一番街の中ほど",
+      "pixel": [
+        166,
+        362
+      ],
+      "latlon_jgd2011_approx": [
+        35.69430164285505,
+        139.70118284225464
+      ],
+      "position_m": [
+        -73.9613,
+        1.6,
+        22.0081
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -57.4527,
+        1.6,
+        -32.1309
+      ]
+    },
+    {
+      "id": "towards-koma-corner",
+      "name": "コマ劇場へ向かう曲がり角の候補",
+      "pixel": [
+        183,
+        306
+      ],
+      "latlon_jgd2011_approx": [
+        35.69478958804641,
+        139.70136523246765
+      ],
+      "position_m": [
+        -57.4527,
+        1.6,
+        -32.1309
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -49.684,
+        1.6,
+        -58.2336
+      ]
+    },
+    {
+      "id": "plaza-reveal",
+      "name": "劇場前広場への出口候補",
+      "pixel": [
+        191,
+        279
+      ],
+      "look_at_pixel": [
+        220,
+        258
+      ],
+      "latlon_jgd2011_approx": [
+        35.69502484626841,
+        139.70145106315613
+      ],
+      "position_m": [
+        -49.684,
+        1.6,
+        -58.2336
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -21.5232,
+        1.6,
+        -78.5355
+      ]
+    },
+    {
+      "id": "koma-front",
+      "name": "旧コマ劇場前の候補",
+      "pixel": [
+        205,
+        266
+      ],
+      "look_at_pixel": [
+        220,
+        255
+      ],
+      "latlon_jgd2011_approx": [
+        35.69513811849815,
+        139.70160126686096
+      ],
+      "position_m": [
+        -36.0891,
+        1.6,
+        -70.8015
+      ],
+      "position_status": "aerial-interpreted-proposal",
+      "look_at_m": [
+        -21.5232,
+        1.6,
+        -81.4358
+      ]
+    }
+  ],
+  "geometry": {
+    "type": "LineString",
+    "coordinate_space": "local-east-up-south-metres",
+    "coordinates": [
+      [
+        -90.4701,
+        0,
+        80.9813
+      ],
+      [
+        -88.5278,
+        0,
+        70.3468
+      ],
+      [
+        -73.9613,
+        0,
+        22.0081
+      ],
+      [
+        -57.4527,
+        0,
+        -32.1309
+      ],
+      [
+        -49.684,
+        0,
+        -58.2336
+      ],
+      [
+        -36.0891,
+        0,
+        -70.8015
+      ]
+    ]
+  },
+  "limitations": [
+    "The exact flight date and circa1976 storefront sequence remain unresolved.",
+    "Roof displacement and shadows may move apparent outlines; no facade or surveyed footprint is claimed.",
+    "Proxy heights are explicit modeling assumptions, not measured historical dimensions.",
+    "All other modern context buildings require historical review; they are not certified1976 buildings.",
+    "The gate model is deliberately absent because1972 and1978 shape evidence conflicts.",
+    "GSI XYZ tile coordinates use EPSG:3857 / web-map longitude-latitude. Local engineering conversion treats geographic positions as approximately JGD2011-equivalent without an epoch/datum correction; decimal precision is not accuracy."
+  ],
+  "validation": {
+    "spacing_m_at_most": 0.5,
+    "samples": 335,
+    "samples_on_modern_road": 335,
+    "building_interior_collisions": 0,
+    "collision_feature_ids": [],
+    "minimum_sampled_building_edge_clearance_m": 1.523,
+    "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, props, slope, dynamic objects or historical street survey"
+  }
+}

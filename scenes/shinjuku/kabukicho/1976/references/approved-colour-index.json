@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "references": [
+    {
+      "id": "R01",
+      "title": "一番街入口・昼の臨場感",
+      "source_year_label": "1978",
+      "source_date_status": "原資料のラベルのみ・原典の書誌未回収",
+      "source_urls": [],
+      "source_sha256": "5ba8b6d8521abd86b226967e21391f4b1d64ff4b1091c247ac665f06b84bd681",
+      "approved_colour_sha256": "01f6804a812e2cac601bd04f5d5ae816454cdb1523019928427452a1bf8b3b23",
+      "approved_colour_native_size": [
+        1672,
+        940
+      ],
+      "role": "入口の構図・周辺外観。門の1976年時点の形状は未確定。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R02",
+      "title": "劇場前広場・人のいる午後",
+      "source_year_label": "1975",
+      "source_date_status": "観光協会の1975年写真と博物館目録の対応",
+      "source_urls": [
+        "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+        "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071"
+      ],
+      "source_sha256": "92727a25f2a5c33e79b95acf104bb707ad4e94a9d477c0dc99f116d15d62bcad",
+      "approved_colour_sha256": "7ab245c59c0641c3ed37e40c4e87437d6415362d0a174a2631c30bb3b013216c",
+      "approved_colour_native_size": [
+        1612,
+        976
+      ],
+      "role": "広場・街路灯と旧コマ劇場の一部。正面全体の根拠には不足。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R03",
+      "title": "ミラノ座・カラー資料に基づく昼景",
+      "source_year_label": "1972",
+      "source_date_status": "所有者の一次目録で1972年を確認",
+      "source_urls": [
+        "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"
+      ],
+      "source_sha256": "72cf9d6ff6a2031aca81c72a0d7f77cd8fb3d52d195354c837364012a90cb123",
+      "approved_colour_sha256": "eec63409a882e0e6293d00effb5e85b70379fc45bc3c9768bab64495ae9a6fa7",
+      "approved_colour_native_size": [
+        1113,
+        1414
+      ],
+      "role": "ミラノ座の外観・素材。コマ劇場とは区別。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R04",
+      "title": "歌舞伎町・ネオンが照らす夜",
+      "source_year_label": "1977",
+      "source_date_status": "原資料のラベルのみ・原典の書誌未回収",
+      "source_urls": [],
+      "source_sha256": "60f602b7a4459bf7d19e46a56e629d6df454b49455ea77cf1abe7666482d3dfd",
+      "approved_colour_sha256": "672679d1043784add943f87acb159a3b492770a0d42429e2d29c1bda2a98f7d1",
+      "approved_colour_native_size": [
+        1532,
+        1027
+      ],
+      "role": "看板と夜の光。経路上の正確な位置は未同定。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R05",
+      "title": "ミラノ座入口・映画看板の実在感",
+      "source_year_label": "Venue slide says 1976; capture year uncertain",
+      "source_date_status": "会場スライドの1976年表記・撮影年未確認",
+      "source_urls": [
+        "https://movieit.exblog.jp/21464052/"
+      ],
+      "source_sha256": "1dfea69ca03b2ddc407aa2b44b7624bac0967c25102f6ca3cdd136f774f95da4",
+      "approved_colour_sha256": "7e6d5846a19af55b4a80cd36538afb96dc2cdd0ead2a845892f176c921fddc6b",
+      "approved_colour_native_size": [
+        1076,
+        1462
+      ],
+      "role": "ミラノ座の部分的な入口と広告。撮影年は未確認。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R06",
+      "title": "Club USA・入口の光と質感",
+      "source_year_label": "1976",
+      "source_date_status": "原資料のラベルのみ・原典の書誌未回収",
+      "source_urls": [],
+      "source_sha256": "fbffe2b82dd290b9337d1ef277026f8bd7492288f1924912584a9c8e0eef215b",
+      "approved_colour_sha256": "02f6a057c782fa748311a9c74c4ddcb6753597ff74a2df65e65dd738bae1d4f3",
+      "approved_colour_native_size": [
+        1531,
+        1027
+      ],
+      "role": "入口・階段・電球。住所と経路上の位置は未確認。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R07",
+      "title": "ゴールデン街・昼の路地の空気",
+      "source_year_label": "1976",
+      "source_date_status": "JPCA NEWS41 p5で1976年と中谷吉隆のクレジットを確認",
+      "source_urls": [
+        "https://jpca.gr.jp/wp-content/uploads/JPCA_NEWS_vol41.pdf"
+      ],
+      "source_sha256": "3e46cc62f1929d8f348bddd17d3ad0d8c79bd96a73d30d9fcd9b742d99db14fb",
+      "approved_colour_sha256": "0620d66b0adb2fe6e6bc758a919c8e6bc6aa65101180faae40680fbc2739bf12",
+      "approved_colour_native_size": [
+        1567,
+        1004
+      ],
+      "role": "ゴールデン街。今回の経路の建物・道幅には使わない。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R08",
+      "title": "一番街の旧門・街頭の人波",
+      "source_year_label": "1972",
+      "source_date_status": "1972年の原資料。博物館ID7378は原典照合を進める候補",
+      "source_urls": [
+        "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378"
+      ],
+      "source_sha256": "687aae196182cbf6cbcb8117293c91874b1a093a0c632f1a2f0f7d265b4abe07",
+      "approved_colour_sha256": "64109fd6f3d79c3cdedab6ddffcc52b5f88dd73198835dd54b4e80561aa1d246",
+      "approved_colour_native_size": [
+        1536,
+        1024
+      ],
+      "role": "直線状の旧門。1976年までの存続・背面・寸法は未確認。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    },
+    {
+      "id": "R09",
+      "title": "ミラノ座正面・街を歩く視点",
+      "source_year_label": "1971",
+      "source_date_status": "所有者の一次目録で1971年を確認",
+      "source_urls": [
+        "https://tokyu.shibuyaphotomuseum.jp/detail/954/"
+      ],
+      "source_sha256": "42d529b06ad1ee78727196e7af6597a0b0529fd0ba44b06d5b47aff817682abf",
+      "approved_colour_sha256": "4532cef746814726ca432393db9786ce848804c977255ea1ad5a689d59cc35f7",
+      "approved_colour_native_size": [
+        1462,
+        1076
+      ],
+      "role": "ミラノ座の1971年の外観。当年の広告を1976年へ転用しない。",
+      "colour_is_reconstruction": true,
+      "historical_1976_certified": false,
+      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+    }
+  ],
+  "notes": "Hashes identify the reviewed source/approved colour versions without publishing private account identifiers or third-party originals."
+}

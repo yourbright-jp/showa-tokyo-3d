@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "status": "provisional-evidence-study",
+  "source": "gsi-gazo1-1974-1978",
+  "source_period": [1974, 1978],
+  "exact_capture_date": null,
+  "pixel_space": {"zoom": 17, "tile_x": 116399, "tile_y": 51606, "width": 512, "height": 512},
+  "interpretation": "Manual interpretation of roof outlines and street space in a 512px historical mosaic; not a ground survey or exact1976 map.",
+  "horizontal_uncertainty_m_assumption": 5,
+  "replace_modern_feature_ids": [
+    "bldg_159ebc0b-e5cd-4de8-a027-e924ee337964",
+    "bldg_7506fc9f-1045-4cdc-9f35-9de5a01de82d"
+  ],
+  "proxies": [
+    {"id": "milano-roof-proxy", "name": "ミラノ座・仮の屋根輪郭", "pixels": [[98,166],[159,181],[146,217],[89,202]], "height_assumption_m": 16, "height_verified": false, "identity_sources": ["https://tokyu.shibuyaphotomuseum.jp/detail/954/", "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"]},
+    {"id": "koma-south-roof-proxy", "name": "旧コマ劇場・南側屋根の仮輪郭", "pixels": [[226,236],[276,250],[266,285],[211,270]], "height_assumption_m": 20, "height_verified": false, "identity_sources": ["https://www.kanko-shinjuku.jp/special/-/article_1768.html", "https://www.toho.co.jp/real-estate/kabukicho/"]},
+    {"id": "adjacent-theatre-roof-proxy", "name": "北隣の劇場街区・同定未確定の屋根輪郭", "pixels": [[239,203],[287,216],[277,248],[229,235]], "height_assumption_m": 28, "height_verified": false, "identity_sources": ["https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf"], "identity_status": "Possibly Shinjuku Toho Kaikan / Plaza theatre; not identified as part of Koma"}
+  ],
+  "stations": [
+    {"id": "entrance-approach", "name": "一番街入口の手前", "pixel": [149,423]},
+    {"id": "under-gate", "name": "門の直下付近・位置未確定", "pixel": [151,412]},
+    {"id": "ichibangai-middle", "name": "一番街の中ほど", "pixel": [166,362]},
+    {"id": "towards-koma-corner", "name": "コマ劇場へ向かう曲がり角の候補", "pixel": [183,306]},
+    {"id": "plaza-reveal", "name": "劇場前広場への出口候補", "pixel": [191,279], "look_at_pixel": [220,258]},
+    {"id": "koma-front", "name": "旧コマ劇場前の候補", "pixel": [205,266], "look_at_pixel": [220,255]}
+  ],
+  "limitations": [
+    "The exact flight date and circa1976 storefront sequence remain unresolved.",
+    "Roof displacement and shadows may move apparent outlines; no facade or surveyed footprint is claimed.",
+    "Proxy heights are explicit modeling assumptions, not measured historical dimensions.",
+    "All other modern context buildings require historical review; they are not certified1976 buildings.",
+    "The gate model is deliberately absent because1972 and1978 shape evidence conflicts.",
+    "GSI XYZ tile coordinates use EPSG:3857 / web-map longitude-latitude. Local engineering conversion treats geographic positions as approximately JGD2011-equivalent without an epoch/datum correction; decimal precision is not accuracy."
+  ],
+  "removal_notes": [
+    "Two large modern source volumes occupy the Milano and Koma/adjacent theatre sites; baseline geometry remains preserved separately."
+  ],
+  "context_hidden_diagnostic_ids": ["bldg_6e446aed-295c-4d08-82ee-f0d8c77fca2b"],
+  "context_hidden_diagnostic_note": "The thin modern feature stays in the shared model. It is hidden only in an explicitly labeled visibility comparison; no historical absence is asserted."
+}

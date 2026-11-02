@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-r01-under-gate",
+  "path": "docs/previews/r01/under-gate.png",
+  "type": "geometry-preview",
+  "provider": "東京都・新宿区 / Project PLATEAU; project reconstruction study",
+  "source_urls": [
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html"
+  ],
+  "retrieved_at": "2026-11-02",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成。配置仮説は国土地理院gazo1（1974〜1978年）を参照。",
+  "source_years": [
+    2025,
+    {
+      "from": 1974,
+      "to": 1978
+    }
+  ],
+  "target_year": 1976,
+  "processing": "scripts/import_plateau.py; scripts/build_blockout.py; scripts/render_blockout.py as applicable",
+  "dependencies": [
+    "plateau-13104-shinjuku-ku-2025",
+    "gsi-gazo1-1974-1978"
+  ],
+  "sha256": "c2747c242e2f1a50f9ef470c6892540d46dc54ae6e65d8ae0f6a7a7989d6bfc3",
+  "format": "png",
+  "units": "pixels; scale and modelling assumptions in intake report",
+  "coordinate_system": "local right-handed east/up/south; origin JGD2011 latitude35.6945 longitude139.702",
+  "geographic_confidence": "approximate",
+  "historical_confidence": "unverified",
+  "inferred_elements": "Individual ground flattening; provisional route and roof-derived volumes with assumed heights; context buildings not historically reviewed. See docs/DATA_INTAKE_R01.md.",
+  "redistribution_review": "Source archive README offers CC-BY-4.0; selected and credited. Raw historical imagery is not redistributed."
+}

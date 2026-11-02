@@ -7,14 +7,28 @@
       "catalog_url": "https://www.mlit.go.jp/plateau/open-data/",
       "purpose": "Modern geospatial and building-layout reference for scene construction",
       "target_area": "Shinjuku, Tokyo",
-      "dataset_id": null,
-      "source_year": null,
-      "license": null,
-      "license_url": null,
-      "status": "dataset-selection-pending",
-      "downloaded": false,
-      "redistribution_review": "pending",
-      "notes": "Select the actual district dataset, record its year and terms, and distinguish modern geometry from the approximately1976 reconstruction."
+      "dataset_id": "plateau-13104-shinjuku-ku-2025",
+      "source_year": 2025,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "status": "imported-modern-lod1-reference",
+      "downloaded": true,
+      "redistribution_review": "CC-BY-4.0 selected from included README license alternatives",
+      "notes": "Dataset2025, created2026-03-13; source surveys/imagery span multiple years. Only modern geometry; buildings individually ground-flattened, roads flat. Not1976 evidence.",
+      "creation_date": "2026-03-13",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "retrieved_at": "2026-11-02",
+      "archive_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "archive_sha256": "342863921264251218d0246ab9f830ccf80d0924403acd72201d1813f64fe7d8",
+      "source_crs": "EPSG:6697",
+      "mesh_code": "53394536",
+      "selection_bounds": {
+        "west": 139.7,
+        "south": 35.6933,
+        "east": 139.7045,
+        "north": 35.6967
+      },
+      "intake_manifest": "data/derived/kabukicho-intake-manifest.json"
     },
     {
       "id": "openstreetmap",
@@ -30,7 +44,7 @@
       "status": "extract-pending",
       "downloaded": false,
       "redistribution_review": "pending-for-selected-extract",
-      "notes": "Record extraction date, bounds and processing. Road locations must be checked against historical evidence."
+      "notes": "Not downloaded in r01. PLATEAU road polygons used for the initial static route checks; OSM remains an optional independent connectivity source."
     },
     {
       "id": "historical-photographs",
@@ -45,6 +59,72 @@
       "downloaded": false,
       "redistribution_review": "pending",
       "notes": "Record each photograph or map independently. Citation of a source is not a claim of redistribution permission."
+    },
+    {
+      "id": "gsi-gazo1-1974-1978",
+      "name": "国土地理院 国土画像情報1974〜1978",
+      "catalog_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_year_range": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "status": "four-tiles-inspected-roof-interpretation-provisional",
+      "downloaded": true,
+      "source_crs": "EPSG:3857",
+      "manifest": "data/derived/gsi-aerial-manifest.json",
+      "redistribution_review": "Raw imagery not redistributed; geometry interpretation explicitly approximate",
+      "notes": "XYZ tiles z17 x116399-116400 y51606-51607. Roof outlines, not surveyed ground footprints or exact1976 conditions."
+    },
+    {
+      "id": "tokyu-milano-1971",
+      "name": "ミラノ 東急レクリエーション",
+      "catalog_url": "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
+      "source_year": 1971,
+      "catalogue_number": "02088000954",
+      "author": "Tokyu Corporation",
+      "status": "primary-catalogue-date-confirmed",
+      "redistribution_review": "Original image not redistributed"
+    },
+    {
+      "id": "tokyu-milano-1972",
+      "name": "東急レクリエーション 新宿東急文化会館",
+      "catalog_url": "https://tokyu.shibuyaphotomuseum.jp/detail/1402/",
+      "source_year": 1972,
+      "catalogue_number": "02088001402",
+      "author": "Tokyu Corporation",
+      "status": "primary-catalogue-date-confirmed",
+      "redistribution_review": "Original image not redistributed"
+    },
+    {
+      "id": "shinjuku-plaza-1975",
+      "name": "劇場前広場のイベント",
+      "catalog_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "image_url": "https://www.kanko-shinjuku.jp/images/special/05/history_shinjuku_1975.jpg",
+      "related_catalogue_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071",
+      "source_year": 1975,
+      "status": "tourism-reproduction-matched-museum-catalogue-index",
+      "redistribution_review": "Original image not redistributed"
+    },
+    {
+      "id": "toho-kabukicho-site-history",
+      "name": "東宝 歌舞伎町の不動産史",
+      "catalog_url": "https://www.toho.co.jp/real-estate/kabukicho/",
+      "additional_url": "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf",
+      "status": "theatre-sites-distinguished",
+      "notes": "Koma and adjacent Toho Kaikan are separate historical buildings. Northern roof identity remains provisional."
+    },
+    {
+      "id": "metropolitan-library-1976-maps",
+      "name": "東京都公立図書館住宅地図総合目録 新宿区",
+      "catalog_url": "https://www.library.metro.tokyo.lg.jp/lib_info_tokyo/house_map_union_catalog/shinjuku/",
+      "source_year": 1976,
+      "holding_ids": [
+        "1124345680",
+        "1124337796"
+      ],
+      "status": "catalogue-inspected-map-pages-not-inspected",
+      "downloaded": false
     }
   ]
 }
