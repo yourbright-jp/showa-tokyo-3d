@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-plateau-intake-manifest",
+  "path": "data/derived/kabukicho-intake-manifest.json",
+  "type": "source-intake-report",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "source_urls": [
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://github.com/yourbright-jp/showa-tokyo-3d"
+  ],
+  "retrieved_at": "2026-11-02",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_scope": "Derived data/preview: retain all applicable source_components credits and processing notice. The code repository MIT license does not replace upstream licenses.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "source_creation_date": "2026-03-13",
+      "vertical_processing": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+      "road_elevation_limitations": "All selected source LOD1 road heights are 0.0 and are treated as missing elevations. Only road vertices are draped to the DEM; triangulated polygon interiors are an approximation, not a terrain-clipped road surface.",
+      "scope": "Modern source buildings, roads and terrain; not a single-date view of the current city or evidence of 1976 conditions."
+    }
+  ],
+  "source_years": [
+    2025
+  ],
+  "source_temporality": {
+    "dataset_release_year": 2025,
+    "dataset_creation_date": "2026-03-13",
+    "building_survey_years": [
+      2021
+    ],
+    "buildings_with_unknown_survey_year": 43,
+    "survey_year_encoding": {
+      "attribute": "uro:surveyYear (xs:gYear)",
+      "unknown_source_value": "0001",
+      "derived_unknown": null,
+      "raw_value_field": "source_survey_year_raw",
+      "specification_url": "https://www.toshiseibi.metro.tokyo.lg.jp/bunyabetsu/machizukuri/pdf/digital_r03_siyou_all.pdf",
+      "note": "Tokyo product specification: Gregorian year as four digits; unknown is 0001. Do not interpret 0001 as a known survey year."
+    },
+    "note": "Release year, feature creation date and survey year are distinct. Per-feature survey years are retained; an unknown year is null."
+  },
+  "target_year": 1976,
+  "processing": "scripts/import_plateau.py verifies the source archive SHA-256, extracts the specified members, records member checksums and selection/mesh statistics without redistributing the upstream archive.",
+  "dependencies": [
+    "kabukicho-plateau-intake-config",
+    "plateau-13104-shinjuku-ku-2025"
+  ],
+  "sha256": "b0ee2bb55f7f001aa183534bf50529ed90c8fd1dde954f917b3c064e5c70a98c",
+  "format": "json",
+  "units": "source byte lengths, feature counts and triangle counts",
+  "coordinate_system": "Not a geometry asset; records the coordinate reference system and origin used by the derived models.",
+  "geographic_confidence": "approximate",
+  "historical_confidence": "unverified",
+  "inferred_elements": "Modern reference only. A shared orthometric datum preserves source relative elevations; the terrain is a modern source TIN, not a surveyed 1976 surface. All 176 selected LOD1 source roads have zero heights, interpreted as missing elevation. Road vertices are draped to the source TIN with a +0.02 m display offset; linearly triangulated polygon interiors are approximate and are not clipped to the TIN. Building survey years differ or are unknown. Context building identities, historic appearance and circa 1976 street levels are unverified.",
+  "redistribution_review": "PLATEAU source archive README offers CC BY 4.0, selected for the source data. This artifact contains no redistributed archival photographs or raw aerial raster imagery."
+}

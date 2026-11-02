@@ -2,35 +2,82 @@
   "schema_version": 1,
   "id": "kabukicho-r01-kabukicho-layout-hypothesis",
   "path": "data/kabukicho-layout-hypothesis.json",
-  "type": "geometry-data",
-  "provider": "東京都・新宿区 / Project PLATEAU; project reconstruction study",
+  "type": "layout-hypothesis",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
   "source_urls": [
-    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
-    "https://maps.gsi.go.jp/development/ichiran.html"
+    "https://maps.gsi.go.jp/development/ichiran.html",
+    "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+    "https://github.com/yourbright-jp/showa-tokyo-3d"
   ],
   "retrieved_at": "2026-11-02",
-  "license": "CC-BY-4.0",
-  "license_url": "https://creativecommons.org/licenses/by/4.0/",
-  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成。配置仮説は国土地理院gazo1（1974〜1978年）を参照。",
-  "source_years": [
-    2025,
+  "license": "MIT",
+  "license_url": "https://opensource.org/license/mit",
+  "license_scope": "Project-authored configuration; retain the distinct upstream terms and attribution in source_components.",
+  "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 劇場前広場のイベント（1975年）、新宿観光振興協会掲載。関連目録：新宿歴史博物館写真DB ID 9071。",
+  "source_components": [
     {
-      "from": 1974,
-      "to": 1978
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "upstream_terms": "PDL 1.0; CC BY 4.0 use selected under section 1.7(3)",
+      "upstream_terms_urls": [
+        "https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "terms_checked_at": "2026-11-02",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Approximate manual interpretation of roof outlines and street space. Raw aerial tiles and historical photographs are not embedded or redistributed."
+    },
+    {
+      "source_id": "shinjuku-plaza-1975",
+      "provider": "新宿観光振興協会（写真再掲元）",
+      "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "related_catalogue_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071",
+      "source_year": 1975,
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "attribution": "劇場前広場のイベント（1975年）、新宿観光振興協会掲載。関連目録：新宿歴史博物館写真DB ID 9071。",
+      "scope": "Visual research corroborating the inferred plaza/open-space boundary and reversible modern-feature omission hypotheses; not proof of exact historical footprints or feature absence. No photograph pixels or textures are embedded.",
+      "rights_status": "Historical photograph redistribution permission is unconfirmed. This evidence citation grants no license to copy the photograph; derived geometry/configuration licenses do not apply to the source photograph."
     }
   ],
-  "target_year": 1976,
-  "processing": "scripts/import_plateau.py; scripts/build_blockout.py; scripts/render_blockout.py as applicable",
-  "dependencies": [
-    "plateau-13104-shinjuku-ku-2025",
-    "gsi-gazo1-1974-1978"
+  "source_years": [
+    {
+      "from": 1974,
+      "to": 1978,
+      "exact_capture_date": null
+    },
+    1975
   ],
-  "sha256": "6cf71beafb1088a3c06309299af5686e7fd77e1f2c71d353a684e3bad11b2e03",
+  "source_temporality": {
+    "source_period": [
+      1974,
+      1978
+    ],
+    "exact_capture_date": null
+  },
+  "target_year": 1976,
+  "processing": "Project-authored manual annotations in a 512 × 512 GSI gazo1 tile mosaic: approximate roof outlines, an inferred plaza/street boundary, explicit proxy height assumptions, modern-feature replacement/exclusion hypotheses and provisional camera pixels. The registered 1975 plaza photograph corroborates the open-space/plaza interpretation and reversible modern-feature omission hypotheses; historic photo/catalogue URLs also support building identification research. No photograph pixels or textures are embedded, and the evidence citation grants no redistribution permission for the photograph.",
+  "dependencies": [
+    "kabukicho-gsi-aerial-manifest",
+    "gsi-gazo1-1974-1978",
+    "shinjuku-plaza-1975"
+  ],
+  "sha256": "3f348fc37ec6717d42516bf87380af987b0d05514ad9c477685c7113d42dc2a3",
   "format": "json",
-  "units": "metres",
-  "coordinate_system": "local right-handed east/up/south; origin JGD2011 latitude35.6945 longitude139.702",
+  "units": "native aerial mosaic pixels; height assumptions in metres",
+  "coordinate_system": "GSI XYZ/Web Mercator tile indices, EPSG:3857; pixel coordinates in the 512 × 512 mosaic; not local metres.",
   "geographic_confidence": "approximate",
   "historical_confidence": "unverified",
-  "inferred_elements": "Individual ground flattening; provisional route and roof-derived volumes with assumed heights; context buildings not historically reviewed. See docs/DATA_INTAKE_R01.md.",
-  "redistribution_review": "Source archive README offers CC-BY-4.0; selected and credited. Raw historical imagery is not redistributed."
+  "inferred_elements": "Project-authored interpretation of historical aerial imagery, with explicit roof/plaza annotations and assumed heights. Native pixels are not surveyed coordinates. The aerial period spans 1974–1978, its exact capture date is unknown, and historical building identity/entrance positions remain provisional. Modern feature IDs identify context to be replaced or excluded in the study; PLATEAU did not author this historical layout hypothesis.",
+  "redistribution_review": "GSI gazo1 is listed under attribution-only non-basic-survey tiles; GSI PDL 1.0 permits CC BY 4.0 use, which is selected here. This artifact contains no redistributed archival photographs or raw aerial raster imagery. The 1975 plaza photograph is cited as evidence only; its redistribution permission and license remain unconfirmed."
 }

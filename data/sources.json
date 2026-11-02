@@ -2,7 +2,7 @@
   "schema_version": 1,
   "sources": [
     {
-      "id": "plateau",
+      "id": "plateau-13104-shinjuku-ku-2025",
       "name": "Project PLATEAU",
       "catalog_url": "https://www.mlit.go.jp/plateau/open-data/",
       "purpose": "Modern geospatial and building-layout reference for scene construction",
@@ -14,7 +14,7 @@
       "status": "imported-modern-lod1-reference",
       "downloaded": true,
       "redistribution_review": "CC-BY-4.0 selected from included README license alternatives",
-      "notes": "Dataset2025, created2026-03-13; source surveys/imagery span multiple years. Only modern geometry; buildings individually ground-flattened, roads flat. Not1976 evidence.",
+      "notes": "Dataset release 2025, created 2026-03-13; source surveys and imagery span multiple years. The same source archive supplies buildings, roads and DEM terrain. One common orthometric datum preserves building/terrain elevations. All 176 selected source roads have height 0.0, treated as missing: road vertices are draped to the DEM with a +0.02 m display offset; triangulated polygon interiors are approximate, not TIN-clipped. the modern underlay does not represent one current-city epoch and is not 1976 evidence.",
       "creation_date": "2026-03-13",
       "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
       "retrieved_at": "2026-11-02",
@@ -28,7 +28,29 @@
         "east": 139.7045,
         "north": 35.6967
       },
-      "intake_manifest": "data/derived/kabukicho-intake-manifest.json"
+      "intake_manifest": "data/derived/kabukicho-intake-manifest.json",
+      "aliases": [
+        "plateau"
+      ],
+      "source_temporality": {
+        "dataset_release_year": 2025,
+        "dataset_creation_date": "2026-03-13",
+        "building_survey_years": [
+          2021
+        ],
+        "buildings_with_unknown_survey_year": 43,
+        "survey_year_encoding": {
+          "attribute": "uro:surveyYear (xs:gYear)",
+          "unknown_source_value": "0001",
+          "derived_unknown": null,
+          "raw_value_field": "source_survey_year_raw",
+          "specification_url": "https://www.toshiseibi.metro.tokyo.lg.jp/bunyabetsu/machizukuri/pdf/digital_r03_siyou_all.pdf",
+          "note": "Tokyo product specification: Gregorian year as four digits; unknown is 0001. Do not interpret 0001 as a known survey year."
+        },
+        "note": "Release year, feature creation date and survey year are distinct. Per-feature survey years are retained; an unknown year is null."
+      },
+      "terrain_member": "udx/dem/533945_dem_6697_op.gml",
+      "terrain_asset_id": "plateau-13104-2025-terrain-crop"
     },
     {
       "id": "openstreetmap",
@@ -73,8 +95,17 @@
       "downloaded": true,
       "source_crs": "EPSG:3857",
       "manifest": "data/derived/gsi-aerial-manifest.json",
-      "redistribution_review": "Raw imagery not redistributed; geometry interpretation explicitly approximate",
-      "notes": "XYZ tiles z17 x116399-116400 y51606-51607. Roof outlines, not surveyed ground footprints or exact1976 conditions."
+      "redistribution_review": "GSI tile catalogue lists gazo1 under non-basic-survey tiles usable with attribution. The project distributes annotated geometry/configuration only; raw tiles and archival photographs are not redistributed. GSI PDL 1.0 permits CC BY 4.0 use, selected here.",
+      "notes": "XYZ tiles z17 x116399–116400 y51606–51607. Roof/plaza annotations are approximate manual interpretations, not surveyed ground footprints or exact 1976 conditions.",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "upstream_terms": "PDL 1.0; CC BY 4.0 use selected under section 1.7(3)",
+      "upstream_terms_urls": [
+        "https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "terms_checked_at": "2026-11-02",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。"
     },
     {
       "id": "tokyu-milano-1971",

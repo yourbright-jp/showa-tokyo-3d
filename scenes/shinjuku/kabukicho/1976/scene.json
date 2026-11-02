@@ -20,11 +20,11 @@
     },
     "origin_wgs84": null,
     "source_crs": "EPSG:6697",
-    "conversion": "GRS80 ECEF horizontal projection to local tangent east/north; Z=-north; individual building bases flattened, roads flat. Historical tile lat/lon treated approximately JGD2011-equivalent, no epoch transformation.",
+    "conversion": "GRS80 ECEF horizontal projection to local tangent east/north; Z=-north. Buildings and source TIN: Y=orthometric height minus common 32 m datum. Source zero-height roads: vertices draped to TIN plus 0.02 m; road interiors approximate. Historical tile lat/lon treated approximately JGD2011-equivalent without an epoch transformation.",
     "origin_jgd2011": {
       "latitude": 35.6945,
       "longitude": 139.702,
-      "height_m": 0
+      "height_m": 32.0
     }
   },
   "environment": {
@@ -45,44 +45,49 @@
       "width": 3840,
       "height": 2160,
       "fps": 30
-    }
+    },
+    "station_lens_overrides_mm": {
+      "plaza-reveal": 24,
+      "koma-front": 24
+    },
+    "lens_scope": "Default proposal with per-station geometry diagnostic overrides; continuous film lens and turns remain unapproved."
   },
   "route": {
     "status": "provisional-from-period-aerial",
-    "distance_m": 163.645,
+    "distance_m": 195.282,
     "geometry": {
       "type": "LineString",
       "coordinate_space": "local-east-up-south-metres",
       "coordinates": [
         [
           -90.4701,
-          0,
+          0.8968,
           80.9813
         ],
         [
           -88.5278,
-          0,
+          0.9021,
           70.3468
         ],
         [
           -73.9613,
-          0,
+          -0.0409,
           22.0081
         ],
         [
-          -57.4527,
-          0,
-          -32.1309
-        ],
-        [
           -49.684,
-          0,
-          -58.2336
+          -0.9215,
+          -64.0342
         ],
         [
-          -36.0891,
-          0,
-          -70.8015
+          -64.2499,
+          -0.8969,
+          -73.7019
+        ],
+        [
+          -65.2207,
+          -1.2101,
+          -100.7712
         ]
       ]
     },
@@ -90,66 +95,248 @@
       {
         "id": "entrance-approach",
         "name": "一番街入口の手前",
+        "pixel": [
+          149,
+          423
+        ],
+        "latlon_jgd2011_approx": [
+          35.693770127731625,
+          139.70100045204163
+        ],
         "position_m": [
           -90.4701,
-          1.6,
+          2.4968,
           80.9813
-        ]
+        ],
+        "ground_height_local_m": 0.8968,
+        "ground_height_orthometric_m": 32.8968,
+        "eye_height_above_ground_m": 1.6,
+        "focal_length_35mm_equivalent_mm": 35,
+        "in_plaza_hypothesis": false,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -88.5278,
+          2.5021,
+          70.3468
+        ],
+        "camera_heading_degrees_local_north": 10.35,
+        "camera_pitch_degrees": 0.028,
+        "route_incoming_heading_deg": null,
+        "route_outgoing_heading_deg": 10.35,
+        "route_turn_degrees": null,
+        "minimum_proxy_footprint_distance_m": 159.7
       },
       {
         "id": "under-gate",
         "name": "門の直下付近・位置未確定",
+        "pixel": [
+          151,
+          412
+        ],
+        "latlon_jgd2011_approx": [
+          35.69386597498289,
+          139.70102190971375
+        ],
         "position_m": [
           -88.5278,
-          1.6,
+          2.5021,
           70.3468
-        ]
+        ],
+        "ground_height_local_m": 0.9021,
+        "ground_height_orthometric_m": 32.9021,
+        "eye_height_above_ground_m": 1.6,
+        "focal_length_35mm_equivalent_mm": 35,
+        "in_plaza_hypothesis": false,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -73.9613,
+          1.5591,
+          22.0081
+        ],
+        "camera_heading_degrees_local_north": 16.77,
+        "camera_pitch_degrees": -1.07,
+        "route_incoming_heading_deg": 10.35,
+        "route_outgoing_heading_deg": 16.77,
+        "route_turn_degrees": 6.419,
+        "minimum_proxy_footprint_distance_m": 149.134
       },
       {
         "id": "ichibangai-middle",
         "name": "一番街の中ほど",
+        "pixel": [
+          166,
+          362
+        ],
+        "latlon_jgd2011_approx": [
+          35.69430164285505,
+          139.70118284225464
+        ],
         "position_m": [
           -73.9613,
-          1.6,
+          1.5591,
           22.0081
-        ]
+        ],
+        "ground_height_local_m": -0.0409,
+        "ground_height_orthometric_m": 31.9591,
+        "eye_height_above_ground_m": 1.6,
+        "focal_length_35mm_equivalent_mm": 35,
+        "in_plaza_hypothesis": false,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -49.684,
+          0.6785,
+          -64.0342
+        ],
+        "camera_heading_degrees_local_north": 15.757,
+        "camera_pitch_degrees": -0.564,
+        "route_incoming_heading_deg": 16.77,
+        "route_outgoing_heading_deg": 15.757,
+        "route_turn_degrees": 1.013,
+        "minimum_proxy_footprint_distance_m": 99.098
       },
       {
         "id": "towards-koma-corner",
-        "name": "コマ劇場へ向かう曲がり角の候補",
+        "name": "広場への曲がり角・曲がる前の見通し",
+        "pixel": [
+          191,
+          273
+        ],
+        "role": "pre-turn-plaza-view",
+        "look_at_pixel": [
+          201,
+          245
+        ],
+        "look_at_height_above_ground_m": 3,
+        "latlon_jgd2011_approx": [
+          35.69507712577905,
+          139.70145106315613
+        ],
         "position_m": [
-          -57.4527,
-          1.6,
-          -32.1309
-        ]
+          -49.684,
+          0.6785,
+          -64.0342
+        ],
+        "ground_height_local_m": -0.9215,
+        "ground_height_orthometric_m": 31.0785,
+        "eye_height_above_ground_m": 1.6,
+        "focal_length_35mm_equivalent_mm": 35,
+        "in_plaza_hypothesis": true,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -39.9733,
+          1.7112,
+          -91.1035
+        ],
+        "camera_heading_degrees_local_north": 19.735,
+        "camera_pitch_degrees": 2.057,
+        "route_incoming_heading_deg": 15.757,
+        "route_outgoing_heading_deg": 303.573,
+        "route_turn_degrees": 72.184,
+        "minimum_proxy_footprint_distance_m": 19.637
       },
       {
         "id": "plaza-reveal",
-        "name": "劇場前広場への出口候補",
+        "name": "広場を横切る開放空間の確認点",
+        "pixel": [
+          176,
+          263
+        ],
+        "look_at_pixel": [
+          229,
+          250
+        ],
+        "look_at_height_above_ground_m": 10,
+        "role": "plaza-open-space-reveal",
+        "focal_length_35mm_equivalent_mm": 24,
+        "latlon_jgd2011_approx": [
+          35.695164258220636,
+          139.70129013061523
+        ],
         "position_m": [
-          -49.684,
-          1.6,
-          -58.2336
-        ]
+          -64.2499,
+          0.7031,
+          -73.7019
+        ],
+        "ground_height_local_m": -0.8969,
+        "ground_height_orthometric_m": 31.1031,
+        "eye_height_above_ground_m": 1.6,
+        "in_plaza_hypothesis": true,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -12.7836,
+          8.734,
+          -86.2696
+        ],
+        "camera_heading_degrees_local_north": 76.277,
+        "camera_pitch_degrees": 8.62,
+        "route_incoming_heading_deg": 303.573,
+        "route_outgoing_heading_deg": 357.946,
+        "route_turn_degrees": 54.373,
+        "minimum_proxy_footprint_distance_m": 34.654
       },
       {
         "id": "koma-front",
-        "name": "旧コマ劇場前の候補",
+        "name": "広場から旧コマ劇場を引いて見る候補・正面軸未確定",
+        "pixel": [
+          175,
+          235
+        ],
+        "look_at_pixel": [
+          233,
+          257
+        ],
+        "look_at_height_above_ground_m": 8,
+        "role": "theatre-oblique-from-plaza",
+        "focal_length_35mm_equivalent_mm": 24,
+        "latlon_jgd2011_approx": [
+          35.69540822855059,
+          139.70127940177917
+        ],
         "position_m": [
-          -36.0891,
-          1.6,
-          -70.8015
-        ]
+          -65.2207,
+          0.3899,
+          -100.7712
+        ],
+        "ground_height_local_m": -1.2101,
+        "ground_height_orthometric_m": 30.7899,
+        "eye_height_above_ground_m": 1.6,
+        "in_plaza_hypothesis": true,
+        "position_status": "aerial-interpreted-proposal",
+        "look_at_m": [
+          -8.8994,
+          6.7853,
+          -79.5023
+        ],
+        "camera_heading_degrees_local_north": 110.688,
+        "camera_pitch_degrees": 6.064,
+        "route_incoming_heading_deg": 357.946,
+        "route_outgoing_heading_deg": null,
+        "route_turn_degrees": null,
+        "minimum_proxy_footprint_distance_m": 33.104
       }
     ],
-    "distance_status": "computed-proposal-not-historical-measurement",
+    "validation": {
+      "spacing_m_at_most": 0.5,
+      "samples": 397,
+      "samples_on_modern_road": 279,
+      "samples_in_plaza_hypothesis": 114,
+      "samples_on_modern_road_and_in_plaza": 0,
+      "samples_on_modern_road_or_in_plaza": 393,
+      "samples_outside_modern_road_and_plaza": 4,
+      "building_interior_collisions": 0,
+      "collision_feature_ids": [],
+      "minimum_sampled_building_edge_clearance_m": 2.881,
+      "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, fountain/steps, street furniture, dynamic objects or historical street survey"
+    },
     "source": "gsi-gazo1-1974-1978",
-    "camera_file": "cameras/route-proposal.json"
+    "camera_file": "cameras/route-proposal.json",
+    "distance_status": "computed-proposal-not-historical-measurement"
   },
   "notes": [
-    "Modern source geometry and a provisional historical-layout study are present; neither certifies1976 appearance.",
+    "Modern source geometry and a provisional historical-layout study are present; neither certifies 1976 appearance.",
     "Gate, intermediate facades, precise theatre frontage and historical street obstacles remain unresolved.",
-    "Proxy heights are assumptions and source terrain was flattened.",
+    "Proxy heights and plaza boundary are assumptions; source TIN is modern terrain, not verified 1976 ground.",
+    "The source dataset mixes survey epochs; 380 selected buildings report 2021 and 43 report unknown.",
     "Approved colour targets remain separate from historical evidence."
   ],
   "appearance_references": {

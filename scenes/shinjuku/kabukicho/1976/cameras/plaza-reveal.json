@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "plaza-reveal",
   "status": "proposal",
+  "role": "plaza-open-space-reveal",
   "position_m": [
-    -49.684,
-    1.6,
-    -58.2336
+    -64.2499,
+    0.7031,
+    -73.7019
   ],
   "look_at_m": [
-    -21.5232,
-    1.6,
-    -78.5355
+    -12.7836,
+    8.734,
+    -86.2696
   ],
   "height_m": 1.6,
-  "focal_length_35mm_equivalent_mm": 35,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": -0.8969,
+  "focal_length_35mm_equivalent_mm": 24,
   "source": "aerial-interpreted-proposal"
 }

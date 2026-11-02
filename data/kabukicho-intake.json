@@ -7,15 +7,47 @@
   "archive_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
   "catalog_url": "https://api.plateauview.mlit.go.jp/datacatalog/citygml/r:139.7005,35.6935,139.7045,35.6966",
   "source_crs": "EPSG:6697",
-  "source_axis_order": ["latitude", "longitude", "orthometric_height_m"],
-  "origin_jgd2011": {"latitude": 35.6945, "longitude": 139.702, "height_m": 0},
-  "selection_bounds": {"west": 139.7000, "south": 35.6933, "east": 139.7045, "north": 35.6967},
+  "source_axis_order": [
+    "latitude",
+    "longitude",
+    "orthometric_height_m"
+  ],
+  "origin_jgd2011": {
+    "latitude": 35.6945,
+    "longitude": 139.702,
+    "height_m": 32.0
+  },
+  "selection_bounds": {
+    "west": 139.7,
+    "south": 35.6933,
+    "east": 139.7045,
+    "north": 35.6967
+  },
   "selection_rule": "mean of LOD1 polygon vertices lies inside bounds; preserve each selected feature whole",
   "mesh_code": "53394536",
-  "members": ["README.md", "metadata/udx_13104_2025_resource_op.csv", "metadata/udx_13104_pref_2025_op.xml", "udx/bldg/53394536_bldg_6697_op.gml", "udx/tran/53394536_tran_6697_op.gml"],
+  "members": [
+    "README.md",
+    "metadata/udx_13104_2025_resource_op.csv",
+    "metadata/udx_13104_pref_2025_op.xml",
+    "udx/bldg/53394536_bldg_6697_op.gml",
+    "udx/tran/53394536_tran_6697_op.gml",
+    "udx/dem/533945_dem_6697_op.gml"
+  ],
   "license_selected": "CC-BY-4.0",
   "license_url": "https://creativecommons.org/licenses/by/4.0/",
   "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
   "geometry_role": "modern-reference-only",
-  "vertical_mode": "flatten each building base to y=0, preserve within-building relative heights; roads flattened to y=0.02; not terrain-accurate"
+  "vertical_mode": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+  "terrain_member": "udx/dem/533945_dem_6697_op.gml",
+  "terrain_derived_path": "data/derived/kabukicho-terrain.json",
+  "temporal_limitations": "Publication year is not survey year. Feature source_survey_year and source_creation_date are separate. This mixed-epoch modern reference is not a snapshot of the current city or 1976.",
+  "survey_year_encoding": {
+    "attribute": "uro:surveyYear (xs:gYear)",
+    "unknown_source_value": "0001",
+    "derived_unknown": null,
+    "raw_value_field": "source_survey_year_raw",
+    "specification_url": "https://www.toshiseibi.metro.tokyo.lg.jp/bunyabetsu/machizukuri/pdf/digital_r03_siyou_all.pdf",
+    "note": "Tokyo product specification: Gregorian year as four digits; unknown is 0001. Do not interpret 0001 as a known survey year."
+  },
+  "road_elevation_limitations": "All selected source LOD1 road heights are 0.0 and are treated as missing elevations. Only road vertices are draped to the DEM; triangulated polygon interiors are an approximation, not a terrain-clipped road surface."
 }

@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "entrance-approach",
   "status": "proposal",
+  "role": null,
   "position_m": [
     -90.4701,
-    1.6,
+    2.4968,
     80.9813
   ],
   "look_at_m": [
     -88.5278,
-    1.6,
+    2.5021,
     70.3468
   ],
   "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": 0.8968,
   "focal_length_35mm_equivalent_mm": 35,
   "source": "aerial-interpreted-proposal"
 }

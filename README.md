@@ -9,9 +9,9 @@
 - 最初の経路：歌舞伎町一番街入口から旧コマ劇場前
 - 最初の成果：位置と縮尺を確認できる街区、6地点の基準静止画、入口をくぐる15秒の試作
 
-第1ラウンドでPLATEAU新宿区2025年度版から建物423件・道路176件を取り込み、旧劇場の仮体積と6地点のカメラを配置しました。**現代の下敷きと、年代配置を検討する仮モデル**です。1976年の外観・門・劇場正面・店舗の並びは確認中であり、歴史的な街並みの完成を意味しません。
+第1ラウンドでPLATEAU新宿区2025年度版から建物423件・道路176件を取り込み、旧劇場の仮体積と6地点のカメラを配置しました。外部レビューを受け、同梱の地形モデル、共通の基準標高、建物ごとの調査年を追加し、広場・カメラ・出典情報を改訂しました。**現代の下敷きと、年代配置を検討する仮モデル**です。1976年の外観・門・劇場正面・店舗の並びは確認中であり、歴史的な街並みの完成を意味しません。
 
-[第1ラウンドの成果・画像・再生成手順](docs/DATA_INTAKE_R01.md)から、[現代の下敷き](scenes/shinjuku/kabukicho/1976/models/modern-baseline.gltf)と[配置検討用の3Dモデル](scenes/shinjuku/kabukicho/1976/models/layout-study.gltf)を取得できます。
+[第1ラウンドの成果・画像・再生成手順](docs/DATA_INTAKE_R01.md)と[外部レビューへの対応記録](docs/rounds/shinjuku-kabukicho-1976-r01-review-fix.md)を公開しています。[現代の下敷き](scenes/shinjuku/kabukicho/1976/models/modern-baseline.gltf)と[配置検討用の3Dモデル](scenes/shinjuku/kabukicho/1976/models/layout-study.gltf)を取得できます。
 
 ![街区の配置検討用モデル](docs/previews/r01/blockout-overview.png)
 

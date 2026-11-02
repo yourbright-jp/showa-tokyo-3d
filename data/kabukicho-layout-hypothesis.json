@@ -2,39 +2,263 @@
   "schema_version": 1,
   "status": "provisional-evidence-study",
   "source": "gsi-gazo1-1974-1978",
-  "source_period": [1974, 1978],
+  "source_period": [
+    1974,
+    1978
+  ],
   "exact_capture_date": null,
-  "pixel_space": {"zoom": 17, "tile_x": 116399, "tile_y": 51606, "width": 512, "height": 512},
-  "interpretation": "Manual interpretation of roof outlines and street space in a 512px historical mosaic; not a ground survey or exact1976 map.",
+  "pixel_space": {
+    "zoom": 17,
+    "tile_x": 116399,
+    "tile_y": 51606,
+    "width": 512,
+    "height": 512
+  },
+  "interpretation": "Manual interpretation of roof outlines and open street/plaza space in a 512 px historical mosaic; not a ground survey or an exact 1976 map.",
   "horizontal_uncertainty_m_assumption": 5,
   "replace_modern_feature_ids": [
     "bldg_159ebc0b-e5cd-4de8-a027-e924ee337964",
-    "bldg_7506fc9f-1045-4cdc-9f35-9de5a01de82d"
+    "bldg_7506fc9f-1045-4cdc-9f35-9de5a01de82d",
+    "bldg_6e446aed-295c-4d08-82ee-f0d8c77fca2b",
+    "bldg_007c0961-d8a4-48d7-915a-74f4336b195e"
   ],
   "proxies": [
-    {"id": "milano-roof-proxy", "name": "ミラノ座・仮の屋根輪郭", "pixels": [[98,166],[159,181],[146,217],[89,202]], "height_assumption_m": 16, "height_verified": false, "identity_sources": ["https://tokyu.shibuyaphotomuseum.jp/detail/954/", "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"]},
-    {"id": "koma-south-roof-proxy", "name": "旧コマ劇場・南側屋根の仮輪郭", "pixels": [[226,236],[276,250],[266,285],[211,270]], "height_assumption_m": 20, "height_verified": false, "identity_sources": ["https://www.kanko-shinjuku.jp/special/-/article_1768.html", "https://www.toho.co.jp/real-estate/kabukicho/"]},
-    {"id": "adjacent-theatre-roof-proxy", "name": "北隣の劇場街区・同定未確定の屋根輪郭", "pixels": [[239,203],[287,216],[277,248],[229,235]], "height_assumption_m": 28, "height_verified": false, "identity_sources": ["https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf"], "identity_status": "Possibly Shinjuku Toho Kaikan / Plaza theatre; not identified as part of Koma"}
+    {
+      "id": "milano-roof-proxy",
+      "name": "ミラノ座・仮の屋根輪郭",
+      "pixels": [
+        [
+          98,
+          166
+        ],
+        [
+          159,
+          181
+        ],
+        [
+          146,
+          217
+        ],
+        [
+          89,
+          202
+        ]
+      ],
+      "height_assumption_m": 16,
+      "height_verified": false,
+      "identity_sources": [
+        "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
+        "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"
+      ]
+    },
+    {
+      "id": "koma-south-roof-proxy",
+      "name": "旧コマ劇場・南側屋根の仮輪郭",
+      "pixels": [
+        [
+          226,
+          236
+        ],
+        [
+          276,
+          250
+        ],
+        [
+          266,
+          285
+        ],
+        [
+          211,
+          270
+        ]
+      ],
+      "height_assumption_m": 20,
+      "height_verified": false,
+      "identity_sources": [
+        "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+        "https://www.toho.co.jp/real-estate/kabukicho/"
+      ]
+    },
+    {
+      "id": "adjacent-theatre-roof-proxy",
+      "name": "北隣の劇場街区・同定未確定の屋根輪郭",
+      "pixels": [
+        [
+          239,
+          203
+        ],
+        [
+          287,
+          216
+        ],
+        [
+          277,
+          248
+        ],
+        [
+          229,
+          235
+        ]
+      ],
+      "height_assumption_m": 28,
+      "height_verified": false,
+      "identity_sources": [
+        "https://www.tohocinemas.co.jp/news/pdf/2011/110712a.pdf"
+      ],
+      "identity_status": "Possibly Shinjuku Toho Kaikan / Plaza theatre; not identified as part of Koma"
+    }
   ],
   "stations": [
-    {"id": "entrance-approach", "name": "一番街入口の手前", "pixel": [149,423]},
-    {"id": "under-gate", "name": "門の直下付近・位置未確定", "pixel": [151,412]},
-    {"id": "ichibangai-middle", "name": "一番街の中ほど", "pixel": [166,362]},
-    {"id": "towards-koma-corner", "name": "コマ劇場へ向かう曲がり角の候補", "pixel": [183,306]},
-    {"id": "plaza-reveal", "name": "劇場前広場への出口候補", "pixel": [191,279], "look_at_pixel": [220,258]},
-    {"id": "koma-front", "name": "旧コマ劇場前の候補", "pixel": [205,266], "look_at_pixel": [220,255]}
+    {
+      "id": "entrance-approach",
+      "name": "一番街入口の手前",
+      "pixel": [
+        149,
+        423
+      ]
+    },
+    {
+      "id": "under-gate",
+      "name": "門の直下付近・位置未確定",
+      "pixel": [
+        151,
+        412
+      ]
+    },
+    {
+      "id": "ichibangai-middle",
+      "name": "一番街の中ほど",
+      "pixel": [
+        166,
+        362
+      ]
+    },
+    {
+      "id": "towards-koma-corner",
+      "name": "広場への曲がり角・曲がる前の見通し",
+      "pixel": [
+        191,
+        273
+      ],
+      "role": "pre-turn-plaza-view",
+      "look_at_pixel": [
+        201,
+        245
+      ],
+      "look_at_height_above_ground_m": 3
+    },
+    {
+      "id": "plaza-reveal",
+      "name": "広場を横切る開放空間の確認点",
+      "pixel": [
+        176,
+        263
+      ],
+      "look_at_pixel": [
+        229,
+        250
+      ],
+      "look_at_height_above_ground_m": 10,
+      "role": "plaza-open-space-reveal",
+      "focal_length_35mm_equivalent_mm": 24
+    },
+    {
+      "id": "koma-front",
+      "name": "広場から旧コマ劇場を引いて見る候補・正面軸未確定",
+      "pixel": [
+        175,
+        235
+      ],
+      "look_at_pixel": [
+        233,
+        257
+      ],
+      "look_at_height_above_ground_m": 8,
+      "role": "theatre-oblique-from-plaza",
+      "focal_length_35mm_equivalent_mm": 24
+    }
   ],
   "limitations": [
-    "The exact flight date and circa1976 storefront sequence remain unresolved.",
+    "The exact flight date and circa 1976 storefront sequence remain unresolved.",
     "Roof displacement and shadows may move apparent outlines; no facade or surveyed footprint is claimed.",
     "Proxy heights are explicit modeling assumptions, not measured historical dimensions.",
-    "All other modern context buildings require historical review; they are not certified1976 buildings.",
-    "The gate model is deliberately absent because1972 and1978 shape evidence conflicts.",
-    "GSI XYZ tile coordinates use EPSG:3857 / web-map longitude-latitude. Local engineering conversion treats geographic positions as approximately JGD2011-equivalent without an epoch/datum correction; decimal precision is not accuracy."
+    "All other modern context buildings require historical review; they are not certified 1976 buildings.",
+    "The gate model is deliberately absent because 1972 and 1978 shape evidence conflicts.",
+    "GSI XYZ tile coordinates use EPSG:3857 / web-map longitude-latitude. Local engineering conversion treats geographic positions as approximately JGD2011-equivalent without an epoch/datum correction; decimal precision is not accuracy.",
+    "The plaza outline and the omission of two modern foreground features are reversible aerial-led interpretations, not verified historical absence.",
+    "The final view is an oblique volume study from the plaza, not a verified theatre entrance or facade axis. The E/F look-target heights (10 m / 8 m above modern terrain) and 24 mm equivalent diagnostic lenses are framing choices, not measured historical dimensions."
   ],
   "removal_notes": [
-    "Two large modern source volumes occupy the Milano and Koma/adjacent theatre sites; baseline geometry remains preserved separately."
+    "Four modern source volumes are omitted from the period-layout hypothesis: two cover historical theatre sites; one thin strip conflicts with interpreted historical paving; one volume covers the interpreted plaza/fountain. Every source volume remains in modern-baseline."
   ],
-  "context_hidden_diagnostic_ids": ["bldg_6e446aed-295c-4d08-82ee-f0d8c77fca2b"],
-  "context_hidden_diagnostic_note": "The thin modern feature stays in the shared model. It is hidden only in an explicitly labeled visibility comparison; no historical absence is asserted."
+  "context_hidden_diagnostic_ids": [
+    "bldg_6e446aed-295c-4d08-82ee-f0d8c77fca2b",
+    "bldg_007c0961-d8a4-48d7-915a-74f4336b195e"
+  ],
+  "context_hidden_diagnostic_note": "Both modern features are retained in modern-baseline and omitted only from the period-layout hypothesis. The comparison restores them to show the effect of this reversible historical interpretation; their historical absence is not certified.",
+  "plaza": {
+    "id": "koma-plaza-open-space-hypothesis",
+    "name": "旧コマ劇場前広場・開放空間の範囲仮説",
+    "boundary_pixels": [
+      [
+        173,
+        233
+      ],
+      [
+        208,
+        242
+      ],
+      [
+        211,
+        270
+      ],
+      [
+        201,
+        284
+      ],
+      [
+        190,
+        286
+      ],
+      [
+        173,
+        265
+      ]
+    ],
+    "historical_status": "inferred-open-space",
+    "boundary_verified": false,
+    "horizontal_uncertainty_m_assumption": 5,
+    "evidence_sources": [
+      "gsi-gazo1-1974-1978",
+      "shinjuku-plaza-1975"
+    ],
+    "interpretation": "Approximate connected paved space west of the theatre roof, including the visible fountain area. The 1975 ground photograph corroborates a plaza/fountain but is not a georeferenced boundary survey. The outline includes unmodelled obstacles and is not a certified navigable polygon.",
+    "excluded_detail": "Fountain, steps, trees and street furniture are not reconstructed; no continuous swept-body clearance is certified."
+  },
+  "removal_decisions": [
+    {
+      "feature_id": "bldg_6e446aed-295c-4d08-82ee-f0d8c77fca2b",
+      "decision": "omit-from-period-layout-only",
+      "confidence": "inferred",
+      "evidence": [
+        "gsi-gazo1-1974-1978",
+        "shinjuku-plaza-1975"
+      ],
+      "reason": "The historical aerial shows a light street/paving strip at this modern thin-feature location. The 1975 ground photograph supports open plaza context, but does not independently locate this exact footprint.",
+      "limitations": "Approximately 1 m native aerial pixels and assumed 5 m horizontal uncertainty prevent proof of exact historical absence. This is a reversible layout hypothesis.",
+      "baseline_preserved": true
+    },
+    {
+      "feature_id": "bldg_007c0961-d8a4-48d7-915a-74f4336b195e",
+      "decision": "omit-from-period-layout-only",
+      "confidence": "inferred",
+      "evidence": [
+        "gsi-gazo1-1974-1978",
+        "shinjuku-plaza-1975"
+      ],
+      "reason": "The modern footprint covers historical paving and the visually identifiable fountain area in the aerial, west of the theatre. The 1975 ground photograph independently depicts a plaza and fountain.",
+      "limitations": "The roof/ground distinction is interpreted visually; the ground photograph does not establish a surveyed footprint or exact 1976 boundary. This is a reversible layout hypothesis.",
+      "baseline_preserved": true
+    }
+  ]
 }
