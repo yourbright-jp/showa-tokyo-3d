@@ -47,7 +47,15 @@ for (const id of stations) {
   const state = await page.evaluate(() => ({ error: window.__error || null, moduleErrors: window.__moduleErrors || [], done: !!window.__renderDone, stats: window.__stats ? window.__stats() : null, log: window.__log }));
   const file = path.join(out, `${id}.png`);
   if (state.done) {
-    await page.locator('canvas').screenshot({ path: file });
+    // Read the canvas directly (still mode sets preserveDrawingBuffer). Playwright's element
+    // screenshot can exceed its 30 s budget under heavy shared CPU load; fall back to it only if
+    // toDataURL fails.
+    const dataUrl = await page.evaluate(() => { try { return document.querySelector('canvas').toDataURL('image/png'); } catch (e) { return null; } });
+    if (dataUrl && dataUrl.startsWith('data:image/png;base64,')) {
+      fs.writeFileSync(file, Buffer.from(dataUrl.slice('data:image/png;base64,'.length), 'base64'));
+    } else {
+      await page.locator('canvas').screenshot({ path: file, timeout: 300000 });
+    }
   }
   const ms = Date.now() - t0;
   const entry = { station: id, file: path.relative(ROOT, file), ms, ...state, console: logs.slice(-40) };

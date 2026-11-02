@@ -99,7 +99,7 @@ async function main() {
   focusShadow(ctx, camera, 90);
 
   const composer = makeComposer(ctx, camera, width, height);
-  scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; if (o.castShadow === undefined) o.castShadow = true; } });
+  scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; } /* castShadow is opt-in: three.js defaults it to false, so each module sets it explicitly */ });
 
   window.__stats = () => {
     let meshes = 0, tris = 0;
