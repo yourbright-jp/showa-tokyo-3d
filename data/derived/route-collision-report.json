@@ -1,12 +1,16 @@
 {
   "validation": {
     "spacing_m_at_most": 0.5,
-    "samples": 335,
-    "samples_on_modern_road": 335,
+    "samples": 397,
+    "samples_on_modern_road": 279,
+    "samples_in_plaza_hypothesis": 114,
+    "samples_on_modern_road_and_in_plaza": 0,
+    "samples_on_modern_road_or_in_plaza": 393,
+    "samples_outside_modern_road_and_plaza": 4,
     "building_interior_collisions": 0,
     "collision_feature_ids": [],
-    "minimum_sampled_building_edge_clearance_m": 1.523,
-    "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, props, slope, dynamic objects or historical street survey"
+    "minimum_sampled_building_edge_clearance_m": 2.881,
+    "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, fountain/steps, street furniture, dynamic objects or historical street survey"
   },
   "collisions": []
 }

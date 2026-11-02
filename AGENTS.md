@@ -1,8 +1,8 @@
 # Project instructions
 
-- Initial scope: the Kabukicho Ichibangai entrance to the former Koma Theatre, targeting approximately1976. Add other Tokyo districts and years as separate scenes.
+- Initial scope: the Kabukicho Ichibangai entrance to the former Koma Theatre, targeting approximately 1976. Add other Tokyo districts and years as separate scenes.
 - Read `README.md`, `docs/PRODUCTION_PLAN.md`, and `docs/ASSET_POLICY.md` before changing scene data.
-- Preserve source attribution and record source year separately from reconstruction year. Current PLATEAU/OSM geometry is a modern reference, not evidence of1976 conditions.
+- Preserve source attribution and record source year separately from reconstruction year. Current PLATEAU/OSM geometry is a modern reference, not evidence of 1976 conditions.
 - Never invent verified coordinates, dimensions, poster programmes or historical confidence. Keep unresolved values explicit.
 - Record coordinate reference systems and conversion steps. Scene interchange uses metres and right-handed Y-up coordinates; preserve georeferencing separately.
 - Keep readable sign text stable across frames. Preserve the common camera route and world geometry when iterating on appearance.

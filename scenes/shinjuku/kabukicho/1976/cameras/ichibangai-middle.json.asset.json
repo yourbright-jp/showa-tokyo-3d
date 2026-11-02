@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-camera-ichibangai-middle",
+  "path": "scenes/shinjuku/kabukicho/1976/cameras/ichibangai-middle.json",
+  "type": "camera-station",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "source_urls": [
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html",
+    "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+    "https://github.com/yourbright-jp/showa-tokyo-3d"
+  ],
+  "retrieved_at": "2026-11-02",
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_scope": "Derived data/preview: retain all applicable source_components credits and processing notice. The code repository MIT license does not replace upstream licenses.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 劇場前広場のイベント（1975年）、新宿観光振興協会掲載。関連目録：新宿歴史博物館写真DB ID 9071。",
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "source_creation_date": "2026-03-13",
+      "vertical_processing": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+      "road_elevation_limitations": "All selected source LOD1 road heights are 0.0 and are treated as missing elevations. Only road vertices are draped to the DEM; triangulated polygon interiors are an approximation, not a terrain-clipped road surface.",
+      "scope": "Modern source buildings, roads and terrain; not a single-date view of the current city or evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "upstream_terms": "PDL 1.0; CC BY 4.0 use selected under section 1.7(3)",
+      "upstream_terms_urls": [
+        "https://www.gsi.go.jp/kikakuchousei/kikakuchousei40182.html",
+        "https://www.digital.go.jp/resources/open_data/public_data_license_v1.0"
+      ],
+      "terms_checked_at": "2026-11-02",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Approximate manual interpretation of roof outlines and street space. Raw aerial tiles and historical photographs are not embedded or redistributed."
+    },
+    {
+      "source_id": "shinjuku-plaza-1975",
+      "provider": "新宿観光振興協会（写真再掲元）",
+      "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+      "related_catalogue_url": "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071",
+      "source_year": 1975,
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "attribution": "劇場前広場のイベント（1975年）、新宿観光振興協会掲載。関連目録：新宿歴史博物館写真DB ID 9071。",
+      "scope": "Visual research corroborating the inferred plaza/open-space boundary and reversible modern-feature omission hypotheses; not proof of exact historical footprints or feature absence. No photograph pixels or textures are embedded.",
+      "rights_status": "Historical photograph redistribution permission is unconfirmed. This evidence citation grants no license to copy the photograph; derived geometry/configuration licenses do not apply to the source photograph."
+    }
+  ],
+  "source_years": [
+    2025,
+    {
+      "from": 1974,
+      "to": 1978,
+      "exact_capture_date": null
+    },
+    1975
+  ],
+  "source_temporality": {
+    "dataset_release_year": 2025,
+    "dataset_creation_date": "2026-03-13",
+    "building_survey_years": [
+      2021
+    ],
+    "buildings_with_unknown_survey_year": 43,
+    "survey_year_encoding": {
+      "attribute": "uro:surveyYear (xs:gYear)",
+      "unknown_source_value": "0001",
+      "derived_unknown": null,
+      "raw_value_field": "source_survey_year_raw",
+      "specification_url": "https://www.toshiseibi.metro.tokyo.lg.jp/bunyabetsu/machizukuri/pdf/digital_r03_siyou_all.pdf",
+      "note": "Tokyo product specification: Gregorian year as four digits; unknown is 0001. Do not interpret 0001 as a known survey year."
+    },
+    "note": "Release year, feature creation date and survey year are distinct. Per-feature survey years are retained; an unknown year is null."
+  },
+  "target_year": 1976,
+  "processing": "scripts/build_blockout.py writes this station's position, terrain-relative eye height, look target and provisional role from the shared route proposal. This file does not contain a new independent coordinate survey.",
+  "dependencies": [
+    "kabukicho-route-proposal",
+    "shinjuku-plaza-1975"
+  ],
+  "sha256": "151b27c0b67ee8c920cd8a8f5c1eeaa2e690d24e149784155edf01e74f5cc4b6",
+  "format": "json",
+  "units": "metres",
+  "coordinate_system": "Local right-handed east/up/south, metres; JGD2011 origin latitude 35.6945, longitude 139.702; Building/terrain Y = source orthometric height minus 32 m. Source road heights are all zero and treated as missing; road vertices use interpolated terrain Y + 0.02 m, with approximate triangulated interiors. Horizontal projection: GRS80 ECEF to local tangent east/north, Z = -north.",
+  "geographic_confidence": "approximate",
+  "historical_confidence": "unverified",
+  "inferred_elements": "Manual roof/plaza interpretation from approximately 1 m/pixel historical aerial imagery, uncertain capture date and approximate map-datum alignment. Proxy heights, plaza boundary, historical layout exclusions and camera placements are explicit hypotheses, not surveyed 1976 dimensions. The northern theatre identity, actual theatre entrance/façade axis and gate chronology remain unresolved. Modern reference only. A shared orthometric datum preserves source relative elevations; the terrain is a modern source TIN, not a surveyed 1976 surface. All 176 selected LOD1 source roads have zero heights, interpreted as missing elevation. Road vertices are draped to the source TIN with a +0.02 m display offset; linearly triangulated polygon interiors are approximate and are not clipped to the TIN. Building survey years differ or are unknown. Context building identities, historic appearance and circa 1976 street levels are unverified.",
+  "redistribution_review": "PLATEAU source archive README offers CC BY 4.0, selected for the source data. GSI gazo1 is listed under attribution-only non-basic-survey tiles; GSI PDL 1.0 permits CC BY 4.0 use, which is selected here. This artifact contains no redistributed archival photographs or raw aerial raster imagery. The 1975 plaza photograph is cited as evidence only; its redistribution permission and license remain unconfirmed."
+}

@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "under-gate",
   "status": "proposal",
+  "role": null,
   "position_m": [
     -88.5278,
-    1.6,
+    2.5021,
     70.3468
   ],
   "look_at_m": [
     -73.9613,
-    1.6,
+    1.5591,
     22.0081
   ],
   "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": 0.9021,
   "focal_length_35mm_equivalent_mm": 35,
   "source": "aerial-interpreted-proposal"
 }

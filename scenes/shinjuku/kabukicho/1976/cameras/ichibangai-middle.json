@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "ichibangai-middle",
   "status": "proposal",
+  "role": null,
   "position_m": [
     -73.9613,
-    1.6,
+    1.5591,
     22.0081
   ],
   "look_at_m": [
-    -57.4527,
-    1.6,
-    -32.1309
+    -49.684,
+    0.6785,
+    -64.0342
   ],
   "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": -0.0409,
   "focal_length_35mm_equivalent_mm": 35,
   "source": "aerial-interpreted-proposal"
 }

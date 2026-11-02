@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "koma-front",
   "status": "proposal",
+  "role": "theatre-oblique-from-plaza",
   "position_m": [
-    -36.0891,
-    1.6,
-    -70.8015
+    -65.2207,
+    0.3899,
+    -100.7712
   ],
   "look_at_m": [
-    -21.5232,
-    1.6,
-    -81.4358
+    -8.8994,
+    6.7853,
+    -79.5023
   ],
   "height_m": 1.6,
-  "focal_length_35mm_equivalent_mm": 35,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": -1.2101,
+  "focal_length_35mm_equivalent_mm": 24,
   "source": "aerial-interpreted-proposal"
 }

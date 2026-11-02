@@ -2,17 +2,20 @@
   "schema_version": 1,
   "id": "towards-koma-corner",
   "status": "proposal",
+  "role": "pre-turn-plaza-view",
   "position_m": [
-    -57.4527,
-    1.6,
-    -32.1309
+    -49.684,
+    0.6785,
+    -64.0342
   ],
   "look_at_m": [
-    -49.684,
-    1.6,
-    -58.2336
+    -39.9733,
+    1.7112,
+    -91.1035
   ],
   "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": -0.9215,
   "focal_length_35mm_equivalent_mm": 35,
   "source": "aerial-interpreted-proposal"
 }

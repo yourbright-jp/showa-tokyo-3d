@@ -30,6 +30,11 @@
       "archive_member": "udx/tran/53394536_tran_6697_op.gml",
       "sha256": "b6732ec989aebb843e71c9707efee32686980d0f51244e25cc691d0e4f84a019",
       "size_bytes": 25412513
+    },
+    {
+      "archive_member": "udx/dem/533945_dem_6697_op.gml",
+      "sha256": "32b328d61fe1e9727774e30ab39ea09079b074607b47fbcc360995b4c8b64f0b",
+      "size_bytes": 983488557
     }
   ],
   "counts": {
@@ -40,16 +45,47 @@
     "road": {
       "source": 918,
       "selected": 176
+    },
+    "terrain": {
+      "source": 2863578,
+      "selected": 17478
     }
   },
-  "triangles": 10048,
+  "triangles": 27526,
   "geometry_role": "modern-reference-only",
   "source_crs": "EPSG:6697",
   "origin_jgd2011": {
     "latitude": 35.6945,
     "longitude": 139.702,
-    "height_m": 0
+    "height_m": 32.0
   },
-  "vertical_mode": "flatten each building base to y=0, preserve within-building relative heights; roads flattened to y=0.02; not terrain-accurate",
-  "license": "CC-BY-4.0"
+  "vertical_mode": "building local Y = source orthometric height minus common 32.0 m datum; zero-height source road vertices draped to the cropped source TIN with +0.02 m display offset; cameras interpolate the TIN",
+  "license": "CC-BY-4.0",
+  "building_survey_year_counts": {
+    "2021": 380,
+    "unknown": 43
+  },
+  "survey_year_encoding": {
+    "attribute": "uro:surveyYear (xs:gYear)",
+    "unknown_source_value": "0001",
+    "derived_unknown": null,
+    "raw_value_field": "source_survey_year_raw",
+    "specification_url": "https://www.toshiseibi.metro.tokyo.lg.jp/bunyabetsu/machizukuri/pdf/digital_r03_siyou_all.pdf",
+    "note": "Tokyo product specification: Gregorian year as four digits; unknown is 0001. Do not interpret 0001 as a known survey year."
+  },
+  "terrain": {
+    "derived_path": "data/derived/kabukicho-terrain.json",
+    "source_triangles": 2863578,
+    "selected_triangles": 17478,
+    "selected_vertices": 8926,
+    "feature_roi_orthometric_height_range_m": [
+      26.99,
+      37.5428
+    ],
+    "orthometric_height_range_m": [
+      26.99,
+      37.57
+    ]
+  },
+  "temporal_limitations": "Dataset publication year, feature creation date and source survey year differ. Unknown survey years stay null. The modern underlay is mixed-epoch and is not a snapshot of the present city or of 1976."
 }
