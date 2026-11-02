@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "shinjuku-kabukicho-1976",
+  "title": "歌舞伎町一番街から旧コマ劇場へ",
+  "ward": "shinjuku",
+  "district": "kabukicho",
+  "target_year": 1976,
+  "year_precision": "approximate",
+  "status": "planning",
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "coordinate_system": {
+    "kind": "local-cartesian",
+    "units": "metres",
+    "handedness": "right",
+    "axes": {"x": "east", "y": "up", "z": "south"},
+    "origin_wgs84": null,
+    "source_crs": null,
+    "conversion": null
+  },
+  "environment": {"season": null, "time_of_day": null, "weather": null},
+  "asset_ids": [],
+  "camera_proposal": {
+    "height_m": 1.6,
+    "focal_length_35mm_equivalent_mm": 35,
+    "speed_m_per_second": 1.0,
+    "pilot_duration_seconds": 15,
+    "final_output_target": {"width": 3840, "height": 2160, "fps": 30}
+  },
+  "route": {
+    "status": "needs-historical-georeferencing",
+    "distance_m": null,
+    "geometry": null,
+    "stations": [
+      {"id": "entrance-approach", "name": "一番街入口の手前", "position_m": null},
+      {"id": "under-gate", "name": "門の直下", "position_m": null},
+      {"id": "ichibangai-middle", "name": "一番街の中ほど", "position_m": null},
+      {"id": "towards-koma-corner", "name": "コマ劇場へ向かう曲がり角", "position_m": null},
+      {"id": "plaza-reveal", "name": "劇場前広場への出口", "position_m": null},
+      {"id": "koma-front", "name": "旧コマ劇場正面", "position_m": null}
+    ]
+  },
+  "notes": [
+    "No verified coordinates or 3D models have been added yet.",
+    "The six station labels describe the intended production sequence, not a verified walking route.",
+    "Keep source years and inferred colour separate from the target year."
+  ]
+}
