@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "R05",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R05-milano-entrance.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://movieit.exblog.jp/21464052/"
+  ],
+  "source_year_label": "Venue slide says 1976; capture year uncertain",
+  "target_year": 1976,
+  "source_date_status": "会場スライドの1976年表記・撮影年未確認",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "7e6d5846a19af55b4a80cd36538afb96dc2cdd0ead2a845892f176c921fddc6b",
+  "format": "PNG",
+  "native_size_px": [
+    1076,
+    1462
+  ],
+  "size_bytes": 2242268,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}

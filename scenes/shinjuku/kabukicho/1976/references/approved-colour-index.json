@@ -5,8 +5,10 @@
       "id": "R01",
       "title": "一番街入口・昼の臨場感",
       "source_year_label": "1978",
-      "source_date_status": "原資料のラベルのみ・原典の書誌未回収",
-      "source_urls": [],
+      "source_date_status": "原資料の掲載元が1978年・吉野純治撮影と明記",
+      "source_urls": [
+        "https://toyokeizai.net/articles/photo/853639?pn=5"
+      ],
       "source_sha256": "5ba8b6d8521abd86b226967e21391f4b1d64ff4b1091c247ac665f06b84bd681",
       "approved_colour_sha256": "01f6804a812e2cac601bd04f5d5ae816454cdb1523019928427452a1bf8b3b23",
       "approved_colour_native_size": [
@@ -16,7 +18,11 @@
       "role": "入口の構図・周辺外観。門の1976年時点の形状は未確定。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R01-ichibangai-entrance.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R02",
@@ -36,7 +42,11 @@
       "role": "広場・街路灯と旧コマ劇場の一部。正面全体の根拠には不足。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R02-theatre-plaza.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R03",
@@ -55,7 +65,11 @@
       "role": "ミラノ座の外観・素材。コマ劇場とは区別。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R03-milano-1972.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R04",
@@ -72,7 +86,11 @@
       "role": "看板と夜の光。経路上の正確な位置は未同定。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R04-neon-street-1977.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R05",
@@ -91,7 +109,11 @@
       "role": "ミラノ座の部分的な入口と広告。撮影年は未確認。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R05-milano-entrance.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R06",
@@ -108,7 +130,11 @@
       "role": "入口・階段・電球。住所と経路上の位置は未確認。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R06-club-usa.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R07",
@@ -127,7 +153,11 @@
       "role": "ゴールデン街。今回の経路の建物・道幅には使わない。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R07-golden-gai.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R08",
@@ -146,7 +176,11 @@
       "role": "直線状の旧門。1976年までの存続・背面・寸法は未確認。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R08-ichibangai-old-gate.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     },
     {
       "id": "R09",
@@ -165,7 +199,11 @@
       "role": "ミラノ座の1971年の外観。当年の広告を1976年へ転用しない。",
       "colour_is_reconstruction": true,
       "historical_1976_certified": false,
-      "image_redistribution": "Neither original nor generated reference raster is included in this public repository."
+      "image_redistribution": "Generated colour reference published at explicit user request; archival originals are not included.",
+      "master_image": "master-v1/R09-milano-1971.png",
+      "master_version": "v1",
+      "reference_kind": "approved-generated-colour-master",
+      "immutable_baseline": true
     }
   ],
   "notes": "Hashes identify the reviewed source/approved colour versions without publishing private account identifiers or third-party originals."

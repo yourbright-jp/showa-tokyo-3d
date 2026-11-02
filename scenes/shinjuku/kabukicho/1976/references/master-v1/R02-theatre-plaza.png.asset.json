@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "R02",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R02-theatre-plaza.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
+    "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=9071"
+  ],
+  "source_year_label": "1975",
+  "target_year": 1976,
+  "source_date_status": "観光協会の1975年写真と博物館目録の対応",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "7ab245c59c0641c3ed37e40c4e87437d6415362d0a174a2631c30bb3b013216c",
+  "format": "PNG",
+  "native_size_px": [
+    1612,
+    976
+  ],
+  "size_bytes": 2629975,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}

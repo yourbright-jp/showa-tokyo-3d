@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "id": "R08",
+  "path": "scenes/shinjuku/kabukicho/1976/references/master-v1/R08-ichibangai-old-gate.png",
+  "type": "generated-reference-image",
+  "provider": "OpenAI Image Gen; selected by project owner",
+  "source_urls": [
+    "https://www.regasu-shinjuku.or.jp/photodb/det.html?data_id=7378"
+  ],
+  "source_year_label": "1972",
+  "target_year": 1976,
+  "source_date_status": "1972年の原資料。博物館ID7378は原典照合を進める候補",
+  "processing": "Original approved generated PNG copied byte-for-byte; no resizing, recompression, cropping or upscaling. Inferred colour and detail remain reconstruction.",
+  "sha256": "64109fd6f3d79c3cdedab6ddffcc52b5f88dd73198835dd54b4e80561aa1d246",
+  "format": "PNG",
+  "native_size_px": [
+    1536,
+    1024
+  ],
+  "size_bytes": 2793588,
+  "units": "pixels",
+  "coordinate_system": null,
+  "geographic_confidence": "unverified",
+  "historical_confidence": "unverified",
+  "colour_is_reconstruction": true,
+  "generation_model_version": "not-recorded",
+  "license": null,
+  "rights_note": "Project code MIT license does not apply to this raster. Public release as reference is authorized by project owner; no additional rights in third-party archival sources are asserted.",
+  "redistribution_review": "Published generated image only, explicitly requested by owner; source photograph not republished."
+}
