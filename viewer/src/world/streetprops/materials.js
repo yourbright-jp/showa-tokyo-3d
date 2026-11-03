@@ -228,7 +228,9 @@ export function makeAtlas(ctx) {
     }
     // 7) orange portable barricade face with pedestrian disc and 歩行者専用
     {
-      const x = 512, y = 80, w = 256, h = 128;
+      // round c: moved from y=80, where the blue drink-machine face (x 384-576, y 128-512) drawn
+      // later overpainted the left of the board and covered 歩 of 歩行者専用
+      const x = 512, y = 600, w = 256, h = 128;
       g.fillStyle = '#e39a2a'; g.fillRect(x, y, w, h);
       g.fillStyle = '#c7801c'; g.fillRect(x, y + h - 10, w, 10);
       g.fillStyle = '#f2f2ee'; g.beginPath(); g.arc(x + 128, y + 44, 34, 0, Math.PI * 2); g.fill();
@@ -236,7 +238,7 @@ export function makeAtlas(ctx) {
       drawPerson(g, x + 121, y + 22, 40, '#f4f4f0'); drawPerson(g, x + 137, y + 34, 28, '#f4f4f0');
       g.fillStyle = '#1a1a1a'; g.font = `30px ${JP_FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
       g.fillText('歩行者専用', x + 128, y + 100);
-      grungeRect(g, rng, x, y, w, h, 0.2);
+      for (let i = 0; i < 9; i++) { const sx = x + rng() * w, len = h * (0.2 + rng() * 0.6); const gr = g.createLinearGradient(0, y, 0, y + len); gr.addColorStop(0, `rgba(110,70,30,${0.1 + rng() * 0.12})`); gr.addColorStop(1, 'rgba(110,70,30,0)'); g.fillStyle = gr; g.fillRect(sx, y + 4, 1 + rng() * 4, len); }
       region('barricade', x, y, w, h);
     }
     // 8) phone roof sign 電話 (cream panel, red text)

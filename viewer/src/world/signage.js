@@ -158,7 +158,7 @@ export async function build(ctx) {
   const added = items.filter((i) => i.tier === 'period-plausible-generic');
   ctx.tag({ id: 'signage/added', module: 'signage', tier: 'period-plausible-generic', note: `added signs by kind: ${JSON.stringify(counts)}. Generic trade words; no real brands, logos, film titles or performers.` });
   ctx.tag({ id: 'signage/fictional-names', module: 'signage', tier: 'period-plausible-generic', fictional: true, note: `FICTIONAL shop names used on ${added.filter((i) => i.fictional).length} signs (invented from the fictional stem lists in signage/vocab.js: ${NAME_STEMS.length} kanji stems, ${KANA_NAMES.length} kana names): ${(env.fictionalNames || []).slice(0, 400).join('、')}` });
-  ctx.tag({ id: 'signage/phone-numbers', module: 'signage', tier: 'placeholder', note: 'Small phone numbers are fictional 1970s-format 7-digit Tokyo numbers (not dialable today).' });
+  ctx.tag({ id: 'signage/phone-numbers', module: 'signage', tier: 'period-plausible-generic', note: 'No telephone numbers are printed (r04 round b): a fictional 7-digit number could map to a real current 03-3xxx-xxxx number.' });
 
   const chk = env.adoptedCheck || [];
   const maxErr = chk.reduce((m, c) => Math.max(m, c.err), 0);
