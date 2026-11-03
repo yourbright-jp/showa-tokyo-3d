@@ -20,7 +20,7 @@ export const LOOK_PRESETS = {
     exposure: 0.95, fogColor: 0xb4c3d2, fogDensity: 0.0019,
     toneMapping: 'neutral',
     bloom: { strength: 0.12, radius: 0.4, threshold: 0.97 },
-    grade: { lift: [0.0, 0.002, 0.008], gain: [1.04, 1.0, 0.95], saturation: 1.16, contrast: 1.17, vignette: 0.24, grain: 0.022 },
+    grade: { lift: [0.004, 0.0, 0.004], gain: [1.045, 0.99, 0.965], saturation: 1.14, contrast: 1.17, vignette: 0.24, grain: 0.022 }, // round d: less green/olive in the shadows
   },
   'neon-night': {
     note: 'Visual working choice matched to R04; not a historical claim.',

@@ -17,7 +17,7 @@ import {
 // People are static for stills in r04. Every person has a stable id, ground position, facing
 // and gait phase (group.userData.people) so motion can be added later without re-placing them.
 
-const MIN_SEP = 0.66;          // centre spacing between unrelated people (m)
+const MIN_SEP = 0.82;          // centre spacing between unrelated people (m); round d: 0.66 let bodies overlap in depth
 const TILE = 4;                // placement tile (m); each tile has its own RNG stream
 const CHUNK = 24;              // mesh chunk size (m) for frustum culling
 const MIN_ROUTE = CORRIDOR_M + BODY_R + 0.06;
@@ -108,9 +108,15 @@ export function build(ctx) {
     if (t < art.tMin - 30 || t > art.tMax + 30 || o < art.carriage[0] - 0.3 || o > art.carriage[1] + 0.3) return false;
     return Math.abs(t - art.cwT) > art.cwWidth / 2 - 0.3;
   };
+  // round d: theatre forecourts outside the adopted plaza boundary (Milano-za front) draw people
+  const forecourts = (data.textNodes || []).filter((t) => t.id === 'milano-name-0').map((t) => {
+    const [bx, bz] = t.baseline_direction_xz; return { x: t.position_m[0], z: t.position_m[2], nx: -bz, nz: bx, half: 18 };
+  });
+  const inForecourt = (x, z) => forecourts.some((f) => { const dx = x - f.x, dz = z - f.z; const out = dx * f.nx + dz * f.nz, along = Math.abs(dx * -f.nz + dz * f.nx); return out > 1.5 && out < 22 && along < f.half; });
   const density = (x, z, ri, zone) => {
     if (inTrafficLane(x, z)) return 0;
     let d = zone === 'street' ? 0.16 : zone === 'plaza' ? 0.1 : 0.034 * (1 - 0.6 * Math.min(1, Math.max(0, (ri.d - 12) / 28)));
+    if (zone !== 'street' && zone !== 'plaza' && inForecourt(x, z)) d = 0.07;
     // keep the immediate foreground of the six diagnostic cameras mostly open (same world for all frames)
     for (const c of camPts) {
       const dd = Math.hypot(x - c[0], z - c[2]);

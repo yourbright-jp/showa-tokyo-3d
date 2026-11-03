@@ -95,7 +95,7 @@ void groundSurface() {
     float r = 0.93 - 0.05 * fine - 0.13 * pt;
     c = mix(c, vec3(0.035, 0.032, 0.03), sealed * 0.75);
     r = mix(r, 0.62, sealed);
-    c *= vec3(1.42, 1.36, 1.25); // r04: older, greyer asphalt; shaded streets read near-black and teal (visual reviews a, b)
+    c *= vec3(1.44, 1.35, 1.33); // r04: older, greyer asphalt (reviews a, b); round d: less yellow so blue skylight does not turn it olive
     alb += wAsp * c; rough += wAsp * r; grad += wAsp * gra * 0.5; aggH = mix(aggH, h, wAsp);
   }
 

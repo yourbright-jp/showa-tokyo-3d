@@ -39,9 +39,11 @@ export function plan(ctx, env) {
   const { data } = ctx;
   const items = [];
   const space = env.space;
-  const used = new Set();
+  const used = new Set(['__dup__']); // '__dup__' always collides (rejected candidates)
   const fictionalNames = new Set();
   const stemUse = new Map(); // fictional stem -> trade (r04: one invented name per trade)
+  const adoptedSeen = new Map(); // adopted generic word -> boards drawn so far
+  const hashStr = (str) => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0; return h; };
   const bnames = new Map();
   const NAME_STEMS_LOCAL = () => STEMS_FOR_BUILDINGS;
 
@@ -92,6 +94,7 @@ export function plan(ctx, env) {
   function tenantsFor(b, pl, groundWord) {
     const r = env.rng(`signage/tenants/${b.id}`);
     const out = [];
+    const localStems = new Set(); // round d: never the same invented stem twice in one building
     for (let fl = 1; fl <= Math.max(1, pl.floors); fl++) {
       let trade;
       if (fl === 1) trade = groundWord ? (TRADE_BY_WORD[groundWord] || { w: groundWord, fmt: 'pre', sch: LIGHT_BG }) : r.pick(TRADES.filter((t) => t.g));
@@ -102,12 +105,14 @@ export function plan(ctx, env) {
       const t = uniq(r, () => {
         if (fl > 1 && r.chance(0.35)) trade = r.pick(TRADES.filter((x) => x.u)); // vary the trade on retries
         const nm = shopName(r, trade, stemUse);
+        if (nm.stem && localStems.has(nm.stem)) return { key: '__dup__' };
         const showName = nm.name && /(店|局|社|所|科|院|産|事|堂|房)$/.test(nm.name) ? nm.name : null;
         const display = nm.name ? (showName || `${trade.w} ${nm.name}`) : trade.w;
         const sch = r.chance(0.45) ? r.pick(LIGHT_BG) : r.pick(trade.sch || ALL_SCHEMES);
         return { key: display, trade: trade.w, name: nm.name, display, fictional: nm.fictional, scheme: SCHEMES[sch], noren: !!trade.noren, floor: fl, uses: 0, flabel: floorLabel(fl, r) }; // r04: one floor-label style per tenant
       });
       if (!t) { out.push(null); continue; }
+      if (t.name) for (const st of NAME_STEMS) if (t.name.startsWith(st)) localStems.add(st);
       if (t.fictional && t.name) fictionalNames.add(t.name);
       t.__b = b.id;
       out.push(t);
@@ -273,6 +278,12 @@ export function plan(ctx, env) {
     // board ground and trim so repeated words do not read as copies (text, size and place unchanged)
     sch.bg = r.pick(['#efece4', '#f0e5c4', '#dde7ee', '#efdfd5', '#e2ecdc', '#ece6d6', '#f3ead2']);
     sch.ac = r.pick(['#b3251c', '#1e4a91', '#1d6a44', '#de6b1c', '#5b1a28', '#1c1b19', sch.ac]);
+    if (tnode) {
+      // round d: the n-th board carrying the same adopted word gets a distinct ground/trim pair
+      const k = adoptedSeen.get(tnode.text) || 0; adoptedSeen.set(tnode.text, k + 1);
+      const V = [['#efece4', '#b3251c'], ['#dbe6ef', '#1e4a91'], ['#f1e3b8', '#1d6a44'], ['#efd9cf', '#5b1a28'], ['#e3ecd9', '#de6b1c']];
+      [sch.bg, sch.ac] = V[(k + (hashStr(B.b.id) % 2)) % V.length];
+    }
     const spec = {
       scheme: sch,
       text: tnode ? tnode.text : (g ? g.display : '営業中'),

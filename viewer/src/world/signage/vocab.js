@@ -189,9 +189,9 @@ export function shopName(r, trade, used = null) {
   if (t.fmt === 'suf') {
     const suf = r.pick(t.suf);
     // e.g. 麻雀 + 白鳥荘, 中華料理 + 桂林?  keep two-part reading: trade word shown separately by caller
-    return { text: `${stem}${suf}`, trade: t.w, name: `${stem}${suf}`, fictional: true };
+    return { text: `${stem}${suf}`, trade: t.w, name: `${stem}${suf}`, stem, fictional: true };
   }
-  return { text: stem, trade: t.w, name: stem, fictional: true };
+  return { text: stem, trade: t.w, name: stem, stem, fictional: true };
 }
 
 export function floorLabel(n, r) {
