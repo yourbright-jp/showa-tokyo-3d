@@ -9,7 +9,9 @@ import { weather, makeCanvas, toTexture } from './kit.js';
 // kabukicho-koma-plaza-1976.json: low Plaza Theatre front (9 m), canopy 4.15 m / 1.6 m,
 // three 2.8 m bays, central 6-step stair (1.2 m rise, 3.0 m wide, 2.0 m out), set-back
 // Club Heights tower (28 m, 6 m setback, 0.48 frontage, 6 x 5 windows), texts プラザ劇場 /
-// クラブハイツ / 入口. The adopted round emblem is NOT drawn (r04 rule: no corporate emblems).
+// クラブハイツ / 入口. r04: the adopted round emblem (3 concentric rings, centre 5.8 m, radius
+// 1.5 m, at 0.78 of the frontage as placed in r03) is drawn as plain rings with no letters or
+// symbol: an adopted-inferred geometric motif after the 1979 photograph, not a trademark copy.
 
 export function buildToho(ctx, kit) {
   const D = ctx.data;
@@ -37,10 +39,16 @@ export function buildToho(ctx, kit) {
   const shopHoles = [-1, 1].map((s) => { const xc = s * (W / 2 + Math.abs(fb.x(span[s > 0 ? 1 : 0]))) / 2; return { x0: xc - 1.8, x1: xc + 1.8, y0: 0.12, y1: 2.85 }; });
   holes.push(...shopHoles);
   // upper end windows beside the billboard
-  const bx0 = fb.x(0.2), bx1 = fb.x(0.8); const bL = Math.min(bx0, bx1), bR = Math.max(bx0, bx1);
+  // adopted emblem position (r03 build_period_scene.py: fraction 0.78 of the lower front)
+  const emX = fb.x(0.78), emR = P.emblem_radius_m || 1.5, emY = P.emblem_center_height_m || 5.8;
+  // the authored billboard stops short of the emblem (r02 ran it to 0.8 and the emblem was omitted)
+  const bx0 = fb.x(0.2), bx1 = fb.x(0.8); const bL0 = Math.min(bx0, bx1), bR0 = Math.max(bx0, bx1);
+  const clearL = emX - emR - 0.6, clearR = emX + emR + 0.6;
+  const bL = emX < 0 ? Math.max(bL0, clearR) : bL0, bR = emX < 0 ? bR0 : Math.min(bR0, clearL);
   const endWins = [];
   for (const s of [-1, 1]) for (const k of [0, 1]) {
     const xc = s > 0 ? bR + (W / 2 - bR) * (k + 0.5) / 2 : -W / 2 + (bL + W / 2) * (k + 0.5) / 2;
+    if (xc + 0.7 > clearL && xc - 0.7 < clearR) continue; // keep the emblem field clear
     endWins.push({ x0: xc - 0.7, x1: xc + 0.7, y0: 5.9, y1: 7.05 });
   }
   holes.push(...endWins);
@@ -138,6 +146,15 @@ export function buildToho(ctx, kit) {
       fb.letters(node, { depth: node.text === 'クラブハイツ' ? 0.05 : 0.075, stroke: 4, pins: node.text !== 'クラブハイツ' });
     }
   }
+  // adopted round emblem: three concentric flat rings (r03: radii R, R-0.35, R-0.7; band 0.11 m)
+  for (let i = 0; i < (P.emblem_rings || 3); i++) {
+    const ro = emR - i * 0.35, ri = ro - 0.11;
+    const sh = new THREE.Shape(); sh.absarc(0, 0, ro, 0, Math.PI * 2, false);
+    const hole = new THREE.Path(); hole.absarc(0, 0, ri, 0, Math.PI * 2, true); sh.holes.push(hole);
+    const g = new THREE.ExtrudeGeometry(sh, { depth: 0.035, bevelEnabled: false, curveSegments: 48 });
+    g.translate(emX, emY, WALL_Z + 0.075 + 0.012 * i);
+    fb.add('emblem', g);
+  }
   for (const s of [-1, 1]) fb.downpipe(s * (W / 2 - 0.3), H);
   fb.add('concrete', boxMinMax(-W / 2 - 0.03, H, -0.25, W / 2 + 0.03, H + 0.12, WALL_Z + 0.06));
   for (const g of massWalls(lower, lower.baseY, lower.baseY + H, new Set([fi]))) fb.addWorld('massWall', g);
@@ -167,7 +184,7 @@ export function buildToho(ctx, kit) {
   }
   const tsills = twin.map((h) => ({ x0: h.x0, x1: h.x1, y: h.y0 - 0.06 }));
   const tjy = []; for (let r = 1; r < P.tower_window_rows; r++) tjy.push(r * TH / P.tower_window_rows - 0.1);
-  const tPainter = paintFacade(tfb, -TW / 2, TW / 2, 0, TH + 0.1, { key: 'tower-west', baseRgb: wallRgb.map((v) => v * 0.95), ppm: 48, jointW: 0.03, joints: { xs: [-TW / 2 + 0.6, TW / 2 - 0.6], ys: tjy }, sills: tsills, coping: TH, dirtH: 0.5, stains: 16, age: 1.5 });
+  const tPainter = paintFacade(tfb, -TW / 2, TW / 2, 0, TH + 0.1, { key: 'tower-west', baseRgb: wallRgb.map((v) => v * 0.95), ppm: 48, jointW: 0.03, joints: { xs: [-TW / 2 + 0.6, TW / 2 - 0.6], ys: tjy }, sills: tsills, coping: TH, dirtH: 0.5, stains: 40, age: 2.2 });
   tfb.add('towerWall', wallWithHoles(-TW / 2, 0, TW / 2, TH, twin, WALL_Z, tPainter));
   edgeQuadReturns(tfb, TW, TH);
   let k = 0;
@@ -206,19 +223,22 @@ export function buildToho(ctx, kit) {
   const mats = {
     ...M, ...lobby,
     frontWall: W8(new THREE.MeshStandardMaterial({ map: painter.texture(), roughness: 0.86 }), { baseY: lower.baseY, dirt: 0, streak: 0.05, mottle: 0.04 }),
-    towerWall: W8(new THREE.MeshStandardMaterial({ map: tPainter.texture(), roughness: 0.88 }), { baseY: tower.baseY, dirt: 0, streak: 0.08, mottle: 0.05 }),
+    towerWall: W8(new THREE.MeshStandardMaterial({ map: tPainter.texture(), roughness: 0.88 }), { baseY: tower.baseY, dirt: 0, streak: 0.2, mottle: 0.12 }),
     massWall: W8(new THREE.MeshStandardMaterial({ map: S.panelTex, color: new THREE.Color(...wallRgb.map((v) => (v / 255) ** 2.2)).multiplyScalar(1.45), roughness: 0.9 }), { baseY: lower.baseY, dirtH: 1.0, dirt: 0.3, streak: 0.16, mottle: 0.06, topY: tower.topY, topStreak: 0.08 }),
     shopGlass: new THREE.MeshStandardMaterial({ map: S.windowTex, color: 0x9a9a90, roughness: 0.05, metalness: 0.3 }),
     billboard: new THREE.MeshStandardMaterial({ map: S.billboardTex, roughness: 0.75, emissive: 0xffffff, emissiveMap: S.billboardTex, emissiveIntensity: kit.night ? 0.5 : 0.0 }),
     lampHead: new THREE.MeshStandardMaterial({ color: 0x3a3c3a, roughness: 0.5, metalness: 0.5, emissive: 0xfff0d0, emissiveIntensity: kit.night ? 0.6 : 0 }),
     band: W8(new THREE.MeshStandardMaterial({ color: 0xc6aaa3, roughness: 0.45 }), { baseY: lower.baseY, dirt: 0, streak: 0.2, mottle: 0.1 }),
     cooler: W8(new THREE.MeshStandardMaterial({ color: 0xb9b6aa, roughness: 0.6, metalness: 0.2 }), { baseY: lower.baseY, dirt: 0, streak: 0.25, mottle: 0.15 }),
+    // r03 material 'plaza-emblem' base colour (linear 0.30, 0.31, 0.29); enamelled metal, weathered
+    emblem: W8(new THREE.MeshStandardMaterial({ color: new THREE.Color(0.30, 0.31, 0.29), roughness: 0.45, metalness: 0.25 }), { baseY: lower.baseY, dirt: 0, streak: 0.15, mottle: 0.1 }),
   };
   const g = new THREE.Group(); g.name = 'toho-kaikan';
   g.add(fb.build(mats, 'toho-lower'));
   g.add(tfb.build(mats, 'toho-tower'));
+  ctx.tag({ id: 'toho-kaikan-emblem', module: 'landmarks', tier: 'adopted-inferred', note: 'Round emblem per kabukicho-koma-plaza-1976 (3 rings, centre 5.8 m, radius 1.5 m, at 0.78 of the frontage as in r03); plain rings without letters or symbol, not a trademark reproduction.' });
   ctx.tag({ id: 'toho-kaikan-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Plaza Theatre low front 9 m, canopy 4.15/1.6 m, 3 x 2.8 m bays, 6-step stair, set-back Club Heights tower 28 m with adopted 6 x 5 window grid (1975/1979 photos, dimensions inferred).' });
-  ctx.tag({ id: 'toho-kaikan-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Shopfronts, showcases, neutral billboard panels (no programme), Club Heights sign band colour, cheek walls/handrails, side-face window grid, window coolers and rooftop plant are authored; adopted round emblem omitted (no corporate emblems rule).' });
+  ctx.tag({ id: 'toho-kaikan-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Shopfronts, showcases, neutral billboard panels (no programme), Club Heights sign band colour, cheek walls/handrails, side-face window grid, window coolers and rooftop plant are authored.' });
   return g;
 }
 

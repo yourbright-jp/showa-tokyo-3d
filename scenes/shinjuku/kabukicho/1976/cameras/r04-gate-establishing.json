@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "r04-gate-establishing",
   "status": "r04-diagnostic-view",
-  "role": "supplementary review camera for the adopted gate; not a route station",
+  "role": "supplementary review camera for the adopted gate front; not a route station",
   "position_m": [
     -100.1433,
     2.6641,
@@ -29,6 +29,6 @@
     "script": "scripts/make_r04_views.py"
   },
   "composition_reference": "R01 (approved colour reference; composition target only, not evidence)",
-  "historical_confidence": "not-applicable: review camera; the R01 source photograph's camera position is not reconstructed",
+  "historical_confidence": "not-applicable: review camera; no source photograph's camera position is reconstructed",
   "source": "r04-review-camera"
 }

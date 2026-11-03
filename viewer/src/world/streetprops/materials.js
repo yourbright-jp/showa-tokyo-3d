@@ -287,10 +287,13 @@ export function makeAtlas(ctx) {
       region('binLabel', x, y, w, h);
     }
     // 14) pole advertisement plates (generic category words only)
-    poleAd(g, rng, 768, 304, 64, 224, ['内科', '小児科'], '#1f4f9a', 'この先'); region('poleAdA', 768, 304, 64, 224);
-    poleAd(g, rng, 832, 304, 64, 224, ['質'], '#b3261e', '右へ50m'); region('poleAdB', 832, 304, 64, 224);
-    poleAd(g, rng, 896, 304, 64, 224, ['歯科'], '#1d6b3a', 'この先'); region('poleAdC', 896, 304, 64, 224);
-    poleAd(g, rng, 960, 304, 64, 224, ['理容'], '#1f4f9a', '左へ'); region('poleAdD', 960, 304, 64, 224);
+    // r04: moved from y=304 to the free block at y=600. At y=304 the plates' lower halves were
+    // overpainted by the pedestrian-signal faces (x 736-800, y 432-496) and the basket/grille
+    // faces (x 800-1024, y 432-528) drawn later, which produced the broken 内科/小児 plate.
+    poleAd(g, rng, 768, 600, 64, 224, ['内科', '小児科'], '#1f4f9a', 'この先'); region('poleAdA', 768, 600, 64, 224);
+    poleAd(g, rng, 832, 600, 64, 224, ['質'], '#b3261e', '右へ50m'); region('poleAdB', 832, 600, 64, 224);
+    poleAd(g, rng, 896, 600, 64, 224, ['歯科'], '#1d6b3a', 'この先'); region('poleAdC', 896, 600, 64, 224);
+    poleAd(g, rng, 960, 600, 64, 224, ['理容'], '#1f4f9a', '左へ'); region('poleAdD', 960, 600, 64, 224);
     // 15) licence plate (white, green characters), small
     {
       const x = 576, y = 368, w = 128, h = 64;
@@ -402,19 +405,29 @@ export function makeAtlas(ctx) {
 }
 
 function poleAd(g, rng, x, y, w, h, words, col, sub) {
+  // r04: the r02 version drew fixed 34 px glyphs, so 内科/小児科 (5 glyphs) ran past the 224 px plate
+  // into the neighbouring atlas region and under the sub line. Fit the glyphs to the plate and clip.
+  g.save();
+  g.beginPath(); g.rect(x, y, w, h); g.clip();
   g.fillStyle = '#efece2'; g.fillRect(x, y, w, h);
   g.fillStyle = col; g.fillRect(x, y, w, 8); g.fillRect(x, y + h - 8, w, 8);
-  g.fillStyle = col; g.textAlign = 'center'; g.textBaseline = 'middle';
-  let cy = y + 30;
+  g.textAlign = 'center'; g.textBaseline = 'middle';
+  const subStep = 15, subH = sub.length * subStep + 10;
+  const n = words.reduce((a, wd) => a + [...wd].length, 0), gaps = words.length - 1;
+  const avail = h - 16 - subH - 10 - gaps * 6;
+  const fs = Math.min(34, Math.floor(avail / n / 1.06));
+  let cy = y + 12 + fs * 0.55;
+  g.fillStyle = col;
   for (const wd of words) {
-    for (const ch of wd) { g.font = `bold 34px ${JP_FONT}`; g.fillText(ch, x + w / 2, cy); cy += 36; }
+    for (const ch of wd) { g.font = `bold ${fs}px ${JP_FONT}`; g.fillText(ch, x + w / 2, cy); cy += fs * 1.06; }
     cy += 6;
   }
-  g.font = `16px ${JP_FONT}`;
+  g.font = `14px ${JP_FONT}`;
   g.fillStyle = '#b8261e';
-  let sy = y + h - 22 - (sub.length - 1) * 16;
-  for (const ch of sub) { g.fillText(ch === 'm' ? 'm' : ch, x + w / 2, sy); sy += 16; }
+  let sy = y + h - 12 - subH + subStep * 0.7;
+  for (const ch of sub) { g.fillText(ch, x + w / 2, sy); sy += subStep; }
   grungeRect(g, rng, x, y, w, h, 0.22);
+  g.restore();
 }
 
 function vendingCig(g, rng, x, y, w, h) {

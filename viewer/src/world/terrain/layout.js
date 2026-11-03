@@ -432,6 +432,9 @@ export function buildLayout(ctx) {
     roads, roadRings, plazaSet, foreSet, plazaRing, connectorRings, forecourtRing, buildings, buildingRings, obstacles,
     classify, pattern, north, sN, southOff, along, linePt, roadWidth, sidewalkW: SIDEWALK_W,
     sidewalkRing, lGutterRing, kerbs, inlets, crosswalk, paint, gutters, gutterLines, edges, manholes, patches, stains,
+    // r04: shared arterial frame so other modules (people) agree on the carriageway: point (x,z) has
+    // along = (x-cx)*ux+(z-cz)*uz and offset = (x-cx)*sx+(z-cz)*sz from the north building line
+    arterial: { cx: north.cx, cz: north.cz, ux: north.ux, uz: north.uz, sx: sN[0], sz: sN[1], carriage: [carriage0, carriage1], tMin, tMax, cwT, cwWidth: crosswalk.width },
     fountain, lampBases, steps, route, routeAt, routeLen, sPlaza, sGate, inFountain,
     gridDir: [north.ux, north.uz],
     foreDir: (() => {

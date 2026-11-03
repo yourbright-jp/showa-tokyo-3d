@@ -115,7 +115,7 @@ export async function build(ctx) {
   ctx.tag({ id: 'terrain-crosswalk', module: 'terrain', tier: 'period-plausible-generic', note: 'Pre-1992 ladder-type crosswalk (side lines + 0.45 m bars) across the main road on the gate axis, stop lines, lane and centre lines; R08 (1972) shows a crossing at the old gate; exact 1976 layout unverified.' });
   ctx.tag({ id: 'terrain-gutters-covers', module: 'terrain', tier: 'period-plausible-generic', note: `U-channel gutters with concrete lids and steel grates along external road edges near the walk (${counts.lids || 0} lids, ${counts.grates || 0} grates); generic cast-iron covers without emblems; plaza/forecourt granite edging where surface patterns change.` });
 
-  group.userData.layout = { gutters: L.gutters, manholes: L.manholes, kerbs: L.kerbs, edges: L.edges, patches: L.patches.map((p) => p.ring), crosswalk: L.crosswalk };
+  group.userData.layout = { gutters: L.gutters, manholes: L.manholes, kerbs: L.kerbs, edges: L.edges, patches: L.patches.map((p) => p.ring), crosswalk: L.crosswalk, arterial: L.arterial };
   ctx.log(`terrain: ${JSON.stringify(timings)} counts ${JSON.stringify(counts)} total ${Math.round(performance.now() - T0)} ms`);
   return group;
 }

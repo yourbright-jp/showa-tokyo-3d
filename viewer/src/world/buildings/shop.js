@@ -6,7 +6,9 @@ import { SHOP_INTERIOR_COLOURS, GOODS } from './style.js';
 // All generic; text-bearing signs belong to the signage module.
 
 const IWALL = SHOP_INTERIOR_COLOURS.map((h) => hexToRgb(h).map((v) => v * 0.42));
-const GOOD = GOODS.map((h) => hexToRgb(h).map((v) => v * 0.7));
+// r04: goods read as flat placeholder colour blocks (visual review): colours are desaturated
+// towards packaging greys and each slot becomes a run of small packs with label bands.
+const GOOD = GOODS.map((h) => { const c = hexToRgb(h).map((v) => v * 0.7); const l = (c[0] + c[1] + c[2]) / 3; return c.map((v) => v * 0.62 + l * 0.38); });
 const ALU = hexToRgb('#9a9e9e');
 const STEEL_DARK = hexToRgb('#3e4240');
 const WOOD = ['#7a5232', '#8e6440', '#5e3e26', '#a07850'].map(hexToRgb);
@@ -233,9 +235,17 @@ function goodsRow(env, F, u0, u1, y, dA, dB, r, hMax) {
   const B = env.B('interior');
   let u = u0;
   while (u < u1 - 0.05) {
-    const w = r.range(0.08, 0.3); const h = r.range(0.06, hMax);
+    const w = r.range(0.12, 0.34); const h = r.range(0.06, hMax);
     const c = r.pick(GOOD);
-    box(B, F, u, Math.min(u1, u + w), y, y + h, dA + r.range(0, 0.1), dB - r.range(0, 0.1), mulCol(c, r.range(0.75, 1.05)), { skip: new Set(['bottom', 'back']) });
+    const n = Math.max(1, Math.round(w / r.range(0.045, 0.09)));
+    const pw = w / n;
+    const da = dA + r.range(0, 0.1), db = dB - r.range(0, 0.1);
+    const label = r.chance(0.55) ? mulCol(r.pick(GOOD), 1.25) : null;
+    for (let k = 0; k < n && u + (k + 1) * pw <= u1; k++) {
+      const hk = h * r.range(0.9, 1.0), a = u + k * pw + 0.004, b = u + (k + 1) * pw - 0.004;
+      box(B, F, a, b, y, y + hk, da, db, mulCol(c, r.range(0.82, 1.0)), { skip: new Set(['bottom', 'back']) });
+      if (label && hk > 0.07) box(B, F, a + 0.002, b - 0.002, y + hk * 0.4, y + hk * 0.62, db, db + 0.003, label, { skip: new Set(['bottom', 'back', 'top']) });
+    }
     u += w + r.range(0.0, 0.05);
   }
 }

@@ -91,7 +91,7 @@ export const NAME_STEMS = [
   '白鳥', '千鳥', '若葉', '桔梗', '花月', '月光', '銀河', '紫苑', '鈴蘭', '白樺', '千草', '夕霧', '志野', '葵', '楓', '桂',
   '藤', '梅', '浜', '松葉', '若竹', '寿', '福', '春日', '秋月', '雪', '星', '虹', '泉', '都', '京', '雅', '栄', '鶴', '亀',
   '鈴', '蘭', '舞', '渚', '港', '岬', '柳', '桜', '椿', '萩', '蓮', '牡丹', '撫子', '水仙', '朝顔', '山茶花', '小菊', '芙蓉',
-  '一休', '大吉', '万福', '八重', '三笠', '加賀', '伊予', '銀座', '浪花', '博多', '長崎', '小町', '静', '紅葉', '翠', '琥珀',
+  '大吉', '万福', '八重', '三笠', '加賀', '伊予', '浪花', '小町', '静', '紅葉', '翠', '琥珀',
 ];
 export const KANA_NAMES = [
   'ルミ', 'エミ', 'マリ', 'ユキ', 'リラ', 'ミモザ', 'カトレア', 'ポエム', 'ロマン', 'モナ', 'ジュン', 'アカネ', 'ミキ', 'サチ',
@@ -104,9 +104,36 @@ export const KANA_NAMES = [
 export const BLOCKLIST = ['コマ', 'ミラノ', 'ハイツ', 'スカラ', 'ジャンボ', 'ロッテ', 'ルノアール', '滝沢', '風月堂', '中村屋', '高野',
   '紀伊國屋', '伊勢丹', '三越', '丸井', '東宝', '松竹', '東映', '日活', '大映', 'キリン', 'サッポロ', 'アサヒ', 'サントリー', '宝'];
 
+// r04: phrases are chosen per trade (phraseFor). The r02 pool was drawn regardless of trade, giving
+// e.g. 'お持ち帰り' on a sauna and '明朗会計' on an estate agent. 'ランチタイム' and 'テナント募集' were
+// dropped (period usage unconfirmed).
 export const PHRASES = ['営業中', '冷房完備', '冷暖房完備', '年中無休', '深夜営業', '貸室あり', 'ご宴会承ります', 'お食事', '喫茶・軽食',
-  '生ビール', '洋酒', '初心者歓迎', '明朗会計', 'ランチタイム', 'お持ち帰り', '御予約承ります', '大衆割烹', '各種宴会', '朝まで営業'];
-export const UPPER_ONLY_PHRASES = ['空室あり', '貸事務所', 'テナント募集'];
+  '生ビール', '洋酒', '初心者歓迎', '明朗会計', 'お持ち帰り', '御予約承ります', '大衆割烹', '各種宴会', '朝まで営業'];
+export const UPPER_ONLY_PHRASES = ['空室あり', '貸事務所'];
+const PHRASE_GROUPS = {
+  any: ['営業中', '冷房完備', '冷暖房完備', '年中無休'],
+  meal: ['お食事', 'ご宴会承ります', '御予約承ります', '各種宴会'],
+  takeaway: ['お持ち帰り'],
+  drink: ['生ビール', '洋酒', '明朗会計', '深夜営業', '朝まで営業'],
+  cafe: ['喫茶・軽食'],
+  game: ['初心者歓迎', '深夜営業'],
+  izakaya: ['大衆割烹', '生ビール', 'ご宴会承ります'],
+};
+const TRADE_PHRASES = {
+  喫茶: ['cafe'], 純喫茶: ['cafe'], 喫茶室: ['cafe'], 麻雀: ['game'], ビリヤード: ['game'], 碁会所: ['game'], パチンコ: [],
+  中華料理: ['meal', 'takeaway'], ラーメン: ['takeaway'], 寿司: ['meal', 'takeaway'], 焼鳥: ['takeaway', 'izakaya'], 酒場: ['izakaya', 'drink'],
+  大衆酒場: ['izakaya', 'drink'], 居酒屋: ['izakaya', 'drink'], スナック: ['drink'], バー: ['drink'], クラブ: ['drink'], 洋酒: ['drink'],
+  洋食: ['meal'], とんかつ: ['meal', 'takeaway'], 天ぷら: ['meal'], そば: ['meal'], 甘味: ['takeaway'], レストラン: ['meal'],
+  焼肉: ['meal'], お好み焼: ['meal', 'takeaway'], 割烹: ['meal'], 定食: ['meal'], 洋菓子: ['takeaway'], サウナ: ['game'],
+};
+/** A phrase that fits the trade (generic 'any' phrases for trades without a group, e.g. shops, clinics, estate agents). */
+export function phraseFor(r, trade) {
+  const groups = TRADE_PHRASES[trade] || [];
+  const pool = [...PHRASE_GROUPS.any];
+  for (const g of groups) pool.push(...PHRASE_GROUPS[g], ...PHRASE_GROUPS[g]);
+  if (trade === 'サウナ') return r.pick(['深夜営業', '年中無休', '冷暖房完備']);
+  return r.pick(pool);
+}
 export const MENU = {
   喫茶: ['コーヒー 150円', '紅茶 150円', 'ミルク 120円', 'ジュース 180円', 'ケーキセット 300円', 'トースト 100円'],
   食事: ['定食 350円', 'ラーメン 250円', 'カレーライス 280円', 'チャーハン 300円', 'ギョーザ 180円', 'もりそば 200円', 'かつ丼 400円', '親子丼 350円'],
@@ -116,18 +143,34 @@ export const NOREN_WORDS = { ラーメン: ['ラーメン', '中華そば'], 寿
   とんかつ: ['とんかつ'], 天ぷら: ['天ぷら'], そば: ['そば', '生そば'], 甘味: ['甘味', 'あんみつ'], 居酒屋: ['酒処', 'のみ処'], お好み焼: ['お好み焼'],
   割烹: ['割烹'], 定食: ['めし', '定食'], 食堂: ['めし', '御食事処'] };
 
-/** Fictional 1970s-format 7-digit Tokyo number (3-digit exchange + 4); not dialable today. */
+/** Fictional 1970s-format number. r04: no longer printed on signs (a mechanical 03-3xxx-xxxx reading
+ *  could coincide with a real current number); kept only for compatibility. */
 export function phone(r) {
   const ex = r.pick(['200', '202', '204', '205', '207', '208', '209', '232', '354', '356']);
   return `TEL ${ex}-${String(r.int(0, 9999)).padStart(4, '0')}`;
 }
 
-/** Make a shop name. Returns { text, trade, name, fictional }. */
-export function shopName(r, trade) {
+// FICTIONAL surname stems for clinics, estate agents and pawnshops (period practice was to use the
+// owner's surname rather than a poetic name; r04 history review). Generic common surnames only.
+export const SURNAMES = ['田村', '小林', '中島', '松井', '石田', '岡本', '西村', '堀', '河野', '野口', '大塚', '森田', '平野', '杉山',
+  '竹内', '今井', '菅原', '久保', '小野', '藤井', '宮本', '上田', '山口', '吉川', '新井', '桑原', '関', '篠原'];
+const SURNAME_TRADES = new Set(['診療所', '歯科', '不動産', '質', '時計', '眼鏡', '書店', '靴', '薬局']);
+
+/**
+ * Make a shop name. Returns { text, trade, name, fictional }.
+ * `used` (optional Map stem -> trade) keeps one fictional stem to one trade within a build, so the
+ * same invented name does not reappear on unrelated businesses (r04 history review).
+ */
+export function shopName(r, trade, used = null) {
   const t = typeof trade === 'string' ? TRADE_BY_WORD[trade] || { w: trade, fmt: 'pre' } : trade;
   if (t.fmt === 'bare') return { text: t.w, trade: t.w, name: null, fictional: false };
   const kana = t.kana && r.chance(0.65);
-  const stem = kana ? r.pick(KANA_NAMES) : r.pick(NAME_STEMS);
+  const pool = SURNAME_TRADES.has(t.w) ? SURNAMES : kana ? KANA_NAMES : NAME_STEMS;
+  let stem = r.pick(pool);
+  if (used) {
+    for (let i = 0; i < 12 && used.has(stem) && used.get(stem) !== t.w; i++) stem = r.pick(pool);
+    if (!used.has(stem)) used.set(stem, t.w);
+  }
   if (t.fmt === 'suf') {
     const suf = r.pick(t.suf);
     // e.g. 麻雀 + 白鳥荘, 中華料理 + 桂林?  keep two-part reading: trade word shown separately by caller

@@ -5,9 +5,15 @@
 //  - short Latin/digit runs (e.g. "3F") set upright side-by-side in one cell (tate-chu-yoko),
 //  - condensed horizontal scaling to fit, letter spacing,
 //  - heavy lettering via stroke+fill, outlines, drop shadows.
-// Only the system fonts IPAGothic / WenQuanYi Zen Hei are used.
+// System fonts only (no font files are fetched): IPAGothic / IPAMincho (IPA Font License v1.0),
+// Motoya L Maruberi / Motoya L Cedar (Apache-2.0), WenQuanYi Zen Hei for Latin/digits fallback.
+// r04: one modern digital gothic for ~1,100 signs read as a modern typeface (history review), so
+// painted signs pick a family per sign and get deterministic per-glyph hand variation.
 
 export const FONT_JP = '"IPAGothic", "IPAPGothic", "WenQuanYi Zen Hei", sans-serif';
+export const FONT_MINCHO = '"IPAMincho", "IPAPMincho", "IPAGothic", serif';
+export const FONT_MARU = '"MotoyaLMaru", "IPAGothic", sans-serif';
+export const FONT_CEDAR = '"MotoyaLCedar", "IPAGothic", sans-serif';
 export const FONT_ALT = '"WenQuanYi Zen Hei", "IPAGothic", sans-serif'; // Latin/digits only
 
 const ROTATE_V = new Set(['ー', '－', '〜', '～', '…', '‥', '—', '―', '（', '）', '「', '」', '『', '』', '【', '】', '〈', '〉', '《', '》', '(', ')', '-', '=', '＝', '~']);
@@ -123,9 +129,9 @@ export function inkCenterOffset(g, text, px, family = FONT_JP) {
 function eachGlyph(g, glyphs, fn) {
   for (const q of glyphs) {
     g.save();
-    g.translate(q.x, q.y);
-    if (q.rot) g.rotate(q.rot);
-    g.scale(q.sx, q.sy || 1);
+    g.translate(q.x + (q.jx || 0), q.y + (q.jy || 0));
+    if (q.rot || q.jr) g.rotate((q.rot || 0) + (q.jr || 0));
+    g.scale(q.sx * (q.js || 1), (q.sy || 1) * (q.js || 1));
     g.font = `${q.px}px ${q.family}`;
     fn(q);
     g.restore();
@@ -139,8 +145,29 @@ function eachGlyph(g, glyphs, fn) {
  *  shadow:{dx, dy, color, blur} (dx,dy as fraction of px),
  *  tube: {color, w, shadow} draws a neon-tube outline along glyph edges.
  */
+function glyphHash(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return () => { h = (h + 0x6d2b79f5) >>> 0; let t = h; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+
+/** Apply style.family (CJK glyphs only) and deterministic hand-painted jitter (style.hand 0..1). */
+function personalise(glyphs, style) {
+  if (!style.family && !style.hand) return glyphs;
+  const hand = style.hand || 0;
+  return glyphs.map((q) => {
+    const family = style.family && q.family !== FONT_ALT ? style.family : q.family;
+    if (!hand) return { ...q, family };
+    const r = glyphHash(`${q.ch}|${Math.round(q.x)}|${Math.round(q.y)}|${q.px.toFixed(1)}`);
+    // Only offsets and per-glyph brush weight vary: per-glyph size or rotation defeats the glyph
+    // cache and tripled the sign painting time on the CPU rasteriser.
+    return { ...q, family, jx: (r() - 0.5) * 0.04 * q.px * hand, jy: (r() - 0.5) * 0.04 * q.px * hand, jw: 1 + Math.round((r() - 0.5) * 2) * 0.3 * hand }; // 3 weight steps (cache friendly)
+  });
+}
+
 export function drawGlyphs(g, glyphs, style) {
   if (!glyphs.length) return;
+  glyphs = personalise(glyphs, style);
   g.textAlign = 'center';
   g.textBaseline = 'middle';
   g.lineJoin = 'round';
@@ -148,7 +175,7 @@ export function drawGlyphs(g, glyphs, style) {
   const px = glyphs[0].px;
   const weight = (style.weight || 0) * px;
   const outlines = (style.outline || []).slice().sort((a, b) => b.w - a.w);
-  const lw = (w, q) => w / Math.max(0.3, Math.min(q.sx, q.sy || 1));
+  const lw = (w, q) => (w * (q.jw || 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1));
   if (style.shadow) {
     const s = style.shadow;
     const ow = outlines.length ? outlines[0].w * px * 2 : 0;
@@ -172,6 +199,15 @@ export function drawGlyphs(g, glyphs, style) {
       if (weight > 0) { g.lineWidth = lw(weight, q); g.strokeText(q.ch, 0, 0); }
       g.fillText(q.ch, 0, 0);
     });
+    if ((style.hand || 0) > 0.45 && glyphs[0].px > 40) {
+      // second, slightly offset translucent pass: the uneven edge of a brush-painted letter
+      g.save(); g.globalAlpha = 0.32;
+      eachGlyph(g, glyphs.map((q) => ({ ...q, jx: (q.jx || 0) + q.px * 0.012, jy: (q.jy || 0) - q.px * 0.009 })), (q) => {
+        if (weight > 0) { g.lineWidth = lw(weight * 0.8, q); g.strokeText(q.ch, 0, 0); }
+        g.fillText(q.ch, 0, 0);
+      });
+      g.restore();
+    }
   }
   if (style.tube) {
     // glass tube following the letter edge; dark offset shadow (tube stands off the board), body, highlight

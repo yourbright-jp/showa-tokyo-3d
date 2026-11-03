@@ -52,19 +52,19 @@
   "source_years_scope": "Underlay data years. The adopted landmark decisions cite 1957-1979 sources; see the linked decision records for each year's role.",
   "target_year": 1976,
   "dependencies": [
-    "kabukicho-gate-1976",
-    "plateau-13104-2025-terrain-crop"
+    "plateau-13104-2025-terrain-crop",
+    "kabukicho-gate-1976"
   ],
-  "sha256": "f530b94e7f0644f03fd7a4db3e9662284dd660717ddcc7a073241681c316b1ef",
-  "size_bytes": 1026,
+  "sha256": "77441f0e598467039c13a297f8e8c99eb85eeed02cf74fa2a67c656cb426d1a8",
+  "size_bytes": 1023,
   "geographic_confidence": "approximate",
   "historical_confidence": "not-applicable",
   "adoption_status": "review-camera",
   "historical_fact_certification": false,
   "redistribution_review": "Only code-generated output is published. No photograph, scanned texture, external 3D model or HDR is embedded; the approved colour masters were used only for side-by-side comparison outside these images.",
-  "processing": "scripts/make_r04_views.py: gate centre from data/decisions/kabukicho-gate-1976.json, 42 m back along the adopted gate forward axis on the modern road polygon, eye 1.6 m above the modern DEM TIN, looking at 5.2 m above the gate ground; 35 mm equivalent.",
+  "processing": "scripts/make_r04_views.py: {\"gate_decision\": \"data/decisions/kabukicho-gate-1976.json\", \"gate_centre_xz_m\": [-88.0251, 70.4983], \"back_distance_along_gate_forward_m\": 42.0, \"look_height_above_gate_ground_m\": 5.2, \"script\": \"scripts/make_r04_views.py\"}; eye 1.6 m above the modern DEM TIN; 35 mm equivalent.",
   "format": "json",
   "units": "metres",
   "coordinate_system": "local east-up-south metres; origin JGD2011 35.6945, 139.702, 32.0 m (scene.json)",
-  "inferred_elements": "Review camera only. It does not reconstruct the R01 source photograph's camera position and is not a route station; the six R01 stations and the adopted walk are unchanged."
+  "inferred_elements": "Review camera only (supplementary review camera for the adopted gate front; not a route station). It does not reconstruct a source photograph's camera position; the six R01 stations and the adopted walk are unchanged."
 }

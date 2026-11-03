@@ -26,9 +26,9 @@ PROJECT_URL = "https://github.com/yourbright-jp/showa-tokyo-3d"
 CC_BY = "https://creativecommons.org/licenses/by/4.0/"
 PLATEAU_URL = "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip"
 GSI_URL = "https://maps.gsi.go.jp/development/ichiran.html"
-CAMERA = f"{SCENE}/cameras/r04-gate-establishing.json"
+VIEW_IDS = ["r04-gate-establishing", "r04-gate-rear", "r04-milano-front"]
+CAMERAS = {v: f"{SCENE}/cameras/{v}.json" for v in VIEW_IDS}
 STATION_IDS = ["entrance-approach", "under-gate", "ichibangai-middle", "towards-koma-corner", "plaza-reveal", "koma-front"]
-VIEW_IDS = ["r04-gate-establishing"]
 STILL_SIZE = (1920, 1080)
 WALK_SIZE = (1280, 720)
 # Data files the viewer reads (viewer/src/core/data.js); hashed into the manifest.
@@ -36,8 +36,8 @@ INPUTS = [
     f"{SCENE}/scene.json", "data/derived/kabukicho-layout-features.json", "data/derived/kabukicho-terrain.json",
     "data/derived/kabukicho-period-features.json", f"{SCENE}/cameras/adopted-walk.json",
     "data/decisions/kabukicho-gate-1976.json", "data/decisions/kabukicho-koma-plaza-1976.json",
-    "data/decisions/kabukicho-route-surfaces-1976.json", CAMERA,
-] + [f"{SCENE}/cameras/{s}.json" for s in STATION_IDS]
+    "data/decisions/kabukicho-route-surfaces-1976.json",
+] + list(CAMERAS.values()) + [f"{SCENE}/cameras/{s}.json" for s in STATION_IDS]
 FONTS = [
     {"family": "IPAGothic", "package": "fonts-ipafont-gothic 00303", "license": "IPA Font License Agreement v1.0",
      "license_url": "https://moji.or.jp/ipafont/license/", "font_binary_redistributed": False},
@@ -118,24 +118,26 @@ def image_record(rel, date, meta):
         "published_resolution_px": meta.get("published_resolution_px"),
         "render_manifest": "docs/previews/r04/render-manifest.json",
     })
-    r["dependencies"] = DEPENDENCIES + ["kabukicho-r04-render-manifest"] + (["kabukicho-r04-camera-gate-establishing"] if meta.get("camera_id") == "r04-gate-establishing" else [])
+    r["dependencies"] = DEPENDENCIES + ["kabukicho-r04-render-manifest"] + (["kabukicho-r04-camera-" + meta["camera_id"].removeprefix("r04-")] if meta.get("camera_id") in VIEW_IDS else [])
     return r
 
 
-def camera_record(date):
-    r = base_record(CAMERA, "camera-review-view", date)
+def camera_record(view_id, date):
+    rel = CAMERAS[view_id]
+    cam = json.loads((ROOT / rel).read_text(encoding="utf-8"))
+    r = base_record(rel, "camera-review-view", date)
+    deps = ["plateau-13104-2025-terrain-crop"] + (["kabukicho-gate-1976"] if "gate" in view_id else ["kabukicho-period-features"])
     r.update({
-        "id": "kabukicho-r04-camera-gate-establishing",
-        "processing": "scripts/make_r04_views.py: gate centre from data/decisions/kabukicho-gate-1976.json, 42 m back along the adopted gate forward axis on the modern road polygon, eye 1.6 m above the modern DEM TIN, looking at 5.2 m above the gate ground; 35 mm equivalent.",
+        "id": "kabukicho-r04-camera-" + view_id.removeprefix("r04-"),
+        "processing": "scripts/make_r04_views.py: " + json.dumps(cam["derivation"], ensure_ascii=False) + f"; eye 1.6 m above the modern DEM TIN; {cam['focal_length_35mm_equivalent_mm']} mm equivalent.",
         "format": "json",
         "units": "metres",
         "coordinate_system": "local east-up-south metres; origin JGD2011 35.6945, 139.702, 32.0 m (scene.json)",
-        "inferred_elements": "Review camera only. It does not reconstruct the R01 source photograph's camera position and is not a route station; the six R01 stations and the adopted walk are unchanged.",
+        "inferred_elements": "Review camera only (" + cam["role"] + "). It does not reconstruct a source photograph's camera position; the six R01 stations and the adopted walk are unchanged.",
         "geographic_confidence": "approximate",
         "historical_confidence": "not-applicable",
     })
-    r["historical_fact_certification"] = False
-    r["dependencies"] = ["kabukicho-gate-1976", "plateau-13104-2025-terrain-crop"]
+    r["dependencies"] = deps
     r.pop("source_photographs_embedded", None)
     r["adoption_status"] = "review-camera"
     return r
@@ -149,7 +151,7 @@ def manifest_record(rel, date):
         "format": "json", "units": None, "coordinate_system": None,
         "inferred_elements": "Records how the previews were produced; certifies no historical fact.",
     })
-    r["dependencies"] = DEPENDENCIES + ["kabukicho-r04-camera-gate-establishing"]
+    r["dependencies"] = DEPENDENCIES + ["kabukicho-r04-camera-" + v.removeprefix("r04-") for v in VIEW_IDS]
     return r
 
 
@@ -191,12 +193,14 @@ def publish(a):
             img = img.resize(size, Image.LANCZOS)
         rel = f"{out.as_posix()}/{dst_name}"
         img.save(ROOT / rel, quality=92, subsampling=0)
-        renderer = {"engine": f"three.js {rep['environment']['three']} + headless Chromium {rep['environment']['browser']} (SwiftShader CPU WebGL2)",
-                    "look": rep["look"], "source_commit": rep["environment"]["source_commit"], "worktree_dirty": rep["environment"]["worktree_dirty"]}
+        env = s.get("environment") or rep["environment"]
+        renderer = {"engine": f"three.js {env['three']} + headless Chromium {env['browser']} (SwiftShader CPU WebGL2)",
+                    "look": rep["look"], "source_commit": env["source_commit"], "worktree_dirty": env["worktree_dirty"]}
         meta = {**meta, "renderer": renderer, "render_resolution_px": [rep["w"], rep["h"]], "published_resolution_px": list(size),
                 "processing": f"scripts/render_stills.mjs ({meta['how']}) at {rep['w']}x{rep['h']}; scripts/publish_r04_previews.py re-encodes as JPEG q92" + (f" resized to {size[0]}x{size[1]}" if size != (rep['w'], rep['h']) else "") + "."}
         published.append((rel, meta))
         entries.append({"file": rel, "camera_id": meta.get("camera_id"), "walk_time_s": meta.get("walk_time_s"), "render_ms": s["ms"],
+                        "source_commit": env["source_commit"], "worktree_dirty": env["worktree_dirty"],
                         "stats": s["stats"], "sha256": sha256(rel), "module_log": [l for l in s["log"] if l.startswith("module ") or "still rendered" in l]})
         return ROOT / rel
 
@@ -226,6 +230,8 @@ def publish(a):
                      "cpus": first["environment"]["cpus"], "gpu": "none (SwiftShader)"},
         "source_commit": first["environment"]["source_commit"], "worktree_dirty": first["environment"]["worktree_dirty"],
         "look": first["look"], "seed": 1976,
+        "fictional_shop_names": next((st["fictionalNames"] for (_, _), (_, st) in reports.items() if st.get("fictionalNames")), None),
+        "fictional_shop_names_note": "Invented names from viewer/src/world/signage/vocab.js; not identified with any historical business. Same list for every camera (one deterministic world).",
         "inputs": {p: sha256(p) for p in INPUTS},
         "images": entries,
         "note": "Full 1920x1080 PNG renders remain in git-ignored renders/. Timings were measured on this 4-CPU, no-GPU container.",
@@ -246,7 +252,8 @@ def write_sidecars(published, mrel, date):
         ids.append(rec["id"])
         write_json(rel + ".asset.json", rec)
     write_json(mrel + ".asset.json", manifest_record(mrel, date))
-    write_json(CAMERA + ".asset.json", camera_record(date))
+    for v in VIEW_IDS:
+        write_json(CAMERAS[v] + ".asset.json", camera_record(v, date))
     return ids
 
 
@@ -256,11 +263,12 @@ def main():
     ap.add_argument("--walk", help="render dir holding adopted-walk frames (with render-report.json)")
     ap.add_argument("--out", default="docs/previews/r04")
     ap.add_argument("--date", required=True, help="publication date YYYY-MM-DD (recorded as retrieved_at)")
-    ap.add_argument("--metadata-only", action="store_true", help="only (re)write the review-camera sidecar")
+    ap.add_argument("--metadata-only", action="store_true", help="only (re)write the review-camera sidecars")
     a = ap.parse_args()
     if a.metadata_only:
-        write_json(CAMERA + ".asset.json", camera_record(a.date))
-        print("wrote camera sidecar")
+        for v in VIEW_IDS:
+            write_json(CAMERAS[v] + ".asset.json", camera_record(v, a.date))
+        print("wrote camera sidecars")
         return
     if not (a.stations and a.walk):
         ap.error("--stations and --walk are required unless --metadata-only")

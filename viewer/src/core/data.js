@@ -3,7 +3,7 @@
 const SCENE_DIR = '/scenes/shinjuku/kabukicho/1976';
 // Supplementary review cameras (not route stations). Loaded for every render so that modules
 // which keep camera foregrounds clear (people) build the same world whichever camera is used.
-export const REVIEW_VIEWS = ['r04-gate-establishing'];
+export const REVIEW_VIEWS = ['r04-gate-establishing', 'r04-gate-rear', 'r04-milano-front'];
 
 async function getJSON(path) {
   const res = await fetch(path);

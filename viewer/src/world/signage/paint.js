@@ -2,7 +2,7 @@
 // context P = { g, ge, x, y, w, h, ppm, r } where g is the albedo canvas context, ge the optional
 // emissive context (neon-night only), (x,y,w,h) the region in pixels and r a keyed PRNG.
 // All content is period-plausible-generic: generic trade words, fictional names, no logos.
-import { FONT_JP, layoutHorizontal, layoutVertical, drawGlyphs, fitH, inkHeight, inkCenterOffset, measureH } from './typeset.js';
+import { FONT_JP, FONT_MINCHO, FONT_MARU, FONT_CEDAR, layoutHorizontal, layoutVertical, drawGlyphs, fitH, inkHeight, inkCenterOffset, measureH } from './typeset.js';
 
 // ---------------------------------------------------------------- colour helpers
 export function hexRgb(h) { const n = parseInt(h.slice(1), 16); return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; }
@@ -55,16 +55,34 @@ function border(P, color, wm, inner = null) {
   }
 }
 
+// r04: per-sign lettering family. Weighted towards gothic; mincho and rounded gothic were both common
+// on 1970s painted and back-lit signs. weightK rescales the stroke so light W3 faces read as bold.
+const FAMILIES = [
+  { f: FONT_JP, w: 0.42, weightK: 1.0 },
+  { f: FONT_MINCHO, w: 0.24, weightK: 0.45 },
+  { f: FONT_MARU, w: 0.22, weightK: 1.55 },
+  { f: FONT_CEDAR, w: 0.12, weightK: 1.35 },
+];
+function pickFamily(r) {
+  let x = r() * FAMILIES.reduce((a, b) => a + b.w, 0);
+  for (const F of FAMILIES) { if ((x -= F.w) <= 0) return F; }
+  return FAMILIES[0];
+}
+
 function textStyle(r, scheme, kind) {
   const dark = lum(scheme.bg) < 0.45;
   const rim = dark ? shade(scheme.bg, -0.5) : '#ffffff';
+  const F = pickFamily(r);
+  const hand = r.range(0.35, 1.0);
+  const k = F.weightK * r.range(0.8, 1.2);
+  const base = { family: F.f, hand };
   switch (kind) {
-    case 'heavy': return { fill: scheme.fg, weight: 0.07 };
-    case 'outlined': return { fill: scheme.fg, weight: 0.05, outline: [{ color: dark ? scheme.ac : shade(scheme.fg, -0.45), w: 0.035 }] };
-    case 'double': return { fill: scheme.fg, weight: 0.04, outline: [{ color: scheme.ac, w: 0.09 }, { color: rim, w: 0.045 }] };
-    case 'shadow': return { fill: scheme.fg, weight: 0.05, shadow: { dx: 0.045, dy: 0.05, color: rgba(dark ? '#000000' : shade(scheme.fg, -0.6), dark ? 0.55 : 0.45) } };
-    case 'thin': return { fill: scheme.fg, weight: 0.0 };
-    default: return { fill: scheme.fg, weight: 0.035 };
+    case 'heavy': return { ...base, fill: scheme.fg, weight: 0.07 * k };
+    case 'outlined': return { ...base, fill: scheme.fg, weight: 0.05 * k, outline: [{ color: dark ? scheme.ac : shade(scheme.fg, -0.45), w: 0.035 }] };
+    case 'double': return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: scheme.ac, w: 0.09 }, { color: rim, w: 0.045 }] };
+    case 'shadow': return { ...base, fill: scheme.fg, weight: 0.05 * k, shadow: { dx: 0.045, dy: 0.05, color: rgba(dark ? '#000000' : shade(scheme.fg, -0.6), dark ? 0.55 : 0.45) } };
+    case 'thin': return { ...base, fill: scheme.fg, weight: 0.0 };
+    default: return { ...base, fill: scheme.fg, weight: 0.035 * k };
   }
 }
 export function pickTextKind(r) { return r.pick(['heavy', 'heavy', 'outlined', 'shadow', 'shadow', 'double', 'plain']); }
@@ -274,7 +292,8 @@ export function paintFascia(P, spec, stamps) {
   }
   const cx = (tx0 + tx1) / 2;
   if (adoptedL) {
-    drawGlyphs(g, adoptedL.glyphs, { ...textStyle(r, { ...S, fg: spec.adopted.fg }, spec.textKind || 'heavy'), fill: spec.adopted.fg });
+    // adopted text keeps the default face and no jitter (its ink height/centre are verified)
+    drawGlyphs(g, adoptedL.glyphs, { ...textStyle(r, { ...S, fg: spec.adopted.fg }, spec.textKind || 'heavy'), fill: spec.adopted.fg, family: null, hand: 0 });
   } else if (spec.text) {
     const mainH = spec.sub ? h * 0.56 : h * 0.72;
     const my = spec.sub ? y + h * 0.4 : y + h * 0.52;
@@ -364,9 +383,9 @@ export function paintRoof(P, spec, stamps) {
     g.restore();
     g.fillStyle = S.bg; g.beginPath(); g.ellipse(x + w * 0.55, y + h * 0.5, w * 0.4, h * 0.42, 0, 0, Math.PI * 2); g.fill();
   } else if (m === 'stripes') {
+    // r04: horizontal double rules (the r02 diagonal border read as a hazard/works stripe)
     g.fillStyle = rgba(S.ac, 0.9);
-    for (let i = -h; i < w; i += 0.6 * ppm) { g.beginPath(); g.moveTo(x + i, y + h); g.lineTo(x + i + 0.25 * ppm, y + h); g.lineTo(x + i + h + 0.25 * ppm, y); g.lineTo(x + i + h, y); g.closePath(); g.fill(); }
-    fillR(g, x + h * 0.15, y + h * 0.15, w - h * 0.3, h * 0.7, S.bg);
+    for (const [f0, f1] of [[0.06, 0.1], [0.13, 0.15], [0.85, 0.87], [0.9, 0.94]]) g.fillRect(x + h * 0.06, y + h * f0, w - h * 0.12, h * (f1 - f0));
   } else if (m === 'disc') {
     g.fillStyle = S.ac; g.beginPath(); g.arc(x + h * 0.55, y + h * 0.5, h * 0.4, 0, Math.PI * 2); g.fill();
     textH(P, spec.discCh || '◎', x + h * 0.55, y + h * 0.5, h * 0.55, h * 0.55, { fill: lum(S.ac) > 0.55 ? '#1b1a17' : '#f5f2ea', weight: 0.06 });

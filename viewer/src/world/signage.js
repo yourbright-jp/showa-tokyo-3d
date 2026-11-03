@@ -164,7 +164,7 @@ export async function build(ctx) {
   const maxErr = chk.reduce((m, c) => Math.max(m, c.err), 0);
   const inkHs = chk.map((c) => c.inkH).filter(Boolean);
   ctx.log && ctx.log(`signage: adopted text nodes rendered ${chk.length}; max centre error ${maxErr.toFixed(3)} m; glyph ink height ${Math.min(...inkHs).toFixed(3)}-${Math.max(...inkHs).toFixed(3)} m; min horizontal scale ${Math.min(...chk.map((c) => c.sx || 1)).toFixed(2)}; min baseline dot ${Math.min(...chk.map((c) => c.dirDot)).toFixed(4)}`);
-  ctx.signage = { volumes: space.vols, items: items.length, adoptedCheck: chk };
+  ctx.signage = { volumes: space.vols, items: items.length, adoptedCheck: chk, fictionalNames: [...(env.fictionalNames || [])].sort() };
   const t1 = performance.now();
   const tris = group.children.reduce((s, m) => s + (m.geometry.index ? m.geometry.index.count / 3 : m.geometry.attributes.position.count / 3) * (m.isInstancedMesh ? m.count : 1), 0);
   ctx.log && ctx.log(`signage: ${items.length} items ${JSON.stringify(counts)}; atlas ${atlas.pages.length} pages (scale ${k.toFixed(2)}), ${faces.length} faces; ${G.bulbs.length} bulbs; ${Math.round(tris)} tris; plan ${(tPlan - t0).toFixed(0)} ms, paint ${(tPaint - tPlan).toFixed(0)} ms, build ${(t1 - tPaint).toFixed(0)} ms; emit failures ${failed}`);

@@ -133,7 +133,7 @@ export function buildKoma(ctx, kit) {
   const ribs = []; for (let x = -Math.floor(UW / 2 / 6.4) * 6.4; x <= UW / 2 - 1; x += 6.4) ribs.push(x);
   const louvreY0 = UH - 2.3, louvreY1 = UH - 0.9;
   const upPainter = paintFacade(ufb, -UW / 2, UW / 2, 0, UH + 0.1, {
-    key: 'upper', baseRgb: wallRgb.map((v) => v * 0.94), ppm: 40, jointW: 0.032, joints: { xs: ujx, ys: ujy }, coping: UH, dirtH: 0.6, stains: 30, age: 1.8,
+    key: 'upper', baseRgb: wallRgb.map((v, i) => v * [0.9, 0.89, 0.87][i]), ppm: 40, jointW: 0.032, joints: { xs: ujx, ys: ujy }, coping: UH, dirtH: 0.6, stains: 70, age: 2.6, // r04: heavier soot/rain staining on the large auditorium wall (visual review: flat pale field)
     extra: (Pn, r) => {
       for (const x of ribs) { Pn.streak(x - 0.45, louvreY0, 3 + r() * 5, 0.16, [80, 76, 66], 0.32); Pn.streak(x + 0.45, louvreY0, 2 + r() * 5, 0.14, [80, 76, 66], 0.28); }
       Pn.streakRun(r, -UW / 2, UW / 2, louvreY0, 0.4, 4.5, 2.4, [80, 76, 66], 0.3);
@@ -159,7 +159,7 @@ export function buildKoma(ctx, kit) {
   const M = theatreMaterials(ctx, kit, { wallColorLin: P.wall_base_color_rgb, metalLin: P.metal_base_color_rgb, glassLin: P.glazing_base_color_rgb, baseY: lower.baseY, topY: upper.topY });
   const S = theatreShared(ctx, kit);
   const frontWall = weather(new THREE.MeshStandardMaterial({ map: painter.texture(), roughness: 0.86 }), kit.macro, { baseY: lower.baseY, dirt: 0.0, streak: 0.05, mottle: 0.05 });
-  const upperWall = weather(new THREE.MeshStandardMaterial({ map: upPainter.texture(), roughness: 0.88 }), kit.macro, { baseY: upper.baseY, dirt: 0.0, streak: 0.08, mottle: 0.06 });
+  const upperWall = weather(new THREE.MeshStandardMaterial({ map: upPainter.texture(), roughness: 0.88 }), kit.macro, { baseY: upper.baseY, dirt: 0.0, streak: 0.22, mottle: 0.14 });
   const massWall = weather(new THREE.MeshStandardMaterial({ map: S.panelTex, color: new THREE.Color(...wallRgb.map((v) => (v / 255) ** 2.2)).multiplyScalar(1.45), roughness: 0.9 }), kit.macro, { baseY: lower.baseY, dirtH: 1.0, dirt: 0.3, streak: 0.16, mottle: 0.06, topY: upper.topY, topStreak: 0.08 });
   const mats = {
     ...M, ...lobby, frontWall, upperWall, massWall,

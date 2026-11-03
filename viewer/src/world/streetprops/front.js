@@ -200,7 +200,8 @@ export function placeSingletons(ctx, kit) {
   }
   if (tryPlace(streetCands, 0.5, 0.5, 2.65, (W, r) => buildPhoneBooth(kit, W, r), 'phone-booth', { wall: 0.1 })) stats.booths++;
   // plaza: a phone booth and concrete bins near the Ichibangai exit and the fountain
-  const plazaBooth = [[-40.2, -81.0, -Math.PI / 2], [-39.0, -71.5, -Math.PI / 2], [-41.0, -86.0, -Math.PI / 2], [-42.5, -64.5, -0.4], [-57.5, -60.5, 0.6]];
+  // r04: prefer the Ichibangai-exit side; the first r02 spot read as standing in front of the Koma doors
+  const plazaBooth = [[-57.5, -60.5, 0.6], [-42.5, -64.5, -0.4], [-39.0, -71.5, -Math.PI / 2], [-40.2, -81.0, -Math.PI / 2], [-41.0, -86.0, -Math.PI / 2]];
   if (tryPlace(plazaBooth, 0.5, 0.5, 2.65, (W, r) => buildPhoneBooth(kit, W, r), 'phone-booth')) stats.booths++;
   // a concrete bin beside each adopted plaza lamp (R02 shows bins at the lamp foot)
   for (const f of ctx.data.fixtures.filter((q) => /^plaza-lamp-.*-base$/.test(q.id))) {

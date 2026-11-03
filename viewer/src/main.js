@@ -14,6 +14,7 @@ import { analyseFacades } from './core/facades.js';
 //                          route station (e.g. r04-gate-establishing); overrides station
 //   look=<preset>          lighting preset from core/look.js
 //   only=<a,b>             build only the listed world modules (debugging)
+//   decor=1972             optional layer: the 1972 temporary street decoration on Ichibangai lamps
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
@@ -65,6 +66,7 @@ async function main() {
     rng: makeRng(1976),
     still,
     stationId,
+    options: { decor1972: params.get('decor') === '1972' },
     quality: { still, shadowMap: still ? 4096 : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
     provenance: [],
     /** Record the evidence tier of generated content. tier: source-derived | period-plausible-generic | placeholder */

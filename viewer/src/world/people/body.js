@@ -687,13 +687,27 @@ function emitHand(w, P, D, A, s) {
   const holding = (P.bag && P.bag.hand === (s > 0 ? 'L' : 'R') && A.mode === 'carry') || (P.umbrella && P.umbrella.hand === (s > 0 ? 'L' : 'R'));
   const fist = holding || A.mode === 'front' || A.mode === 'crossed' || A.mode === 'behind';
   const k = D.f ? 0.9 : 1;
-  const c = madd(A.wrist, ez, (fist ? 0.032 : 0.045) * H * k);
-  ellipsoid(w, c, [ex, ey, ez], (fist ? 0.025 : 0.024) * H * k, (fist ? 0.018 : 0.0125) * H * k, (fist ? 0.032 : 0.046) * H * k, 7, 5, { col: P.skin, rough: 0.6 });
-  if (!fist) {
-    // thumb
-    ellipsoid(w, madd(c, ex, 0.012 * H * k), [ex, ey, ez], 0.008 * H * k, 0.008 * H * k, 0.02 * H * k, 5, 3, { col: P.skin, rough: 0.6 });
+  const handSkin = { col: P.skin.map((v, i) => v * [0.93, 0.9, 0.9][i]), rough: 0.6 };
+  if (fist) {
+    const c = madd(A.wrist, ez, 0.032 * H * k);
+    ellipsoid(w, c, [ex, ey, ez], 0.025 * H * k, 0.018 * H * k, 0.032 * H * k, 7, 5, handSkin);
+    A.handC = c;
+    return;
   }
-  A.handC = c;
+  // r04: an open hand was one long ellipsoid (read as a paddle/mitten in close views). Palm,
+  // a slightly curled finger block separated by a knuckle crease, and a thumb set off the palm.
+  const palm = madd(A.wrist, ez, 0.03 * H * k);
+  ellipsoid(w, palm, [ex, ey, ez], 0.025 * H * k, 0.0125 * H * k, 0.031 * H * k, 7, 5, handSkin);
+  const fz = nrm(madd(ez, ey, 0.32));
+  const fx = nrm(cross(ey, fz));
+  const fy = cross(fz, fx);
+  const fingers = madd(madd(palm, ez, 0.047 * H * k), ey, 0.006 * H * k);
+  ellipsoid(w, fingers, [fx, fy, fz], 0.022 * H * k, 0.0095 * H * k, 0.025 * H * k, 7, 4, { ...handSkin, col: handSkin.col.map((v) => v * 0.96) });
+  const tz = nrm(madd(madd(ez, ex, 0.55), ey, 0.35));
+  const tx = nrm(cross(ey, tz));
+  const ty = cross(tz, tx);
+  ellipsoid(w, madd(madd(madd(palm, ex, 0.019 * H * k), ey, 0.006 * H * k), ez, 0.012 * H * k), [tx, ty, tz], 0.0085 * H * k, 0.0085 * H * k, 0.021 * H * k, 5, 3, handSkin);
+  A.handC = palm;
 }
 
 // ------------------------------------------------------------------ head, face, hair, hats
@@ -740,8 +754,8 @@ function emitHead(w, P, D, S, q, seed) {
   const eyeC = [0.03, 0.025, 0.024];
   const surfZ = (x, y) => { const a = (x / 0.34) ** 2 + ((y - 0.08) / 0.42) ** 2; return -0.01 + 0.42 * Math.sqrt(Math.max(0, 1 - a)); };
   for (const s of [1, -1]) {
-    ellipsoid(w, headLocal(hc, B, s * 0.125, 0.02, surfZ(0.125, 0.02) - 0.004, hh), B, 0.055 * hh, 0.022 * hh, 0.014 * hh, 6, 4, { col: eyeC, rough: 0.3 });
-    ellipsoid(w, headLocal(hc, B, s * 0.13, 0.085, surfZ(0.13, 0.085) + 0.003, hh), B, 0.07 * hh, 0.014 * hh, 0.014 * hh, 6, 3, dark);
+    ellipsoid(w, headLocal(hc, B, s * 0.125, 0.02, surfZ(0.125, 0.02) - 0.004, hh), B, 0.06 * hh, 0.026 * hh, 0.015 * hh, 6, 4, { col: eyeC, rough: 0.3 });
+    ellipsoid(w, headLocal(hc, B, s * 0.13, 0.088, surfZ(0.13, 0.088) + 0.003, hh), B, 0.075 * hh, 0.019 * hh, 0.016 * hh, 6, 3, dark);
     ellipsoid(w, headLocal(hc, B, s * 0.335, 0.0, 0.0, hh), B, 0.035 * hh, 0.11 * hh, 0.07 * hh, 6, 4, skin);
   }
   ellipsoid(w, headLocal(hc, B, 0, -0.07, 0.375, hh), B, 0.05 * hh, 0.1 * hh, 0.075 * hh, 6, 4, skin);

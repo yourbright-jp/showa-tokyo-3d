@@ -68,7 +68,22 @@ export function build(ctx) {
     const l = Math.hypot(dx, dz) || 1;
     cones.push({ x: pos[0], z: pos[2], dx: dx / l, dz: dz / l, cos: Math.cos(Math.atan(18 / (focal || 35)) + 0.2), reach });
   };
-  for (const c of fixedCams) addCone(c.position_m, c.look_at_m, c.focal_length_35mm_equivalent_mm, 6.0);
+  // r04: keep only the first 3.5 m in front of fixed cameras empty; between 3.5 and 9 m people may
+  // stand but are turned away from the camera (below), so the foreground is populated without close
+  // frontal faces exposing the limited face/hand modelling (visual review asked for both).
+  for (const c of fixedCams) addCone(c.position_m, c.look_at_m, c.focal_length_35mm_equivalent_mm, 3.5);
+  const awayCones = fixedCams.map((c) => {
+    const dx = c.look_at_m[0] - c.position_m[0], dz = c.look_at_m[2] - c.position_m[2], l = Math.hypot(dx, dz) || 1;
+    return { x: c.position_m[0], z: c.position_m[2], dx: dx / l, dz: dz / l, cos: Math.cos(Math.atan(18 / (c.focal_length_35mm_equivalent_mm || 35)) + 0.25), reach: 9.5 };
+  });
+  const awayFrom = (x, z) => {
+    for (const c of awayCones) {
+      const vx = x - c.x, vz = z - c.z, d = Math.hypot(vx, vz);
+      if (d > c.reach || d < 1e-6) continue;
+      if ((vx * c.dx + vz * c.dz) / d > c.cos) return Math.atan2(vx, vz);
+    }
+    return null;
+  };
   if (data.walk && data.walk.samples) {
     const S = data.walk.samples;
     for (let i = 0; i < S.length; i += 4) addCone(S[i].position_m, S[i].look_at_m, data.walk.focal_length_35mm_equivalent_mm, 2.9);
@@ -83,12 +98,23 @@ export function build(ctx) {
     return false;
   };
 
+  // r04: nobody stands in the arterial traffic lanes except on the ladder crosswalk (visual/history
+  // review: pedestrians loitered on the carriageway in the gate establishing view)
+  const tg = ctx.scene.children.find((o) => o.name === 'terrain');
+  const art = tg && tg.userData.layout && tg.userData.layout.arterial;
+  const inTrafficLane = (x, z) => {
+    if (!art) return false;
+    const t = (x - art.cx) * art.ux + (z - art.cz) * art.uz, o = (x - art.cx) * art.sx + (z - art.cz) * art.sz;
+    if (t < art.tMin - 30 || t > art.tMax + 30 || o < art.carriage[0] - 0.3 || o > art.carriage[1] + 0.3) return false;
+    return Math.abs(t - art.cwT) > art.cwWidth / 2 - 0.3;
+  };
   const density = (x, z, ri, zone) => {
-    let d = zone === 'street' ? 0.16 : zone === 'plaza' ? 0.075 : 0.034 * (1 - 0.6 * Math.min(1, Math.max(0, (ri.d - 12) / 28)));
+    if (inTrafficLane(x, z)) return 0;
+    let d = zone === 'street' ? 0.16 : zone === 'plaza' ? 0.1 : 0.034 * (1 - 0.6 * Math.min(1, Math.max(0, (ri.d - 12) / 28)));
     // keep the immediate foreground of the six diagnostic cameras mostly open (same world for all frames)
     for (const c of camPts) {
       const dd = Math.hypot(x - c[0], z - c[2]);
-      if (dd < 9) d *= 0.25 + 0.75 * Math.max(0, (dd - 2.5) / 6.5);
+      if (dd < 9) d *= 0.45 + 0.55 * Math.max(0, (dd - 3.5) / 5.5);
     }
     return d;
   };
@@ -107,7 +133,7 @@ export function build(ctx) {
     return true;
   };
   const addP = (p) => { people.push(p); const k = hkey(p.x, p.z); if (!hash.has(k)) hash.set(k, []); hash.get(k).push(p); };
-  const okPos = (x, z) => freeAt(G, x, z, MIN_ROUTE) && data.routeDistance(x, z) >= MIN_ROUTE && !inCone(x, z);
+  const okPos = (x, z) => freeAt(G, x, z, MIN_ROUTE) && data.routeDistance(x, z) >= MIN_ROUTE && !inCone(x, z) && !inTrafficLane(x, z);
 
   const ntx = Math.ceil((G.maxX - G.minX) / TILE), ntz = Math.ceil((G.maxZ - G.minZ) / TILE);
   const cellsPerTile = TILE / G.cell;
@@ -198,7 +224,7 @@ export function build(ctx) {
     if (p.group && groupLook.has(p.group)) {
       const gl = groupLook.get(p.group);
       if (p.role === 'pair' && gl.pairPartner) arch = ARCHETYPE_BY_ID[gl.pairPartner];
-      else arch = r() < 0.7 ? ARCHETYPE_BY_ID[gl.arch] : chooseArchetype(r, bias);
+      else arch = r() < 0.5 ? ARCHETYPE_BY_ID[gl.arch] : chooseArchetype(r, bias); // r04: 0.5 (was 0.7) — fewer look-alike groups
     } else {
       arch = chooseArchetype(r, bias);
       if (p.group) {
@@ -252,6 +278,9 @@ export function build(ctx) {
       if (wall && wall.d < 1.7 && r() < 0.55) yaw = Math.atan2(-wall.n[0], -wall.n[1]) + (r() - 0.5) * 0.5;
       else yaw = Math.atan2(ri.foot[0] - p.x, ri.foot[1] - p.z) + (r() - 0.5) * 2.4;
     }
+    // r04: near the fixed cameras, turn away from the lens (keeps chat groups' inward facing loosely)
+    const away = awayFrom(p.x, p.z);
+    if (away !== null) yaw = p.role === 'chat' ? away + (r() - 0.5) * 1.6 : away + (r() - 0.5) * 0.7;
     p.yaw = yaw;
 
     // pose
@@ -330,19 +359,20 @@ export function build(ctx) {
   // soft contact occlusion under each person (people often stand in building shade)
   const blobTex = canvasTexture(64, 64, (g, W, H) => {
     const grd = g.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
-    grd.addColorStop(0, 'rgba(0,0,0,0.62)');
-    grd.addColorStop(0.45, 'rgba(0,0,0,0.38)');
+    grd.addColorStop(0, 'rgba(0,0,0,0.9)');
+    grd.addColorStop(0.35, 'rgba(0,0,0,0.62)');
+    grd.addColorStop(0.7, 'rgba(0,0,0,0.22)');
     grd.addColorStop(1, 'rgba(0,0,0,0)');
     g.fillStyle = grd; g.fillRect(0, 0, W, H);
   }, { srgb: false });
-  const blobMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: blobTex, transparent: true, opacity: look === 'neon-night' ? 0.75 : 0.62, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+  const blobMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: blobTex, transparent: true, opacity: look === 'neon-night' ? 0.8 : 0.78, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
   const blobGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
   const blobs = new THREE.InstancedMesh(blobGeo, blobMat, people.length);
   const m4 = new THREE.Matrix4(), qn = new THREE.Quaternion(), sc = new THREE.Vector3(), ps = new THREE.Vector3();
   people.forEach((p, i) => {
     const walk = p.pose.type === 'walk';
     qn.setFromAxisAngle(new THREE.Vector3(0, 1, 0), p.yaw);
-    sc.set(0.62, 1, walk ? 0.95 : 0.72);
+    sc.set(0.7, 1, walk ? 1.0 : 0.8); // r04: stronger, slightly larger contact shadow (visual review)
     ps.set(p.x, p.y + 0.012, p.z);
     m4.compose(ps, qn, sc);
     blobs.setMatrixAt(i, m4);
@@ -370,7 +400,7 @@ export function build(ctx) {
   });
   ctx.tag({
     id: 'people-placement-rule', module: 'people', tier: 'period-plausible-generic',
-    note: `Placement rule: adopted asphalt/paving + plaza boundary, ≥${MIN_ROUTE.toFixed(2)} m from the walk centreline (1.2 m corridor + body), ≥0.72 m from facades, off adopted ground obstacles and off other modules' body-height props; foreground of the six diagnostic cameras thinned. Densities 0.16/m² Ichibangai, 0.075/m² plaza, ≤0.034/m² side streets are working choices.`,
+    note: `Placement rule: adopted asphalt/paving + plaza boundary, ≥${MIN_ROUTE.toFixed(2)} m from the walk centreline (1.2 m corridor + body), ≥0.72 m from facades, off adopted ground obstacles and off other modules' body-height props; foreground of the six diagnostic cameras thinned. Densities 0.16/m² Ichibangai, 0.1/m² plaza, ≤0.034/m² side streets are working choices.`,
   });
   const tEnd = performance.now();
   ctx.log && ctx.log(`people: ${people.length} persons, ${Math.round(tris)} tris, ${writers.size} chunks; grid ${(tGrid - t0).toFixed(0)} ms (terrainHeights=${terrainHeights}, propCells=${propCells}), place ${(tPlace - tGrid).toFixed(0)} ms, looks ${(tLook - tPlace).toFixed(0)} ms, mesh ${(tEnd - tLook).toFixed(0)} ms; mix ${JSON.stringify(counts)}`);

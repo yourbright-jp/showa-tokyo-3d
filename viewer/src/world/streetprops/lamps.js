@@ -1,9 +1,11 @@
 import { MAT, lin, jitter, mat4, mixc, prim, mul } from './kit.js';
 
 // Ichibangai shopping-street lamps: steel pole, arched crossbar with two chrome bell shades and
-// frosted bulbs, hanging ribbon streamers and an artificial-flower cluster. Modelled on the
-// decorative street lamps visible in R08 (1972 source photograph); the 1976 design, spacing and
-// decoration are not documented, so the whole set is period-plausible-generic.
+// frosted bulbs. Modelled on the decorative street lamps visible in R08 (generated colour master
+// of a 1972 source photograph); the 1976 design and spacing are not documented, so the set is
+// period-plausible-generic. r04: the ribbon streamers and artificial-flower cluster seen in that
+// 1972 view were a temporary/seasonal street decoration (docs/research/r02-gate-evidence.md,
+// constraint 6) and are no longer permanent: they are an optional layer (viewer ?decor=1972).
 
 const BELL = [[0, 0.33], [0.05, 0.325], [0.13, 0.3], [0.22, 0.24], [0.29, 0.15], [0.335, 0.06], [0.36, 0.0], [0.385, -0.035], [0.37, -0.045], [0.33, -0.01], [0.3, 0.05], [0.0, 0.08]];
 const RIBBON_COLS = ['#e86f9a', '#f4a6c0', '#5b8fd6', '#f2d24b', '#f5f2ea', '#61b07a', '#e4572e', '#9b6fc9'];
@@ -37,8 +39,8 @@ export function buildStreetLamp(B, o) {
     // frosted bulb
     B.add(prim.sphere(10, 8), mul(W, mat4(sx, hy - 0.08, 0, 0, 0, 0, 0.1, 0.11, 0.1)), lin('#fff3dc'), MAT.lens, { emit: [4.0, 0.0] });
     heads.push([sx, hy]);
-    // ribbon streamers hanging from the rim
-    const n = rng.int(6, 9);
+    // ribbon streamers hanging from the rim (optional 1972 temporary-decoration layer)
+    const n = rng.int(6, 9) * (o.decor ? 1 : 0);
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2 + rng.range(-0.2, 0.2);
       const len = rng.range(0.6, 1.25);
@@ -51,7 +53,7 @@ export function buildStreetLamp(B, o) {
     }
   }
   // artificial flower cluster around the pole (spring decoration)
-  if (o.flowers) {
+  if (o.decor && o.flowers) {
     const fy = rng.range(3.0, 3.4);
     for (let i = 0; i < 18; i++) {
       const a = rng.range(0, Math.PI * 2), r = rng.range(0.07, 0.2), y = fy + rng.range(-0.25, 0.25);
@@ -88,7 +90,7 @@ export function placeStreetLamps(ctx, site, streets, B, avoid) {
       if (!site.boxFree(x, z, 0.2, 0.2, ry, gy + 0.2, gy + 3.1)) continue;
       if (!site.boxFree(x, z, 1.05, 0.45, ry, gy + 3.1, gy + 5.2)) continue;
       const rng = ctx.rng(`streetprops/lamp/${slot.s}`);
-      buildStreetLamp(B, { x, z, gy, ry, rng, flowers: rng.chance(0.85) });
+      buildStreetLamp(B, { x, z, gy, ry, rng, flowers: rng.chance(0.85), decor: !!(ctx.options && ctx.options.decor1972) });
       site.markBox(x, z, 0.2, 0.2, ry, gy, gy + 3.1);
       site.markBox(x, z, 1.05, 0.45, ry, gy + 3.1, gy + 5.2);
       footprints.push({ x, z, r: 0.25, kind: 'street-lamp' });
@@ -96,6 +98,6 @@ export function placeStreetLamps(ctx, site, streets, B, avoid) {
     }
     if (!placed) stats.skipped++;
   }
-  ctx.tag({ id: 'streetprops/ichibangai-lamps', module: 'streetprops', tier: 'period-plausible-generic', note: `${stats.lamps} twin chrome-bell shopping-street lamps with streamers/flowers after R08 (1972 photo); 1976 design and spacing undocumented. Not placed in the plaza (adopted plaza lamps).` });
+  ctx.tag({ id: 'streetprops/ichibangai-lamps', module: 'streetprops', tier: 'period-plausible-generic', note: `${stats.lamps} twin chrome-bell shopping-street lamps after R08 (generated master of a 1972 photo); 1976 design and spacing undocumented; 1972 temporary streamers/flowers ${ctx.options && ctx.options.decor1972 ? 'ON (optional layer)' : 'off (not treated as permanent)'}. Not placed in the plaza (adopted plaza lamps).` });
   return { stats, footprints };
 }

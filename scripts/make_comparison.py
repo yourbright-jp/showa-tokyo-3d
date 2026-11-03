@@ -16,14 +16,16 @@ SCENE = ROOT / "scenes/shinjuku/kabukicho/1976"
 REF_DIR = SCENE / "references/master-v1"
 # Mirrors docs/rounds/shinjuku-kabukicho-1976-r04-rules.md (composition ref first).
 STATION_REFS = {
-    "entrance-approach": ["R01", "R08"],
-    "under-gate": ["R08", "R01"],
+    "entrance-approach": ["R08", "R01"],
+    "under-gate": ["R01"],
     "ichibangai-middle": ["R01", "R04"],
     "towards-koma-corner": ["R01", "R02"],
     "plaza-reveal": ["R02", "R09"],
     "koma-front": ["R02"],
     # r04 supplementary review camera (not a route station)
     "r04-gate-establishing": ["R01", "R08"],
+    "r04-gate-rear": ["R01", "R08"],
+    "r04-milano-front": ["R03", "R09"],
 }
 FONT_PATHS = ["/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf", "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf"]
 
@@ -52,7 +54,7 @@ def main():
     out = Path(a.out) if a.out else rdir / "review"
     out.mkdir(parents=True, exist_ok=True)
     scene = json.loads((SCENE / "scene.json").read_text(encoding="utf-8"))
-    ids = [s["id"] for s in scene["route"]["stations"]] + ["r04-gate-establishing"]
+    ids = [s["id"] for s in scene["route"]["stations"]] + ["r04-gate-establishing", "r04-gate-rear", "r04-milano-front"]
     H = 540
     tiles = []
     for sid in ids:

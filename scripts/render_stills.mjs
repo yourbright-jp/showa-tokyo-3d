@@ -47,7 +47,12 @@ for (const id of stations) {
   try {
     await page.waitForFunction(() => window.__renderDone || window.__error, null, { timeout: timeoutMs, polling: 500 });
   } catch (e) { logs.push(`[timeout] ${e.message}`); }
-  const state = await page.evaluate(() => ({ error: window.__error || null, moduleErrors: window.__moduleErrors || [], done: !!window.__renderDone, stats: window.__stats ? window.__stats() : null, log: window.__log }));
+  const state = await page.evaluate(() => ({
+    error: window.__error || null, moduleErrors: window.__moduleErrors || [], done: !!window.__renderDone, stats: window.__stats ? window.__stats() : null, log: window.__log,
+    // provenance tags of everything generated, and the fictional shop-name list (production plan: keep a list)
+    provenance: window.__ctx ? window.__ctx.provenance : null,
+    fictionalNames: window.__ctx && window.__ctx.signage ? window.__ctx.signage.fictionalNames : null,
+  }));
   const file = path.join(out, `${id}.png`);
   if (state.done) {
     // Read the canvas directly (still mode sets preserveDrawingBuffer). Playwright's element
@@ -76,5 +81,13 @@ const environment = {
   browser: browserVersion, node: process.version, cpus: (await import('node:os')).cpus().length,
   source_commit: git('git rev-parse HEAD'), worktree_dirty: git('git status --porcelain -- viewer scripts data scenes') ? true : false,
 };
-fs.writeFileSync(path.join(out, 'render-report.json'), JSON.stringify({ look, w, h, environment, stations: report }, null, 2));
+for (const e of report) e.environment = environment;
+// merge with an existing report in the same directory (several invocations may share an output dir)
+const reportPath = path.join(out, 'render-report.json');
+let merged = report;
+try {
+  const prev = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+  if (prev.look === look && prev.w === w && prev.h === h) merged = [...prev.stations.filter((p) => !report.some((r) => r.station === p.station)), ...report];
+} catch { /* no previous report */ }
+fs.writeFileSync(reportPath, JSON.stringify({ look, w, h, environment, stations: merged }, null, 2));
 process.exit(failed ? 1 : 0);

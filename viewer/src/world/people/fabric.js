@@ -78,7 +78,9 @@ export function makeFabricTexture(THREE, rng) {
  * out with screen-space footprint so distant people do not shimmer.
  */
 export function makePeopleMaterial(THREE, tex) {
-  const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.85, metalness: 0, envMapIntensity: 0.85 });
+  // r04: the sky environment is not occluded by the street canyon, so with 0.85 the pedestrians
+  // standing in building shade read as self-lit against the shaded paving (visual review).
+  const mat = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.85, metalness: 0, envMapIntensity: 0.5 });
   mat.onBeforeCompile = (sh) => {
     sh.uniforms.uPat = { value: tex };
     sh.vertexShader = sh.vertexShader

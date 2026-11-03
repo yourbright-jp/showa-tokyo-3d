@@ -2,7 +2,7 @@
 // walk, decides which signs it carries (seeded by building/facade id) and returns items:
 //   { id, kind, tier, fictional, faces: [faceReq], emit(G) }
 // faceReq = { painter, spec, wm, hm, ppm, cls } gets an atlas region before emit() runs.
-import { TRADES, TRADE_BY_WORD, SCHEMES, shopName, phone, PHRASES, MENU, NOREN_WORDS, floorLabel, UPPER_ONLY_PHRASES, NAME_STEMS } from './vocab.js';
+import { TRADES, TRADE_BY_WORD, SCHEMES, shopName, phraseFor, PHRASES, MENU, NOREN_WORDS, floorLabel, UPPER_ONLY_PHRASES, NAME_STEMS } from './vocab.js';
 const STEMS_FOR_BUILDINGS = NAME_STEMS.filter((s) => s.length <= 2);
 import { neonStyle, pickTextKind, shade } from './paint.js';
 import { box, beam, cylinder, face, v3, lin } from './geo.js';
@@ -41,6 +41,7 @@ export function plan(ctx, env) {
   const space = env.space;
   const used = new Set();
   const fictionalNames = new Set();
+  const stemUse = new Map(); // fictional stem -> trade (r04: one invented name per trade)
   const bnames = new Map();
   const NAME_STEMS_LOCAL = () => STEMS_FOR_BUILDINGS;
 
@@ -97,7 +98,7 @@ export function plan(ctx, env) {
         trade = r.pick(TRADES.filter((t) => t.u));
       }
       const t = uniq(r, () => {
-        const nm = shopName(r, trade);
+        const nm = shopName(r, trade, stemUse);
         const showName = nm.name && /(店|局|社|所|科|院|産|事|堂|房)$/.test(nm.name) ? nm.name : null;
         const display = nm.name ? (showName || `${trade.w} ${nm.name}`) : trade.w;
         const sch = r.chance(0.45) ? r.pick(LIGHT_BG) : r.pick(trade.sch || ALL_SCHEMES);
@@ -264,15 +265,18 @@ export function plan(ctx, env) {
     const bw = u1 - u0;
     const g = B.tenants[0];
     const sch = tnode ? { ...SCHEMES[r.pick(LIGHT_BG)] } : { ...SCHEMES[r.pick(LIGHT_BG)] };
-    sch.bg = r.pick(['#efece4', '#ece6d6', '#f1efe9', '#e9e4d6', '#e6e2d9']);
+    // r04: adopted generic shop words repeat (e.g. two 食堂 boards facing each other); vary the
+    // board ground and trim so repeated words do not read as copies (text, size and place unchanged)
+    sch.bg = r.pick(['#efece4', '#f0e5c4', '#dde7ee', '#efdfd5', '#e2ecdc', '#ece6d6', '#f3ead2']);
+    sch.ac = r.pick(['#b3251c', '#1e4a91', '#1d6a44', '#de6b1c', '#5b1a28', '#1c1b19', sch.ac]);
     const spec = {
       scheme: sch,
       text: tnode ? tnode.text : (g ? g.display : '営業中'),
       textKind: r.pick(['heavy', 'heavy', 'shadow', 'plain']),
       weather: r.range(0.2, 0.55),
-      band: r.chance(0.6) ? { h: r.range(0.04, 0.09), top: true, bottom: r.chance(0.6), color: sch.ac, stripe: r.chance(0.3) ? sch.fg : null } : null,
+      band: r.chance(0.85) ? { h: r.range(0.05, 0.12), top: r.chance(0.8), bottom: r.chance(0.7), color: sch.ac, stripe: r.chance(0.3) ? sch.fg : null } : null,
       borderColor: r.chance(0.5) ? shade(sch.ac, -0.3) : null,
-      side: r.chance(0.55) ? phone(r) : null,
+      side: null,
       emblem: r.chance(0.35) ? { ch: tnode ? [...tnode.text][0] : '店', bg: sch.ac, fg: '#f4f1ea', round: r.chance(0.5) } : null,
       lit: r.chance(0.4) ? 'backlit' : 'none',
     };
@@ -280,7 +284,7 @@ export function plan(ctx, env) {
       const c = tnode.color_rgba;
       spec.adopted = { inkH_m: tnode.height_m, fg: `rgb(${Math.round(Math.pow(c[0], 1 / 2.2) * 255)},${Math.round(Math.pow(c[1], 1 / 2.2) * 255)},${Math.round(Math.pow(c[2], 1 / 2.2) * 255)})`, u_m: tu - u0, v_m: yb1 - ty };
     } else {
-      spec.sub = r.chance(0.5) ? r.pick(PHRASES) : null;
+      spec.sub = r.chance(0.5) ? phraseFor(r, g && g.trade) : null;
     }
     const cls = r.chance(0.5) ? 'gloss' : 'paint';
     const fq = req('fascia', spec, bw, yb1 - yb0, ppm, cls);
@@ -340,7 +344,7 @@ export function plan(ctx, env) {
     const valText = r.chance(0.7) ? (tnode ? `${tnode.text}${g && g.name ? ' ' + g.name : ''}` : (g ? g.display : null)) : null;
     if (g && g.name && valText && valText.includes(g.name)) fictionalNames.add(g.name);
     return awningItem(B, best.F, u0, u1, yTop, Math.max(0.6, dOut), {
-      c1, c2: '#ede6d6', stripes, stripeW: r.range(0.18, 0.3), fg: '#f4efe4', text: valText, side: valText && r.chance(0.5) ? phone(r).replace('TEL ', '☎') : null, scallop: r.chance(0.5) ? r.range(0.18, 0.3) : 0, weather: r.range(0.4, 0.85),
+      c1, c2: '#ede6d6', stripes, stripeW: r.range(0.18, 0.3), fg: '#f4efe4', text: valText, side: null, scallop: r.chance(0.5) ? r.range(0.18, 0.3) : 0, weather: r.range(0.4, 0.85),
     }, r, `adopted awning ${awF.id} (adopted colour key ${key}, extent and depth); cloth form and valance text period-plausible-generic`, 'adopted-inferred', awF.id);
   }
 
@@ -434,7 +438,7 @@ export function plan(ctx, env) {
     const { fr, f, dmin } = F;
     const pl = B.pl;
     const r = env.rng(`signage/fascia/${f.id}/${idx}`);
-    const g = (idx === 0 ? B.tenants[0] : null) || uniq(r, () => { const t = r.pick(TRADES.filter((x) => x.g)); const nm = shopName(r, t); const d = nm.name ? `${t.w} ${nm.name}` : t.w; return { key: d, display: d, trade: t.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(t.sch)] }; });
+    const g = (idx === 0 ? B.tenants[0] : null) || uniq(r, () => { const t = r.pick(TRADES.filter((x) => x.g)); const nm = shopName(r, t, stemUse); const d = nm.name ? `${t.w} ${nm.name}` : t.w; return { key: d, display: d, trade: t.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(t.sch)] }; });
     if (g.fictional && g.name) fictionalNames.add(g.name);
     const y0 = pl.fasciaY0 - r.range(0, 0.06), y1 = pl.fasciaY1 + r.range(0, 0.2);
     const depth = r.range(0.12, 0.26);
@@ -448,10 +452,10 @@ export function plan(ctx, env) {
     const sch = neon ? { ...scheme, bg: r.pick(['#1d1c1a', '#20302a', '#2a1a20', '#1a2233']) } : scheme;
     const spec = {
       scheme: sch, text: g.display, textKind: pickTextKind(r), weather: r.range(0.35, 0.9), neon,
-      sub: !neon && r.chance(0.45) ? (r.chance(0.5) ? r.pick(PHRASES) : phone(r)) : null,
+      sub: !neon && r.chance(0.3) ? phraseFor(r, g.trade) : null,
       band: !neon && r.chance(0.4) ? { h: r.range(0.04, 0.1), top: true, bottom: r.chance(0.5), color: sch.ac } : null,
       emblem: !neon && r.chance(0.25) ? { ch: [...g.trade][0], bg: sch.ac, fg: sch.bg, round: r.chance(0.5) } : null,
-      side: !neon && r.chance(0.25) ? phone(r) : null,
+      side: null,
       borderColor: r.chance(0.45) ? shade(sch.bg, -0.4) : null, pin: r.chance(0.3) ? sch.ac : null,
       seams: r.chance(0.3), lit: neon ? 'neon' : r.chance(0.4) ? 'backlit' : 'none', bulbs: dmin < 50 && r.chance(0.1) ? r.range(0.14, 0.2) : 0,
     };
@@ -489,6 +493,7 @@ export function plan(ctx, env) {
     if (directory) {
       const ten = B.tenants.slice(1).filter(Boolean).reverse();
       for (const t of ten.slice(0, 6)) {
+        t.uses++; // r04: listed tenants count as used, so the building's next sign is a different business
         panels.push({ label: floorLabel(t.floor, r), text: t.name ? t.display.replace(' ', '') : t.trade, trade: t.trade, name: t.name && !t.display.endsWith(t.name) ? null : t.name, scheme: r.chance(0.6) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], kind: pickTextKind(r), labelStyle: r.chance(0.4) ? 'disc' : 'band' });
         if (t.fictional) fictional = true;
       }
@@ -497,9 +502,9 @@ export function plan(ctx, env) {
       if (!t) return null;
       t.uses++;
       if (t.fictional) fictional = true;
-      const p = { text: t.name ? t.display.replace(' ', '') : t.trade, trade: t.name && t.trade !== 'ビル' && t.display !== t.name ? t.trade : null, name: t.name, scheme: t.scheme, kind: pickTextKind(r), small: r.chance(0.4) ? phone(r) : null, tenant: t };
+      const p = { text: t.name ? t.display.replace(' ', '') : t.trade, trade: t.name && t.trade !== 'ビル' && t.display !== t.name ? t.trade : null, name: t.name, scheme: t.scheme, kind: pickTextKind(r), small: null, tenant: t };
       panels.push(p);
-      if (r.chance(0.3)) panels.push({ text: r.pick(PHRASES), scheme: SCHEMES[r.pick(LIGHT_BG)], kind: 'plain', weight: 0.45 });
+      if (r.chance(0.3)) panels.push({ text: phraseFor(r, t.trade), scheme: SCHEMES[r.pick(LIGHT_BG)], kind: 'plain', weight: 0.45 });
     }
     if (!panels.length) return null;
     // height from content: characters at ~84% of the face width, stretched 1.0-1.35
@@ -626,7 +631,7 @@ export function plan(ctx, env) {
     if (space.hits(vol, 0.1)) return null;
     space.addVolume(vol);
     const label = floorLabel(t.floor, r);
-    const spec = { text: t.name ? t.display.replace(' ', vertical ? '' : ' ') : t.trade, label, sub: !vertical && r.chance(0.6) ? `${r.pick([...PHRASES, ...UPPER_ONLY_PHRASES])}  ${phone(r)}` : null, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], textKind: pickTextKind(r), weather: r.range(0.45, 0.95) };
+    const spec = { text: t.name ? t.display.replace(' ', vertical ? '' : ' ') : t.trade, label, sub: !vertical && r.chance(0.6) ? (r.chance(0.3) ? r.pick(UPPER_ONLY_PHRASES) : phraseFor(r, t.trade)) : null, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], textKind: pickTextKind(r), weather: r.range(0.45, 0.95) };
     if (t.fictional && t.name) fictionalNames.add(t.name);
     const fq = req('wallboard', spec, u1 - u0, y1 - y0, ppmFor(dmin, 0.85), 'paint');
     const steel = lin('#55524c');
@@ -792,16 +797,16 @@ export function plan(ctx, env) {
     space.addVolume(vol);
     const t = B.tenants.slice(1).find((x) => x && r.chance(0.5)) || B.tenants.find(Boolean);
     const generic = r.chance(0.35);
-    const top = r.chance(0.5) ? r.pick([...PHRASES, '冷暖房完備', '年中無休', '深夜営業']) : null;
+    const top = r.chance(0.5) ? r.pick(['冷暖房完備', '年中無休', '営業中']) : null;
     let text, fictional = false, sub = null;
     if (generic || !t) {
       const tr = r.pick(['サウナ', 'レストラン', '喫茶', '麻雀', '旅行', '不動産', 'ビリヤード', '中華料理', 'パチンコ', '洋品', '時計', '眼鏡', '金融']);
-      const nm = shopName(r, tr);
+      const nm = shopName(r, tr, stemUse);
       text = nm.name ? `${tr} ${nm.name}` : tr; fictional = nm.fictional; if (nm.name) fictionalNames.add(nm.name);
-      sub = r.chance(0.6) ? `${r.pick(['歌舞伎町', '新宿', '当ビル'])}${r.pick(['', ' ' + floorLabel(r.int(2, 6), r)])}  ${phone(r)}` : null;
+      sub = r.chance(0.6) ? `${r.pick(['歌舞伎町', '新宿', '当ビル'])}${r.pick(['', ' ' + floorLabel(r.int(2, 6), r)])}` : null;
     } else {
       text = t.display; fictional = !!t.fictional;
-      sub = `当ビル ${floorLabel(t.floor, r)}  ${phone(r)}`;
+      sub = `当ビル ${floorLabel(t.floor, r)}`;
     }
     const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: [...text][0], textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
     const ppm = ppmFor(dmin + 6, 0.8);
@@ -947,7 +952,7 @@ export function plan(ctx, env) {
     }
     // off-site advertiser
     const tr = r.pick(TRADES.filter((x) => x.u));
-    const t = uniq(r, () => { const nm = shopName(r, tr); const d = nm.name ? `${tr.w} ${nm.name}` : tr.w; return { key: d, display: d, trade: tr.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(tr.sch)], floor: 0, uses: 0 }; });
+    const t = uniq(r, () => { const nm = shopName(r, tr, stemUse); const d = nm.name ? `${tr.w} ${nm.name}` : tr.w; return { key: d, display: d, trade: tr.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(tr.sch)], floor: 0, uses: 0 }; });
     if (t.name) fictionalNames.add(t.name);
     return t;
   }

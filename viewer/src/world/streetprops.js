@@ -66,6 +66,12 @@ export function build(ctx) {
   const BF = new Batch();           // foliage (double sided)
   const BG = new Batch();           // transparent glass
   const D = new DecalBatch();
+  // r04: record every overhead wire polyline (all are emitted in world space with an identity
+  // transform) so a 1-pixel line can be drawn along each: sub-pixel tubes broke into dotted
+  // segments in the stills and would shimmer in motion (visual review).
+  const wireLines = [];
+  const tube0 = BW.tube.bind(BW);
+  BW.tube = (W, pts, ...rest) => { wireLines.push(pts); return tube0(W, pts, ...rest); };
   const kit = { B, BS, BW, BA, BF, BG, D, site, streets, mats };
   const footprints = [];
 
@@ -95,6 +101,16 @@ export function build(ctx) {
   add(B, mats.opaque, 'streetprops-main', true);
   add(BS, mats.opaque, 'streetprops-small', false);
   add(BW, mats.opaque, 'streetprops-wires', false);
+  if (wireLines.length) {
+    const seg = [];
+    for (const pts of wireLines) for (let i = 0; i + 1 < pts.length; i++) seg.push(...pts[i], ...pts[i + 1]);
+    const lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(seg, 3));
+    const lines = new THREE.LineSegments(lg, new THREE.LineBasicMaterial({ color: 0x24221f, transparent: true, opacity: 0.85 }));
+    lines.name = 'streetprops-wire-lines';
+    lines.userData.noShadow = true;
+    group.add(lines);
+  }
   add(BA, mats.atlas, 'streetprops-printed', true);
   add(BF, mats.foliage, 'streetprops-foliage', true);
   if (BG.triCount) { const g = BG.toMesh(mats.glass, 'streetprops-glass'); g.castShadow = false; g.userData.noShadow = true; g.renderOrder = 2; group.add(g); }

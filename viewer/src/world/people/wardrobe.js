@@ -5,6 +5,12 @@
 // dark suits with white shirts and ties, short-sleeved white shirts with slacks, trench and
 // wool coats, skirts/dresses below the knee, school uniforms, 1970s casual wear. Colours and
 // mixes are working estimates, not counts of the 1976 crowd. No brand, logo or text is drawn.
+//
+// r04 working season (visual choice, not a historical date): early October, clear afternoon. It fits
+// the clear-afternoon sun (40 deg elevation, azimuth 222 deg ~ 14:15 in early October) and the
+// 1 October change to winter school uniforms. Overcoats and trench coats are rare, short sleeves
+// a minority, floral/aloha shirts on men removed, and the 1972 lamp streamers are off (history
+// review: one scene must not mix summer, winter and spring cues).
 
 // pattern layers in the fabric texture array (see people/fabric.js)
 export const PAT = { plain: 0, pinstripe: 1, stripe: 2, check: 3, floral: 4, dots: 5, tweed: 6, denim: 7, knit: 8, wave: 9, border: 10 };
@@ -29,13 +35,13 @@ export const lin = (hex) => hexRgb(hex).map(srgbToLin);
 const P_ = {
   suit: [0x23272f, 0x1e222b, 0x2c2c2e, 0x353437, 0x44464a, 0x4a3a2c, 0x3b3226, 0x5e5e5d, 0x4d4632, 0x3a3f48, 0x2a2f2c, 0x262a30],
   suitLight: [0xa89878, 0x8d8d8a, 0x9c8160, 0x7e7462, 0xb0a48a],
-  shirtWhite: [0xe0ddd4, 0xe6e3da, 0xd8dbdc, 0xdcd8cc, 0xe3e0d6],
+  shirtWhite: [0xd2cec4, 0xd8d4ca, 0xcbcdcd, 0xcfcabe, 0xd5d1c6], // r04: below paper-white so shirts keep shading
   shirtPale: [0xb8c8dc, 0xc9d4e0, 0xe6dfcc, 0xe8e0b8, 0xd6dccf, 0xe3d2cc],
   tie: [0x6b1e24, 0x1e2a4a, 0x24412e, 0x5a3a22, 0xa8862a, 0x5a1a2a, 0x4a4a52, 0x2c3c6a, 0x7a3a1e],
   slacks: [0x5a5a5c, 0xa39274, 0x292c34, 0x5a4632, 0x262628, 0x7a7466, 0x4a4438, 0x8a7a60, 0x6a665c],
   casualShirt: [0xc49a3a, 0xa4502a, 0x6b6a3a, 0x6a4a30, 0xe2d6b8, 0x8fb0d0, 0xc2672e, 0x6e2a2e, 0x2e4a36, 0x5a3a4a, 0xd8c8a0, 0x3a5a7a],
   denim: [0x2c3a52, 0x46566e, 0x36445c, 0x323e54],
-  blouse: [0xeeeae0, 0xeadfc6, 0xe2b4b8, 0xb8cce0, 0xe8dc9a, 0xc4b4d0, 0xe09a84, 0xb8d4c0, 0xf2f0ea],
+  blouse: [0xdcd8ce, 0xdcd2ba, 0xe2b4b8, 0xb8cce0, 0xe8dc9a, 0xc4b4d0, 0xe09a84, 0xb8d4c0, 0xdedcd5],
   skirt: [0x2a3048, 0xb8a07a, 0x6a4a30, 0x6a6a6a, 0x252525, 0x6a2430, 0xa8824e, 0x34483a, 0x8a4a2a, 0x5a4a62],
   dress: [0xc86a3a, 0x4a6a48, 0xc8a848, 0xa83a34, 0x4a6aa0, 0xe8e4da, 0x7a3a5a, 0x3a4a6a, 0xd89a6a, 0x8a9a5a],
   coat: [0xa88456, 0xb8a27c, 0x262d42, 0x6a6a68, 0x5e2630, 0x5a412c, 0x2a2a2c, 0x8a7a5a, 0x3c4a3a],
@@ -67,7 +73,7 @@ function baseBody(r, sex, age) {
     girth: Math.max(0.86, Math.min(1.22, 1 + r.normal() * 0.065 + (age > 45 ? 0.06 : 0))),
     belly: age > 40 && !f ? r.range(0, 0.6) : r.range(0, 0.15),
     shoulderK: 1 + r.normal() * 0.04,
-    skin: colour(r, pick(r, P_.skin), 0.06, 0.08),
+    skin: colour(r, pick(r, P_.skin), 0.06, 0.08).map((c) => c * 0.86), // r04: sunlit faces were near clipping
   };
 }
 
@@ -137,7 +143,7 @@ export const ARCHETYPES = [
   {
     id: 'salaryman-shirtsleeves', weight: 15, sex: 'm', age: [21, 58],
     make(r, P) {
-      const shortS = r.chance(0.65);
+      const shortS = r.chance(0.22);
       P.top = { kind: 'shirt', ...plain(colour(r, r.chance(0.75) ? pick(r, P_.shirtWhite) : pick(r, P_.shirtPale), 0.04, 0.1)), sleeves: shortS ? 'short' : 'rolled', tucked: true };
       const tc = colour(r, pick(r, P_.tie), 0.1, 0.1);
       P.tie = r.chance(0.7) ? { ...plain(tc), layer: r.chance(0.4) ? PAT.stripe : PAT.plain, col2: tc.map((c) => c * 0.5), scale: 0.035, wide: r.range(0.9, 1.3) } : null;
@@ -151,7 +157,7 @@ export const ARCHETYPES = [
     },
   },
   {
-    id: 'man-trenchcoat', weight: 5, sex: 'm', age: [28, 65],
+    id: 'man-trenchcoat', weight: 0.6, sex: 'm', age: [28, 65],
     make(r, P) {
       const c = colour(r, pick(r, [0xb8a27c, 0xa89070, 0x8a7a5a, 0x3a3a3c, 0x262d42, 0x6a6a68]), 0.08, 0.1);
       P.top = { kind: 'coat', ...plain(c), layer: PAT.plain, col2: c.map((x) => x * 1.2), sleeves: 'long', hem: r.range(0.27, 0.33), belted: r.chance(0.6) };
@@ -170,13 +176,13 @@ export const ARCHETYPES = [
     make(r, P) {
       const patd = r.chance(0.55);
       const base = colour(r, pick(r, P_.casualShirt), 0.1, 0.15);
-      const layer = patd ? r.pick([PAT.check, PAT.floral, PAT.wave, PAT.stripe, PAT.check]) : PAT.plain;
-      P.top = { kind: r.chance(0.25) ? 'tshirt' : 'shirt', col: base, col2: patd ? colour(r, pick(r, P_.casualShirt), 0.1, 0.15) : base, layer, scale: layer === PAT.check ? 0.09 : 0.11, sleeves: r.chance(0.5) ? 'long' : 'short', tucked: r.chance(0.6), bigCollar: true };
+      const layer = patd ? r.pick([PAT.check, PAT.check, PAT.stripe, PAT.stripe, PAT.wave]) : PAT.plain;
+      P.top = { kind: r.chance(0.15) ? 'tshirt' : 'shirt', col: base, col2: patd ? colour(r, pick(r, P_.casualShirt), 0.1, 0.15) : base, layer, scale: layer === PAT.check ? 0.09 : 0.11, sleeves: r.chance(0.78) ? 'long' : 'short', tucked: r.chance(0.6), bigCollar: true };
       P.bottom = { kind: 'flare', ...plain(colour(r, r.chance(0.6) ? pick(r, P_.denim) : pick(r, [0x6a4a30, 0x3a3a3c, 0xa89070, 0x4a4a3a, 0x2a2a3a]), 0.1, 0.1)), layer: PAT.denim, scale: 0.03 };
       if (P.bottom.col[2] < P.bottom.col[0]) P.bottom.layer = PAT.plain;
       P.bottom.col2 = P.bottom.col.map((c) => Math.min(1, c * 2.1 + 0.02));
       P.belt = colour(r, pick(r, [0x2a1e16, 0x4a3020, 0x6a4a2a]), 0.1);
-      if (r.chance(0.25)) P.top = { kind: 'jacket', col: colour(r, pick(r, [0x3a4a6a, 0x6a4a30, 0x4a4a3a, 0x8a6a4a]), 0.1), col2: null, layer: PAT.denim, scale: 0.03, sleeves: 'long', hem: 0.5, casual: true }, P.top.col2 = P.top.col.map((c) => c * 1.8), P.inner = { kind: 'tshirt', ...plain(colour(r, pick(r, [0xe8e4da, 0xc49a3a, 0x9a3030, 0x2a2a2a]))) };
+      if (r.chance(0.4)) P.top = { kind: 'jacket', col: colour(r, pick(r, [0x3a4a6a, 0x6a4a30, 0x4a4a3a, 0x8a6a4a]), 0.1), col2: null, layer: PAT.denim, scale: 0.03, sleeves: 'long', hem: 0.5, casual: true }, P.top.col2 = P.top.col.map((c) => c * 1.8), P.inner = { kind: 'tshirt', ...plain(colour(r, pick(r, [0xe8e4da, 0xc49a3a, 0x9a3030, 0x2a2a2a]))) };
       P.shoes = shoesM(r, r.chance(0.3) ? 'sneaker' : 'oxford');
       if (P.shoes.kind === 'sneaker') P.shoes.col = colour(r, pick(r, [0xd8d4cc, 0x3a4a7a, 0x8a2a2a]), 0.1);
       maybeBag(r, P, 'shoulder', 0.25);
@@ -187,7 +193,7 @@ export const ARCHETYPES = [
   {
     id: 'man-casual', weight: 7, sex: 'm', age: [25, 60],
     make(r, P) {
-      const kind = r.pick(['polo', 'knit', 'safari', 'blouson']);
+      const kind = r.pick(['polo', 'knit', 'knit', 'blouson', 'blouson']);
       const c = colour(r, pick(r, kind === 'safari' ? [0xb8a27c, 0x9c8a62, 0x8a8a6a] : P_.knit), 0.1, 0.12);
       if (kind === 'safari') P.top = { kind: 'jacket', ...plain(c), sleeves: 'short', hem: 0.47, belted: true, casual: true };
       else if (kind === 'blouson') P.top = { kind: 'blouson', ...plain(c), sleeves: 'long' };
@@ -205,7 +211,7 @@ export const ARCHETYPES = [
     id: 'office-lady', weight: 9, sex: 'f', age: [19, 35],
     make(r, P) {
       const b = colour(r, pick(r, P_.blouse), 0.05, 0.12);
-      P.top = { kind: 'blouse', ...plain(b), layer: r.chance(0.2) ? PAT.dots : PAT.plain, col2: b.map((c) => c * 0.6), scale: 0.05, sleeves: r.chance(0.5) ? 'long' : 'short', tucked: true, bow: r.chance(0.35) ? colour(r, pick(r, P_.tie)) : null };
+      P.top = { kind: 'blouse', ...plain(b), layer: r.chance(0.2) ? PAT.dots : PAT.plain, col2: b.map((c) => c * 0.6), scale: 0.05, sleeves: r.chance(0.75) ? 'long' : 'short', tucked: true, bow: r.chance(0.35) ? colour(r, pick(r, P_.tie)) : null };
       const sk = colour(r, pick(r, P_.skirt), 0.1, 0.1);
       P.bottom = { kind: 'skirt', ...plain(sk), layer: r.chance(0.25) ? PAT.check : PAT.plain, col2: sk.map((c) => c * 0.6 + 0.02), scale: 0.1, hem: r.range(0.24, 0.31), flare: r.range(0.98, 1.08), pleats: r.chance(0.4) ? r.int(14, 24) : 0 };
       if (r.chance(0.25)) P.top = { ...P.top, kind: 'cardigan', inner: b, col: colour(r, pick(r, P_.knit), 0.1), layer: PAT.knit, scale: 0.02 }, P.top.col2 = P.top.col.map((c) => c * 0.8);
@@ -222,7 +228,7 @@ export const ARCHETYPES = [
       const base = colour(r, pick(r, P_.dress), 0.1, 0.12);
       const layer = r.chance(0.55) ? r.pick([PAT.floral, PAT.floral, PAT.dots, PAT.check, PAT.wave, PAT.stripe]) : PAT.plain;
       const c2 = layer === PAT.plain ? base : colour(r, pick(r, [0xeeeae0, 0xe8dc9a, 0x2a3048, 0xc86a3a, 0x6a2430]), 0.08);
-      P.top = { kind: 'dress', col: base, col2: c2, layer, scale: layer === PAT.dots ? 0.05 : 0.12, sleeves: r.pick(['short', 'long', 'short']), belted: r.chance(0.5) };
+      P.top = { kind: 'dress', col: base, col2: c2, layer, scale: layer === PAT.dots ? 0.05 : 0.12, sleeves: r.pick(['long', 'long', 'short']), belted: r.chance(0.5) };
       P.bottom = { kind: 'skirt', col: base, col2: c2, layer, scale: P.top.scale, hem: r.range(0.18, 0.29), flare: r.range(1.0, 1.1), pleats: 0 };
       P.legs = { hose: true };
       P.shoes = shoesF(r);
@@ -232,7 +238,7 @@ export const ARCHETYPES = [
     },
   },
   {
-    id: 'woman-coat', weight: 4, sex: 'f', age: [20, 60],
+    id: 'woman-coat', weight: 0.6, sex: 'f', age: [20, 60],
     make(r, P) {
       const c = colour(r, pick(r, P_.coat), 0.08, 0.1);
       P.top = { kind: 'coat', ...plain(c), layer: r.chance(0.2) ? PAT.tweed : PAT.plain, col2: c.map((x) => x * 1.3), sleeves: 'long', hem: r.range(0.2, 0.29), belted: r.chance(0.5) };
@@ -250,7 +256,7 @@ export const ARCHETYPES = [
     make(r, P) {
       const base = colour(r, pick(r, [...P_.knit, ...P_.blouse]), 0.1, 0.15);
       const layer = r.chance(0.35) ? r.pick([PAT.border, PAT.stripe, PAT.floral]) : r.chance(0.4) ? PAT.knit : PAT.plain;
-      P.top = { kind: r.chance(0.5) ? 'knit' : 'blouse', col: base, col2: layer === PAT.knit ? base.map((c) => c * 0.8) : colour(r, pick(r, P_.knit), 0.1), layer, scale: layer === PAT.knit ? 0.02 : 0.08, sleeves: r.chance(0.6) ? 'long' : 'short', tucked: r.chance(0.6), turtle: r.chance(0.2) };
+      P.top = { kind: r.chance(0.5) ? 'knit' : 'blouse', col: base, col2: layer === PAT.knit ? base.map((c) => c * 0.8) : colour(r, pick(r, P_.knit), 0.1), layer, scale: layer === PAT.knit ? 0.02 : 0.08, sleeves: r.chance(0.8) ? 'long' : 'short', tucked: r.chance(0.6), turtle: r.chance(0.2) };
       P.bottom = { kind: 'flare', ...plain(colour(r, r.chance(0.65) ? pick(r, P_.denim) : pick(r, [0xe8e4da, 0xa8824e, 0x6a2430, 0x3a3a3c, 0x8a4a2a]), 0.1, 0.1)), layer: PAT.denim, scale: 0.03 };
       if (P.bottom.col[2] < P.bottom.col[0]) P.bottom.layer = PAT.plain;
       P.bottom.col2 = P.bottom.col.map((c) => Math.min(1, c * 2.0 + 0.02));

@@ -16,11 +16,11 @@ export const LOOK_PRESETS = {
     // references read as saturated reversal film with a deep blue sky and dark-ish shadows.
     sunElevationDeg: 40, sunAzimuthDeg: 222, // azimuth measured clockwise from north
     turbidity: 3.0, rayleigh: 2.4, mieCoefficient: 0.0035, mieDirectionalG: 0.8,
-    sunIntensity: 3.6, sunColor: 0xfff0d8, skyFill: 0.62, groundFill: 0x5e564a,
+    sunIntensity: 3.7, sunColor: 0xfff0d8, skyFill: 0.56, groundFill: 0x5e564a,
     exposure: 0.95, fogColor: 0xb4c3d2, fogDensity: 0.0019,
     toneMapping: 'neutral',
     bloom: { strength: 0.12, radius: 0.4, threshold: 0.97 },
-    grade: { lift: [0.004, 0.005, 0.012], gain: [1.03, 1.0, 0.96], saturation: 1.16, contrast: 1.12, vignette: 0.24, grain: 0.022 },
+    grade: { lift: [0.0, 0.002, 0.008], gain: [1.04, 1.0, 0.95], saturation: 1.16, contrast: 1.17, vignette: 0.24, grain: 0.022 },
   },
   'neon-night': {
     note: 'Visual working choice matched to R04; not a historical claim.',
