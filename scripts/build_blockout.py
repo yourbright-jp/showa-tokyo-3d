@@ -54,8 +54,8 @@ def camera_rotation(eye, target):
 
 
 def main():
-    data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
-    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+    data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
+    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
     cfg = dict(data["config"])
     terrain = load_terrain(cfg)
     origin, space = cfg["origin_jgd2011"], h["pixel_space"]
@@ -164,7 +164,7 @@ def main():
         "scope": "sampled static footprint centreline and edge clearance only; no continuous swept body, fountain/steps, street furniture, dynamic objects or historical street survey"}
     write_json(SCENE / "cameras/route-proposal.json", route)
     write_json(ROOT / "data/derived/route-collision-report.json", {"validation": route["validation"], "collisions": collisions})
-    scene = json.loads((SCENE / "scene.json").read_text())
+    scene = json.loads((SCENE / "scene.json").read_text(encoding="utf-8"))
     scene["route"].update({key: route[key] for key in ("status", "distance_m", "geometry", "stations", "validation")})
     scene["route"].update({"source": h["source"], "camera_file": "cameras/route-proposal.json",
         "distance_status": "computed-proposal-not-historical-measurement"})
@@ -178,7 +178,7 @@ def main():
     write_json(SCENE / "scene.json", scene)
     intermediate = ROOT / "tmp/layout-study-base.gltf"
     export_gltf(features, intermediate, cfg)
-    model = json.loads(intermediate.read_text())
+    model = json.loads(intermediate.read_text(encoding="utf-8"))
     model["asset"]["copyright"] = ("東京都・新宿区 3D 都市モデル（Project PLATEAU）2025 年度を加工（CC BY 4.0）。"
         "国土地理院の 1974–1978 年航空写真（gazo1）を参照して屋根輪郭・広場・配置を解釈。"
         "高さ、広場境界、現代地物の省略、1976 年の外観は未検証。")

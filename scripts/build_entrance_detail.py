@@ -691,7 +691,7 @@ def modern_context():
     path = ROOT / "data/derived/kabukicho-layout-features.json"
     if not path.exists():
         return {"included": False, "reason": "layout-feature input unavailable"}
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     visible, hidden = [], []
     c = collection("Modern 2025 reference geometry — historical survival inferred")
     c["source"] = "PLATEAU Tokyo/Shinjuku 2025 modified; CC BY 4.0"
@@ -797,7 +797,7 @@ def camera(name, position, target, lens=35, street_space=False, role="shared-rou
 def cameras():
     views = {}
     for name in ("entrance-approach", "under-gate"):
-        source = json.loads((SCENE_DIR / "cameras" / (name + ".json")).read_text())
+        source = json.loads((SCENE_DIR / "cameras" / (name + ".json")).read_text(encoding="utf-8"))
         views[name] = camera(name, source["position_m"], source["look_at_m"], source["focal_length_35mm_equivalent_mm"])
     views["entrance-calibration"] = camera("entrance-calibration", (-3.0, -48, 1.6), (.8, 4.0, 14.0), 24, True,
         "separate-reference-framing-calibration; not a route replacement")
@@ -818,7 +818,7 @@ def build(args):
             raise ValueError("Published previews must be placed within this repository")
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
-    stations = json.loads((SCENE_DIR / "cameras/route-proposal.json").read_text())["stations"]
+    stations = json.loads((SCENE_DIR / "cameras/route-proposal.json").read_text(encoding="utf-8"))["stations"]
     gate = next(s for s in stations if s["id"] == "under-gate")["position_m"]
     middle = next(s for s in stations if s["id"] == "ichibangai-middle")["position_m"]
     ANCHOR = Vector((gate[0], gate[2]))
@@ -829,7 +829,7 @@ def build(args):
     from import_plateau import load_terrain
     TERRAIN = load_terrain()
     decision_path = ROOT / "data/decisions/kabukicho-gate-1976.json"
-    GATE_DECISION = json.loads(decision_path.read_text()) if decision_path.exists() else {}
+    GATE_DECISION = json.loads(decision_path.read_text(encoding="utf-8")) if decision_path.exists() else {}
     FONT = bpy.data.fonts.load(str(args.font.resolve()))
     FONT.pack()
     make_materials()
@@ -888,8 +888,8 @@ def build(args):
     scene.camera = views[selected_views[0]]
     args.output.mkdir(parents=True, exist_ok=True)
     # This copy contains only hashes/provenance, never the source photographs.
-    spec = json.loads(SPEC_PATH.read_text())
-    (args.output / "entrance-detail-spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n")
+    spec = json.loads(SPEC_PATH.read_text(encoding="utf-8"))
+    (args.output / "entrance-detail-spec.json").write_text(json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     output_blend = args.output / ("entrance-detail-" + args.gate + ".blend")
     bpy.ops.wm.save_as_mainfile(filepath=str(output_blend.resolve()))
     render_files = []
@@ -930,7 +930,7 @@ def build(args):
         "authored_asset_license": "MIT", "third_party_rasters_embedded": False,
         "license_notes": "Modern context PLATEAU CC BY 4.0; packed CJK font has its own license. Check both before distributing blend."
     }
-    (args.output / "build-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
+    (args.output / "build-manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     if args.publish_preview_dir and render_files:
         args.publish_preview_dir.mkdir(parents=True, exist_ok=True)
         published = []
@@ -949,7 +949,7 @@ def build(args):
             "gate_decision_sha256": hashlib.sha256((ROOT / "data/decisions/kabukicho-gate-1976.json").read_bytes()).hexdigest(),
             "spec_path": str(SPEC_PATH.relative_to(ROOT)),
             "inspection_status": "See the reconstruction round report; this renderer does not self-certify visual quality."})
-        (args.publish_preview_dir / "entrance-render-manifest.json").write_text(json.dumps(public_manifest, ensure_ascii=False, indent=2) + "\n")
+        (args.publish_preview_dir / "entrance-render-manifest.json").write_text(json.dumps(public_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     asset = {
         "schema_version": 1, "id": "kabukicho-entrance-detail-r03-" + args.gate,
         "path": output_blend.name, "asset_type": "authored-blender-scene",
@@ -968,7 +968,7 @@ def build(args):
         "redistribution": "Authored geometry/code MIT; retain PLATEAU CC BY 4.0 attribution and supplied font license. No permission for source photograph redistribution is implied.",
         "validation": manifest["validation"]
     }
-    (args.output / (output_blend.name + ".asset.json")).write_text(json.dumps(asset, ensure_ascii=False, indent=2) + "\n")
+    (args.output / (output_blend.name + ".asset.json")).write_text(json.dumps(asset, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print("ENTRANCE_DETAIL_READY " + json.dumps({"blend": str(output_blend), "renders": render_files, "objects": len(bpy.data.objects), "gate": args.gate}))
 
 

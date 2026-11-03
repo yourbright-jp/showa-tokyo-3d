@@ -39,20 +39,41 @@ sudo apt-get install fonts-ipafont-gothic fonts-ipafont-mincho fonts-motoya-l-ma
 
 **Mac**：IPAフォントは配布ページから入れる。モトヤLの2書体は、Windowsと同じ方法で`.deb`から取り出してFont Bookで入れる。
 
+**フォントをOSに入れられない場合**（r05で追加）
+
+同じファイルを、リポジトリ直下の`local-fonts/`に置く。このフォルダはGitの対象外で、コミットも配布もしない。ビューア（`viewer/src/core/fonts.js`）は、OSに入っていない書体だけをここから読む。OSに入っている書体は、従来どおりOSのものを使う。
+
+| ファイル名 | 書体 |
+| --- | --- |
+| `ipag.ttf`・`ipagp.ttf` | IPAゴシック・IPA Pゴシック |
+| `ipam.ttf`・`ipamp.ttf` | IPA明朝・IPA P明朝 |
+| `MTLmr3m.ttf` | モトヤLマルベリ3等幅 |
+| `MTLc3m.ttf` | モトヤLシーダ3等幅 |
+| `wqy-zenhei.ttf` | WenQuanYi Zen Hei |
+
+- WenQuanYiは、Debianの`.ttc`のままではChromeが読めない（OTSの検査で`FFTM: misaligned table`）。fontToolsで最初の書体を`.ttf`に書き出す。
+  ```sh
+  pip install fonttools
+  py -3 -c "from fontTools.ttLib import TTCollection as C; f=C('local-fonts/wqy-zenhei.ttc').fonts[0]; f.__delitem__('FFTM'); f.save('local-fonts/wqy-zenhei.ttf')"
+  ```
+- 描画記録の`stations[].fontSources`に、書体ごとの読み込み元（`system`・`local-fonts/<ファイル名>`・`missing`）が残る。
+
 ## 3. リポジトリの準備
 
 ```sh
 git clone https://github.com/yourbright-jp/showa-tokyo-3d.git
 cd showa-tokyo-3d
 git lfs install
-git checkout claude/stoic-ramanujan-2ngpfv
 npm ci
 pip install -r requirements-render.txt
 python3 -m unittest discover -s tests
 ```
 
-- PR #10が`main`へ合流した後は、`main`から作業する。
+- PR #10は2026-11-03に`main`へ合流した。`main`から作業する。
 - Windowsでは`python3`の代わりに`py -3`を使う。
+- Windowsで分かったこと（r05、2026-11-03）
+  - Gitの既定（`core.autocrlf=true`）では、テキストが改行CRLFで取り出され、公開ファイルのハッシュ検査が一致しなかった。`.gitattributes`を`* text=auto eol=lf`にし、どの設定でもLFで取り出すようにした。古い取り出しが残っている場合は、`git rm -rq --cached . && git reset -q --hard`で取り出し直す。
+  - Pythonの既定の文字コード（cp1252）では、日本語を含むJSONを読めず27件がエラーになった。テストとスクリプトのファイルの読み書きを、UTF-8・改行LFに固定した。
 
 ## 4. GPUで描けることの確認
 
@@ -76,6 +97,21 @@ node scripts/render_stills.mjs --gpu --channel chrome --out renders/gpu-check --
 4. `--channel chromium`
 
 どの組み合わせで動いたかを記録する。
+
+**確認済みの組み合わせ（2026-11-03）**：Windows 11、RTX 4070（ドライバ610.88）、Google Chrome 156.0.8078.80、Node 24.15.0、Python 3.13。`--channel chrome`と既定の`--angle d3d11`で、1回目から`ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)`で描けた。
+
+**GPUとCPUで同じ絵にするための注意**：シェーダーの中で`fract(sin(x) * 43758.5)`型の乱数を使わない。大きな引数の`sin`の精度は実装ごとに違い、r04の窓の室内（カーテン・ブラインド・壁の色）がGPUとSwiftShaderで入れ替わっていた。r05で整数ハッシュ（`buildings/materials.js`の`uhash`）に替えた。
+
+**重ね描きとまとめ描き（r05）**：静止画は、1ページで世界を1回だけ作り、全カメラを続けて描く。1ページ1地点では世界の作成（CPU、約13秒）が毎回かかり、GPUはほとんど使われない。
+
+```sh
+node scripts/render_stills.mjs --gpu --channel chrome --batch --spp 64 --out renders/r05 --stations entrance-approach,under-gate,ichibangai-middle,towards-koma-corner,plaza-reveal,koma-front --views r04-gate-establishing,r04-gate-rear,r04-milano-front --walk 0,10,60,120,184,230,257
+```
+
+- `--spp N`：1コマをN回ずらして描いて平均する（ぎざぎざの除去・柔らかい影）。このPCでは64回で1枚0.5秒以内。
+- 任意：`--sunr <度>`（太陽の半径。既定0.27）、`--fstop <F値> --focus <m>`（被写界深度）、`--shutter <秒>`（歩行の動きのぶれ）、`--shadow <画素>`（影の解像度。既定4096）。
+- `--batch`なしでは、従来どおり1ページ1地点で描く（`--spp`なしならr04と同じ1回描き）。
+- 測定の結果は[r05ラウンド記録](rounds/shinjuku-kabukicho-1976-r05.md)。
 
 ## 5. 歩いて見る
 

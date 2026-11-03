@@ -130,11 +130,11 @@ def plan(features, route):
                 ax.add_patch(Polygon([(p[0], -p[2]) for p in ring], facecolor="#dcaa70" if inferred else
                     "#e5ebef" if kind == "building" else "#aebfc9", edgecolor="#a66e31" if inferred else
                     "#7d96a5" if kind == "building" else "none", linewidth=.5))
-    hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+    hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
     plaza = hypothesis.get("plaza", {})
     plaza_pixels = plaza.get("boundary_pixels", plaza.get("pixels", []))
     if plaza_pixels:
-        origin = json.loads((ROOT / "data/kabukicho-intake.json").read_text())["origin_jgd2011"]
+        origin = json.loads((ROOT / "data/kabukicho-intake.json").read_text(encoding="utf-8"))["origin_jgd2011"]
         outline = [horizontal(*pixel_latlon(p, hypothesis["pixel_space"]), origin) for p in plaza_pixels]
         ax.add_patch(Polygon([(p[0], -p[1]) for p in outline], facecolor="#dceacb", edgecolor="#557449",
                              linewidth=1.2, alpha=.65, zorder=4, linestyle="--"))
@@ -199,8 +199,8 @@ def main():
                         help="Optional directory of archived E/F PNGs for a revision comparison")
     args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
-    data = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text())
-    route = json.loads((SCENE / "cameras/route-proposal.json").read_text())
+    data = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text(encoding="utf-8"))
+    route = json.loads((SCENE / "cameras/route-proposal.json").read_text(encoding="utf-8"))
     overview, _ = render(data["features"], [-300, 340, 425], [0, 10, -45], 1920, 1080, aerial=True)
     save_png(caption(overview, "Kabukicho: first 3D layout study", "Modern context + provisional theatre roof volumes. Geometry study; heights and exact 1976 appearance remain unverified."), OUT / "blockout-overview.png")
     images = []
@@ -215,9 +215,9 @@ def main():
     for i, image in enumerate(images):
         sheet.paste(image.resize((640, 360)), ((i % 3) * 640, (i // 3) * 360))
     save_png(sheet, OUT / "camera-contact-sheet.png")
-    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
     hidden = set(h["context_hidden_diagnostic_ids"])
-    modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
+    modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
     retained_features = [f for f in data["features"] if f["id"] not in hidden] + [f for f in modern["features"] if f["id"] in hidden]
     camera = route["stations"][-1]
     retained, _ = render(retained_features, camera["position_m"], camera["look_at_m"], 960, 540, focal_mm=camera.get("focal_length_35mm_equivalent_mm", 35))

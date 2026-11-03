@@ -36,7 +36,7 @@ def arguments():
 def write_json(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".pending")
-    temporary.write_text(json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":")) + "\n")
+    temporary.write_text(json.dumps(value, ensure_ascii=False, allow_nan=False, separators=(",", ":")) + "\n", encoding="utf-8", newline="\n")
     temporary.replace(path)
 
 
@@ -213,7 +213,7 @@ def environment(args):
 def main():
     args = arguments()
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    data = json.loads((ROOT / "data/derived/kabukicho-period-features.json").read_text())
+    data = json.loads((ROOT / "data/derived/kabukicho-period-features.json").read_text(encoding="utf-8"))
     if args.prepare_text_meshes:
         prepare_text(args, data)
         return
@@ -231,7 +231,7 @@ def main():
     selected_views = [name for name in args.views.split(",") if name]
     walk_details = {}
     if args.walk_samples:
-        walk = json.loads((SCENE / "cameras/adopted-walk.json").read_text())
+        walk = json.loads((SCENE / "cameras/adopted-walk.json").read_text(encoding="utf-8"))
         for index in range(args.walk_samples):
             target_time = walk["duration_s"] * index / max(1, args.walk_samples - 1)
             sample = min(walk["samples"], key=lambda s: abs(s["time_s"] - target_time))

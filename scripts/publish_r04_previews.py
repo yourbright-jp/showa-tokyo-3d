@@ -55,7 +55,7 @@ def sha256(path):
 
 def write_json(path, value):
     (ROOT / path).parent.mkdir(parents=True, exist_ok=True)
-    (ROOT / path).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (ROOT / path).write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def source_components():

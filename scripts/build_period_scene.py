@@ -59,9 +59,9 @@ class Builder:
         self.config = modern["config"]
         self.origin = self.config["origin_jgd2011"]
         self.terrain = load_terrain(self.config)
-        self.hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+        self.hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
         self.space = self.hypothesis["pixel_space"]
-        self.route = json.loads((SCENE / "cameras/route-proposal.json").read_text())
+        self.route = json.loads((SCENE / "cameras/route-proposal.json").read_text(encoding="utf-8"))
         self.path = self.route["geometry"]["coordinates"]
         self.gate, self.koma, self.surfaces = gate, koma, surfaces
         self.features, self.obstacles, self.text_nodes, self.classifications = [], [], [], []
@@ -736,7 +736,7 @@ def export_period_gltf(data, path):
         extras = {k: v for k, v in feature.items() if k not in {"polygons", "polygon_material_keys"}}
         doc["nodes"].append({"name": feature["id"], "mesh": mesh_i, "extras": extras})
         doc["scenes"][0]["nodes"].append(len(doc["nodes"]) - 1)
-    route = json.loads((SCENE / "cameras/route-proposal.json").read_text())
+    route = json.loads((SCENE / "cameras/route-proposal.json").read_text(encoding="utf-8"))
     for s in route["stations"]:
         focal = s.get("focal_length_35mm_equivalent_mm", 35)
         camera = len(doc["cameras"])
@@ -754,14 +754,14 @@ def export_period_gltf(data, path):
 
 
 def main():
-    modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
-    layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text())
-    gate, koma = [json.loads(p.read_text()) for p in (GATE_PATH, KOMA_PATH)]
+    modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
+    layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text(encoding="utf-8"))
+    gate, koma = [json.loads(p.read_text(encoding="utf-8")) for p in (GATE_PATH, KOMA_PATH)]
     if not gate.get("decision_complete") or not koma.get("decision_complete"):
         raise ValueError("Historical production choices must be adopted before generating this scene")
     if not SURFACE_PATH.exists():
         raise ValueError("Adopted connector surface decision is required")
-    surfaces = json.loads(SURFACE_PATH.read_text())
+    surfaces = json.loads(SURFACE_PATH.read_text(encoding="utf-8"))
     if not surfaces.get("decision_complete"):
         raise ValueError("Route surface decision is incomplete")
     builder = Builder(modern, layout, gate, koma, surfaces)
@@ -769,7 +769,7 @@ def main():
     facades = builder.build_theatres(); builder.build_plaza_props()
     fonts = []
     if TEXT_MESH_PATH.exists():
-        glyph_doc = json.loads(TEXT_MESH_PATH.read_text())
+        glyph_doc = json.loads(TEXT_MESH_PATH.read_text(encoding="utf-8"))
         digest = hashlib.sha256(json.dumps(builder.text_nodes, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         fonts = glyph_doc.get("features", []) if glyph_doc.get("input_text_nodes_sha256") == digest else []
         node_map = {n["id"]: n for n in builder.text_nodes}

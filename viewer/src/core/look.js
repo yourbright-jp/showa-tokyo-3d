@@ -136,14 +136,33 @@ export function focusShadow(ctx, camera, radius = 70) {
   sun.target.updateMatrixWorld();
 }
 
-export function makeComposer(ctx, camera, width, height) {
+const InputShader = {
+  uniforms: { tInput: { value: null } },
+  vertexShader: GradeShader.vertexShader,
+  fragmentShader: `uniform sampler2D tInput; varying vec2 vUv; void main(){ gl_FragColor = texture2D(tInput, vUv); }`,
+};
+
+/**
+ * Bloom, grade and tone mapping after the scene. `input` (optional): a linear HDR texture to use
+ * instead of drawing the scene, e.g. the averaged samples of core/accumulate.js; swap it later with
+ * composer.setInput(texture) to reuse the passes for the next view or frame (EffectComposer.dispose()
+ * does not free the passes' own render targets, so per-view composers would leak GPU memory).
+ */
+export function makeComposer(ctx, camera, width, height, input = null) {
   const { renderer, scene } = ctx;
   const P = ctx.look.preset;
-  const rt = new THREE.WebGLRenderTarget(width, height, { type: THREE.HalfFloatType, samples: ctx.quality.msaa });
+  const rt = new THREE.WebGLRenderTarget(width, height, { type: THREE.HalfFloatType, samples: input ? 0 : ctx.quality.msaa });
   const composer = new EffectComposer(renderer, rt);
   composer.setPixelRatio(1);
   composer.setSize(width, height);
-  composer.addPass(new RenderPass(scene, camera));
+  if (input) {
+    const pass = new ShaderPass(InputShader, 'tInputUnused'); // keep tInput: the pass must not read the composer buffer
+    pass.uniforms.tInput.value = input;
+    composer.addPass(pass);
+    composer.setInput = (texture) => { pass.uniforms.tInput.value = texture; };
+  } else {
+    composer.addPass(new RenderPass(scene, camera));
+  }
   const bloom = new UnrealBloomPass(new THREE.Vector2(width, height), P.bloom.strength, P.bloom.radius, P.bloom.threshold);
   composer.addPass(bloom);
   const grade = new ShaderPass(GradeShader);

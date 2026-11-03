@@ -2,8 +2,10 @@ import * as THREE from 'three';
 import { loadData } from './core/data.js';
 import { makeRng } from './core/rng.js';
 import { applyLook, focusShadow, makeComposer } from './core/look.js';
+import { accumulate } from './core/accumulate.js';
 import { WORLD_MODULES } from './world/index.js';
 import { analyseFacades } from './core/facades.js';
+import { prepareSignFonts } from './core/fonts.js';
 
 // URL parameters
 //   station=<station id>   camera from scenes/.../cameras/<id>.json (default entrance-approach)
@@ -15,6 +17,15 @@ import { analyseFacades } from './core/facades.js';
 //   look=<preset>          lighting preset from core/look.js
 //   only=<a,b>             build only the listed world modules (debugging)
 //   decor=1972             optional layer: the 1972 temporary street decoration on Ichibangai lamps
+//   spp=<n>                stills: accumulation rendering, n jittered samples averaged (core/accumulate.js);
+//                          omitted = the r04 single-pass path
+//   aa=<px>                accumulation pixel filter sigma (default 0.42)
+//   sunr=<deg>             angular radius of the sun for soft shadows (default 0.27, the solar disk)
+//   msaa=<n>               MSAA per accumulation sample (default 0)
+//   fstop=<N>, focus=<m>   optional depth of field (35 mm-equivalent full frame), focus distance in metres
+//   shutter=<s>            optional motion blur along the walk (walk= only), e.g. 0.0167 for 1/60 s
+//   shadow=<px>            stills: sun shadow map size (default 4096)
+//   batch=1                stills: build the world once and expose window.__renderView({station|view|walk})
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
@@ -24,6 +35,8 @@ const width = Number(params.get('w')) || (still ? 1920 : window.innerWidth);
 const height = Number(params.get('h')) || (still ? 1080 : window.innerHeight);
 const lookName = params.get('look') || 'clear-afternoon';
 const only = params.get('only') ? new Set(params.get('only').split(',')) : null;
+const num = (k, d) => (params.has(k) ? Number(params.get(k)) : d);
+const spp = still ? num('spp', 0) : 0;
 if (still) document.body.classList.add('still');
 
 window.__log = [];
@@ -48,6 +61,7 @@ function setStationCamera(cam) {
   const [px, py, pz] = cam.position_m;
   const [tx, ty, tz] = cam.look_at_m;
   const f = cam.focal_length_35mm_equivalent_mm || 35;
+  camera.userData.focalMm = f;
   // 35 mm equivalent on the 36 mm horizontal film width (same convention as scripts/render_blockout.py)
   const hfov = 2 * Math.atan(18 / f);
   camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(Math.tan(hfov / 2) / (width / height)));
@@ -67,7 +81,7 @@ async function main() {
     still,
     stationId,
     options: { decor1972: params.get('decor') === '1972' },
-    quality: { still, shadowMap: still ? 4096 : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
+    quality: { still, shadowMap: still ? num('shadow', 4096) : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
     provenance: [],
     /** Record the evidence tier of generated content. tier: source-derived | period-plausible-generic | placeholder */
     tag(entry) { ctx.provenance.push(entry); },
@@ -83,12 +97,9 @@ async function main() {
   } catch (e) { window.__gpu = `unknown (${e.message})`; }
   log(`webgl renderer: ${window.__gpu}`);
   {
-    const probe = document.createElement('canvas').getContext('2d');
-    const w = (f) => { probe.font = `64px ${f}`; return probe.measureText('喫茶歌舞伎町一番街ABC123').width; };
-    const missing = ['IPAGothic', 'IPAMincho', 'MotoyaLMaru', 'MotoyaLCedar', 'WenQuanYi Zen Hei']
-      .filter((f) => w(`"${f}", monospace`) === w('monospace') && w(`"${f}", serif`) === w('serif'));
+    const { missing, sources } = await prepareSignFonts(log);
     window.__fontWarnings = missing;
-    if (missing.length) log(`WARNING fonts not installed (fallbacks used): ${missing.join(', ')}`);
+    window.__fontSources = sources;
   }
   applyLook(ctx, lookName);
   const tf = performance.now();
@@ -109,9 +120,12 @@ async function main() {
     }
   }
 
-  if (walkT !== null) {
-    const pose = data.walkPose(walkT);
+  const walkCamera = (t) => {
+    const pose = data.walkPose(t);
     setStationCamera({ position_m: pose.position_m, look_at_m: pose.look_at_m, focal_length_35mm_equivalent_mm: data.walk.focal_length_35mm_equivalent_mm });
+  };
+  if (walkT !== null) {
+    walkCamera(walkT);
   } else {
     let cam = data.cameras[stationId];
     if (viewId) {
@@ -123,7 +137,7 @@ async function main() {
   }
   focusShadow(ctx, camera, 90);
 
-  const composer = makeComposer(ctx, camera, width, height);
+  const composer = spp > 0 ? null : makeComposer(ctx, camera, width, height);
   scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; } /* castShadow is opt-in: three.js defaults it to false, so each module sets it explicitly */ });
   // three.js (r163+) replaces material.envMapIntensity with scene.environmentIntensity whenever a
   // material has no envMap of its own. Bind the scene environment explicitly to materials that ask
@@ -147,6 +161,52 @@ async function main() {
     return { meshes, tris: Math.round(tris), provenanceEntries: ctx.provenance.length, calls: renderer.info.render.calls };
   };
 
+  // batch=1: build the world once, then the renderer script calls window.__renderView() per camera.
+  // The world does not depend on the camera (detail ranges are measured from the route), so every
+  // view sees the same world as a one-view page; only the per-page build time is saved.
+  if (still && params.get('batch') === '1') {
+    let post = null; // one bloom/grade/output chain for every view (see makeComposer)
+    window.__renderView = async (v) => {
+      const tv = performance.now();
+      if (v.walk !== undefined && v.walk !== null) walkCamera(v.walk);
+      else {
+        const cam = v.view ? data.reviewCameras[v.view] : data.cameras[v.station];
+        if (!cam) throw new Error(`unknown camera ${v.view || v.station}`);
+        setStationCamera(cam);
+      }
+      focusShadow(ctx, camera, 90);
+      const isWalk = v.walk !== undefined && v.walk !== null;
+      const { texture, target, stats } = await accumulate(ctx, camera, width, height, {
+        spp: Math.max(1, spp), aa: num('aa', undefined), sunRadiusDeg: num('sunr', undefined), msaa: num('msaa', 0),
+        fstop: num('fstop', 0), focus: num('focus', 0), focalMm: camera.userData.focalMm,
+        shutter: isWalk ? num('shutter', 0) : 0, pose: isWalk ? (dt) => walkCamera(v.walk + dt) : null,
+        shadowRadius: 90,
+      });
+      if (post) post.setInput(texture); else post = makeComposer(ctx, camera, width, height, texture);
+      post.render();
+      target.dispose();
+      log(`view ${JSON.stringify(v)}: accumulated ${stats.spp} samples in ${stats.ms} ms, view total ${(performance.now() - tv).toFixed(0)} ms`);
+      return { ...stats, viewMs: Math.round(performance.now() - tv) };
+    };
+    log(`world ready in ${(performance.now() - t0).toFixed(0)} ms (batch)`);
+    window.__worldReady = true;
+    return;
+  }
+
+  if (still && spp > 0) {
+    const { texture, stats } = await accumulate(ctx, camera, width, height, {
+      spp, aa: num('aa', undefined), sunRadiusDeg: num('sunr', undefined), msaa: num('msaa', 0),
+      fstop: num('fstop', 0), focus: num('focus', 0), focalMm: camera.userData.focalMm,
+      shutter: walkT !== null ? num('shutter', 0) : 0, pose: walkT !== null ? (dt) => walkCamera(walkT + dt) : null,
+      shadowRadius: 90,
+    });
+    window.__accum = stats;
+    log(`accumulated ${stats.spp} samples in ${stats.ms} ms (${stats.msPerSample} ms/sample) ${JSON.stringify(stats)}`);
+    makeComposer(ctx, camera, width, height, texture).render();
+    log(`still rendered in ${(performance.now() - t0).toFixed(0)} ms`);
+    window.__renderDone = true;
+    return;
+  }
   if (still) {
     composer.render();
     // second frame after shader compile ensures all lazily-uploaded textures are present

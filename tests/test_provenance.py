@@ -17,7 +17,7 @@ def sidecars():
     for directory in (ROOT / "data", ROOT / "docs/previews", ROOT / "scenes"):
         for path in directory.rglob("*.asset.json"):
             if "raw" not in path.relative_to(ROOT).parts:
-                yield path, json.loads(path.read_text())
+                yield path, json.loads(path.read_text(encoding="utf-8"))
 
 
 # Directories whose non-code, non-document payloads must carry an adjacent *.asset.json
@@ -107,7 +107,7 @@ class ProvenanceContracts(unittest.TestCase):
 
     def test_dependency_ids_resolve_to_assets_or_registered_sources(self):
         records = list(sidecars())
-        sources = json.loads((ROOT / "data/sources.json").read_text())["sources"]
+        sources = json.loads((ROOT / "data/sources.json").read_text(encoding="utf-8"))["sources"]
         ids = [record["id"] for _, record in records]
         self.assertEqual(len(ids), len(set(ids)), "Duplicate asset IDs")
         known = set(ids)
@@ -122,7 +122,7 @@ class ProvenanceContracts(unittest.TestCase):
             for component in record.get("source_components", []):
                 with self.subTest(asset=record["id"], component=component["source_id"]):
                     self.assertIn(component["source_id"], known)
-        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
         evidence_groups = [hypothesis["plaza"]["evidence_sources"]]
         evidence_groups.extend(decision["evidence"] for decision in hypothesis["removal_decisions"])
         for group in evidence_groups:
@@ -134,15 +134,15 @@ class ProvenanceContracts(unittest.TestCase):
         paths = [ROOT / "data/derived/kabukicho-modern-features.json.asset.json",
                  SCENE / "models/modern-baseline.gltf.asset.json"]
         for path in paths:
-            record = json.loads(path.read_text())
+            record = json.loads(path.read_text(encoding="utf-8"))
             self.assertNotIn("gsi-gazo1-1974-1978", record["dependencies"])
             self.assertTrue(all("gsi.go.jp" not in url for url in record["source_urls"]))
             self.assertIn("PLATEAU", record["provider"])
             self.assertNotIn("as applicable", record["processing"])
 
     def test_standalone_layout_model_credits_both_geometry_sources(self):
-        modern = json.loads((SCENE / "models/modern-baseline.gltf").read_text())
-        layout = json.loads((SCENE / "models/layout-study.gltf").read_text())
+        modern = json.loads((SCENE / "models/modern-baseline.gltf").read_text(encoding="utf-8"))
+        layout = json.loads((SCENE / "models/layout-study.gltf").read_text(encoding="utf-8"))
         self.assertIn("PLATEAU", modern["asset"]["copyright"])
         self.assertNotIn("国土地理院", modern["asset"]["copyright"])
         self.assertIn("PLATEAU", layout["asset"]["copyright"])
