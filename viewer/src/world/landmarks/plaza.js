@@ -133,7 +133,10 @@ function buildFountain(ctx, kit, fx, prop) {
     floor: { material: new THREE.MeshStandardMaterial({ map: floorTex, roughness: 0.8 }), castShadow: false },
     metal: new THREE.MeshStandardMaterial({ color: 0x5f6058, roughness: 0.4, metalness: 0.7 }),
   }, 'fountain'));
-  const wmat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.012, 0.03, 0.028), roughness: 0.05, metalness: 0.0, normalMap: rippleNormal(rng), normalScale: new THREE.Vector2(0.2, 0.2), transparent: true, opacity: 0.92, envMapIntensity: 0.9, depthWrite: false });
+  // r04: the r02 water (normalScale 0.2, env 0.9) mirrored the sky as one flat pale sheet at
+  // grazing angles; stronger ripples and a weaker sky term let the dark basin read through.
+  const wmat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.01, 0.026, 0.022), roughness: 0.09, metalness: 0.0, normalMap: rippleNormal(rng), normalScale: new THREE.Vector2(0.65, 0.65), transparent: true, opacity: 0.86, envMapIntensity: 0.5, depthWrite: false });
+  wmat.normalMap.repeat.set(1 / 1.2, 1 / 1.2); // 1.2 m ripple period (r02: 2.4 m)
   const wm = new THREE.Mesh(waterGeo, wmat); wm.castShadow = false; wm.userData.noShadow = true; wm.receiveShadow = true; wm.renderOrder = 1;
   g.add(wm);
   // water jet: column, umbrella sheet, splash ring (translucent, subtle)
