@@ -85,3 +85,18 @@ class StreetpropsAtlas(unittest.TestCase):
                 with self.subTest(a=a[0], b=b[0]):
                     overlap = a[1] < b[1] + b[3] and b[1] < a[1] + a[3] and a[2] < b[2] + b[4] and b[2] < a[2] + a[4]
                     self.assertFalse(overlap, f"{a} overlaps {b}")
+
+
+class ViewerSyntax(unittest.TestCase):
+    def test_viewer_and_render_scripts_parse(self):
+        """A broken module only shows up as a moduleErrors entry at render time; catch it here."""
+        import shutil
+        node = shutil.which("node")
+        if not node:
+            self.skipTest("node not installed")
+        files = sorted(str(p) for p in (ROOT / "viewer").rglob("*.js")) + sorted(str(p) for p in (ROOT / "scripts").glob("*.mjs"))
+        self.assertTrue(files)
+        for f in files:
+            with self.subTest(file=Path(f).relative_to(ROOT).as_posix()):
+                out = subprocess.run([node, "--check", f], capture_output=True, text=True)
+                self.assertEqual(out.returncode, 0, out.stderr)

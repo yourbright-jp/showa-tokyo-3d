@@ -828,7 +828,7 @@ export function plan(ctx, env) {
       text = t.display; fictional = !!t.fictional;
       sub = `当ビル ${(t.flabel || floorLabel(t.floor, r))}`;
     }
-    const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: '◎', // round d: a lone initial (e.g. レ) read as an unexplained mark textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
+    const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: '◎', textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
     const ppm = ppmFor(dmin + 6, 0.8);
     const fq = req('roof', spec, w, h, ppm, 'paint');
     const steel = lin(r.pick(['#5a5650', '#4a4640', '#6a5a4a', '#55524c']));
