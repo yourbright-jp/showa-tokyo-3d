@@ -2,7 +2,7 @@
 // walk, decides which signs it carries (seeded by building/facade id) and returns items:
 //   { id, kind, tier, fictional, faces: [faceReq], emit(G) }
 // faceReq = { painter, spec, wm, hm, ppm, cls } gets an atlas region before emit() runs.
-import { TRADES, TRADE_BY_WORD, SCHEMES, shopName, phraseFor, PHRASES, MENU, NOREN_WORDS, floorLabel, UPPER_ONLY_PHRASES, NAME_STEMS } from './vocab.js';
+import { TRADES, TRADE_BY_WORD, SCHEMES, shopName, phraseFor, BLOCKLIST, PHRASES, MENU, NOREN_WORDS, floorLabel, UPPER_ONLY_PHRASES, NAME_STEMS } from './vocab.js';
 const STEMS_FOR_BUILDINGS = NAME_STEMS.filter((s) => s.length <= 2);
 import { neonStyle, pickTextKind, shade } from './paint.js';
 import { box, beam, cylinder, face, v3, lin } from './geo.js';
@@ -471,7 +471,7 @@ export function plan(ctx, env) {
       scheme: sch, text: g.display, textKind: pickTextKind(r), weather: r.range(0.35, 0.9), neon,
       sub: !neon && r.chance(0.3) ? phraseFor(r, g.trade) : null,
       band: !neon && r.chance(0.4) ? { h: r.range(0.04, 0.1), top: true, bottom: r.chance(0.5), color: sch.ac } : null,
-      emblem: !neon && r.chance(0.25) ? { ch: [...g.trade][0], bg: sch.ac, fg: sch.bg, round: r.chance(0.5) } : null,
+      emblem: null, // round d: a trade-initial disc beside the trade word read as doubled text (喫|喫茶 鈴)
       side: null,
       borderColor: r.chance(0.45) ? shade(sch.bg, -0.4) : null, pin: r.chance(0.3) ? sch.ac : null,
       seams: r.chance(0.3), lit: neon ? 'neon' : r.chance(0.4) ? 'backlit' : 'none', bulbs: dmin < 50 && r.chance(0.1) ? r.range(0.14, 0.2) : 0,
@@ -828,7 +828,7 @@ export function plan(ctx, env) {
       text = t.display; fictional = !!t.fictional;
       sub = `当ビル ${(t.flabel || floorLabel(t.floor, r))}`;
     }
-    const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: [...text][0], textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
+    const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: '◎', // round d: a lone initial (e.g. レ) read as an unexplained mark textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
     const ppm = ppmFor(dmin + 6, 0.8);
     const fq = req('roof', spec, w, h, ppm, 'paint');
     const steel = lin(r.pick(['#5a5650', '#4a4640', '#6a5a4a', '#55524c']));
@@ -965,7 +965,8 @@ export function plan(ctx, env) {
     const key = b || 'x';
     if (!bnames.has(key)) {
       const stem = r.pick(NAME_STEMS_LOCAL());
-      const nm = r.pick([`${stem}ビル`, `第${r.pick(['一', '二', '三', '五'])}${stem}ビル`, `${stem}会館`]);
+      let nm = r.pick([`${stem}ビル`, `第${r.pick(['一', '二', '三', '五'])}${stem}ビル`, `${stem}会館`]);
+      if (BLOCKLIST.some((b) => nm.includes(b))) nm = `${stem}ビル`;
       const t = { key: nm, trade: 'ビル', name: nm, display: nm, fictional: true, scheme: SCHEMES[r.pick(['blackOnWhite', 'blueOnWhite', 'whiteOnBlue', 'brownOnCream'])], floor: 0, uses: 0 };
       bnames.set(key, t); fictionalNames.add(nm);
       return t;

@@ -97,9 +97,9 @@ export const NAME_STEMS = [
   '白鳥', '千鳥', '若葉', '桔梗', '月光', '銀河', '紫苑', '鈴蘭', '白樺', '千草', '夕霧', '志野', '葵', '楓', '桂',
   '藤', '梅', '浜', '松葉', '若竹', '寿', '福', '春日', '秋月', '雪', '星', '虹', '泉', '都', '京', '雅', '栄', '鶴', '亀',
   '鈴', '蘭', '舞', '渚', '港', '岬', '柳', '桜', '椿', '萩', '蓮', '牡丹', '撫子', '水仙', '朝顔', '山茶花', '小菊', '芙蓉',
-  '大吉', '万福', '八重', '三笠', '加賀', '伊予', '浪花', '小町',
+  '大吉', '万福', '八重', '加賀', '伊予', '浪花', '小町',
   '青葉', '若草', '朝霧', '白萩', '夕顔', '桐', '杉', '竹', '笹', '菊', '桃', '杏', '梢', '霞', '澪', '汐', '灯', '暁', '宵', '凪',
-  '千代', '小春', '初音', '朱鷺', '雲雀', '千秋', '弥生', '皐月', '葉月', '長月', '睦', '清水', '帆影', '扇', '錦', '有明', '春風', '秋草', '静', '紅葉', '翠', '琥珀',
+  '千代', '小春', '朱鷺', '雲雀', '千秋', '弥生', '皐月', '葉月', '長月', '睦', '清水', '帆影', '扇', '錦', '有明', '春風', '秋草', '静', '紅葉', '翠', '琥珀',
 ];
 export const KANA_NAMES = [
   'ルミ', 'エミ', 'マリ', 'ユキ', 'リラ', 'ミモザ', 'カトレア', 'ロマン', 'モナ', 'アカネ', 'ミキ', 'サチ',
@@ -113,7 +113,9 @@ export const KANA_NAMES = [
 // r04 round b (history review): ポエム (possible period coffee-house chain), パピヨン (1973 film title),
 // カルメン/ボレロ (stage works), ジュン (period fashion label), 花月 (theatre house name) removed from the
 // name lists and blocked. A full check against period trade directories is still outstanding.
-export const BLOCKLIST = ['ポエム', 'パピヨン', 'カルメン', 'ボレロ', 'ジュン', '花月',
+// round d (history review): 三笠会館 (long-established Ginza restaurant company), 梅園 and 初音 (well-known
+// Tokyo sweet shops) are blocked as stems/compounds.
+export const BLOCKLIST = ['ポエム', 'パピヨン', 'カルメン', 'ボレロ', 'ジュン', '花月', '三笠', '梅園', '初音',
   'コマ', 'ミラノ', 'ハイツ', 'スカラ', 'ジャンボ', 'ロッテ', 'ルノアール', '滝沢', '風月堂', '中村屋', '高野',
   '紀伊國屋', '伊勢丹', '三越', '丸井', '東宝', '松竹', '東映', '日活', '大映', 'キリン', 'サッポロ', 'アサヒ', 'サントリー', '宝'];
 
@@ -187,7 +189,9 @@ export function shopName(r, trade, used = null) {
     if (!used.has(stem)) used.set(stem, t.w);
   }
   if (t.fmt === 'suf') {
-    const suf = r.pick(t.suf);
+    let suf = r.pick(t.suf);
+    // compounds can hit a blocked real name even when the stem alone does not (梅 + 園 = 梅園)
+    for (let i = 0; i < 12 && BLOCKLIST.some((b) => `${stem}${suf}`.includes(b)); i++) { stem = r.pick(pool); suf = r.pick(t.suf); }
     // e.g. 麻雀 + 白鳥荘, 中華料理 + 桂林?  keep two-part reading: trade word shown separately by caller
     return { text: `${stem}${suf}`, trade: t.w, name: `${stem}${suf}`, stem, fictional: true };
   }

@@ -220,7 +220,9 @@ export function placeSingletons(ctx, kit) {
   // round postboxes: main-road sidewalk near the booth, and one inside Ichibangai
   stats.postboxes = 0;
   const pbMain = [];
-  for (const E of [-19, -20.5, -22, -9.5]) { const [x, z] = M.toWorld(E, 1.0); pbMain.push([x, z, yawS]); }
+  // round d: east of the old spot; seen from across the road the red postbox stood behind a parked car
+  // and read as an emergency-vehicle roof lamp
+  for (const E of [-9.5, -22, -20.5, -19]) { const [x, z] = M.toWorld(E, 1.0); pbMain.push([x, z, yawS]); }
   if (tryPlace(pbMain, 0.26, 0.26, 1.25, (W, r) => buildPostbox(kit, W, r), 'postbox')) stats.postboxes++;
   const pbStreet = [];
   for (const s of [58, 55, 61, 52, 64]) {

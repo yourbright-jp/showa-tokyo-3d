@@ -159,7 +159,7 @@ export const ARCHETYPES = [
     },
   },
   {
-    id: 'man-trenchcoat', weight: 0.6, sex: 'm', age: [28, 65],
+    id: 'man-trenchcoat', weight: 0.12, sex: 'm', age: [28, 65],
     make(r, P) {
       const c = colour(r, pick(r, [0xb8a27c, 0xa89070, 0x8a7a5a, 0x3a3a3c, 0x262d42, 0x6a6a68]), 0.08, 0.1);
       P.top = { kind: 'coat', ...plain(c), layer: PAT.plain, col2: c.map((x) => x * 1.2), sleeves: 'long', hem: r.range(0.27, 0.33), belted: r.chance(0.6) };
@@ -240,7 +240,7 @@ export const ARCHETYPES = [
     },
   },
   {
-    id: 'woman-coat', weight: 0.6, sex: 'f', age: [20, 60],
+    id: 'woman-coat', weight: 0.12, sex: 'f', age: [20, 60],
     make(r, P) {
       const c = colour(r, pick(r, P_.coat), 0.08, 0.1);
       P.top = { kind: 'coat', ...plain(c), layer: r.chance(0.2) ? PAT.tweed : PAT.plain, col2: c.map((x) => x * 1.3), sleeves: 'long', hem: r.range(0.2, 0.29), belted: r.chance(0.5) };
