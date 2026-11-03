@@ -5,6 +5,8 @@ import { Batch } from './signage/geo.js';
 import { Space } from './signage/space.js';
 import { plan } from './signage/plan.js';
 import { NAME_STEMS, KANA_NAMES } from './signage/vocab.js';
+import { setLegibility } from './signage/typeset.js';
+import { drawAge, swapSpec, ageFace, makeAgeStamps, makeAgedMetal, ageBatchColours } from './signage/age.js';
 
 // Signage layer for non-landmark buildings (r04).
 //  - Renders the 35 adopted generic shop text nodes (decision period-background-context-rule)
@@ -26,6 +28,9 @@ export async function build(ctx) {
   const night = ctx.look && ctx.look.name === 'neon-night';
   const space = new Space(ctx);
   const env = { rng: ctx.rng, space };
+  // r05 optional: sign=1 ages faces/frames and thins strokes of complex glyphs (signage/age.js)
+  const aged = !!(ctx.params && ctx.params.get('sign') === '1');
+  setLegibility(aged);
 
   const items = plan(ctx, env);
   const tPlan = performance.now();
@@ -41,6 +46,8 @@ export async function build(ctx) {
 
   // ---------------------------------------------------------------- paint (page by page)
   const stamps = makeStamps(ctx.rng);
+  const ageStamps = aged ? makeAgeStamps(ctx.rng) : null;
+  const ageStats = { n: 0, recent: 0, old: 0 };
   const byPage = atlas.pages.map(() => []);
   for (const f of faces) byPage[f.region.page].push(f);
   const texs = [];
@@ -57,8 +64,19 @@ export async function build(ctx) {
         P.ppm = sy;
       }
       const sp = f.spec;
+      let age = null, rr = null, undo = null;
+      if (aged && f.painter !== 'pole') {
+        rr = ctx.rng(`signage/r05age/${f.painter}/${reg.page}/${reg.x}/${reg.y}`);
+        age = drawAge(rr, sp);
+        undo = swapSpec(sp, age.a, age.recent);
+        ageStats.n++; if (age.recent) ageStats.recent++; else if (age.a > 0.6) ageStats.old++;
+      }
       atlas.prefill(reg, f.cls === 'cloth' ? null : (sp.scheme && sp.scheme.bg) || (sp.panels && sp.panels[0].scheme.bg) || sp.c1 || '#8a8780');
       try { PAINTERS[f.painter](P, f.spec, stamps); } catch (e) { ctx.log && ctx.log(`signage: painter ${f.painter} failed: ${e.message}`); }
+      if (age) {
+        try { ageFace(P, f, ageStamps, age, rr); } catch (e) { ctx.log && ctx.log(`signage: age ${f.painter} failed: ${e.message}`); }
+        undo();
+      }
     }
     if (night) {
       // unlit painted boards still read at night (spill from goosenecks/street light): weak base glow
@@ -97,7 +115,7 @@ export async function build(ctx) {
     }
     return faceMats.get(key);
   };
-  const metalTex = makeMetalGrime(ctx.rng);
+  const metalTex = aged ? makeAgedMetal(ctx.rng) : makeMetalGrime(ctx.rng);
   metalTex.repeat.set(0.5, 0.5);
   const G = {
     steel: new Batch(),
@@ -125,6 +143,7 @@ export async function build(ctx) {
   }
   const steelMat = new THREE.MeshStandardMaterial({ map: metalTex, vertexColors: true, roughness: 0.58, metalness: 0.45 });
   const paintMat = new THREE.MeshStandardMaterial({ map: metalTex, vertexColors: true, roughness: 0.62, metalness: 0.08 });
+  if (aged) { ageBatchColours(G.steel, 1.0); ageBatchColours(G.painted, 0.3); }
   for (const [batch, mat, name] of [[G.steel, steelMat, 'signage-steel'], [G.painted, paintMat, 'signage-painted']]) {
     if (!batch.vc) continue;
     const mesh = new THREE.Mesh(batch.geometry(), mat);
@@ -158,6 +177,7 @@ export async function build(ctx) {
   const added = items.filter((i) => i.tier === 'period-plausible-generic');
   ctx.tag({ id: 'signage/added', module: 'signage', tier: 'period-plausible-generic', note: `added signs by kind: ${JSON.stringify(counts)}. Generic trade words; no real brands, logos, film titles or performers.` });
   ctx.tag({ id: 'signage/fictional-names', module: 'signage', tier: 'period-plausible-generic', fictional: true, note: `FICTIONAL shop names used on ${added.filter((i) => i.fictional).length} signs (invented from the fictional stem lists in signage/vocab.js: ${NAME_STEMS.length} kanji stems, ${KANA_NAMES.length} kana names): ${(env.fictionalNames || []).slice(0, 400).join('、')}` });
+  if (aged) ctx.tag({ id: 'signage/r05-ageing', module: 'signage', tier: 'period-plausible-generic', note: `sign=1: per-sign deterministic age on ${ageStats.n} faces (${ageStats.recent} recently repainted, ${ageStats.old} old): hue-selective sun fade (reds/oranges to salmon), enamel chalking, dirt caps on top edges, bolts with rust runs, rust bleed on lower frames, flaked paint showing primer; rusty steel frames. Stroke/outline weight capped by glyph complexity and size. Generic 1970s street-sign wear, not a specific photographed sign; no text content changed.` });
   ctx.tag({ id: 'signage/phone-numbers', module: 'signage', tier: 'period-plausible-generic', note: 'No telephone numbers are printed (r04 round b): a fictional 7-digit number could map to a real current 03-3xxx-xxxx number.' });
 
   const chk = env.adoptedCheck || [];

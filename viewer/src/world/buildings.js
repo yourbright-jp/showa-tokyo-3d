@@ -124,6 +124,14 @@ export async function build(ctx) {
   const published = { roofY: new Map(), rooftop: new Map() };
   ctx.buildingsInfo = published;
 
+  // r05 mat=1: remember each near facade region with its building levels for the extra soot pass
+  const matRegions = U.mat ? [] : null;
+  let matLv = null;
+  if (matRegions) {
+    const alloc0 = atlas.alloc.bind(atlas);
+    atlas.alloc = (L, y0, y1, ppm) => { const R = alloc0(L, y0, y1, ppm); if (R && matLv) matRegions.push([R, matLv]); return R; };
+  }
+
   // --- near buildings -----------------------------------------------------------------------
   let nearFacades = 0;
   const tn = performance.now();
@@ -139,6 +147,7 @@ export async function build(ctx) {
       topY: b.topY, roofY: b.topY - S.parapetH,
       floorY: (k) => b.baseY + plan.groundFloorH + (k - 1) * plan.upperFloorH,
     };
+    if (matRegions) matLv = lv;
     const fp = b.footprint; const n = fp.length;
     const metas = new Map((data.facadesByBuilding.get(b.id) || []).map((f) => [f.index, f]));
     // adopted frontage: the edge (> 3 m) nearest the walk path gets a storefront
@@ -187,6 +196,19 @@ export async function build(ctx) {
     published.roofY.set(b.id, lv.roofY);
     published.rooftop.set(b.id, env.rooftop);
   }
+  if (matRegions) {
+    // exhaust soot thickest on the lower floors, dirt under the coping and faint drip bands under
+    // each floor line (own rng stream; the facade streams are untouched)
+    delete atlas.alloc;
+    const r = ctx.rng('buildings/r05mat/atlas');
+    for (const [R, lv] of matRegions) {
+      R.begin();
+      R.bandAbove(0, R.L, lv.base, r.range(4.5, 8), [136, 130, 122], r.range(0.07, 0.14));
+      R.bandBelow(0, R.L, lv.topY, r.range(0.4, 1.2), [118, 112, 104], r.range(0.06, 0.12));
+      for (let k = 2; k <= lv.floors; k++) R.bandBelow(0, R.L, lv.floorY(k) + r.range(-0.05, 0.1), r.range(0.25, 0.8), [140, 134, 126], r.range(0.02, 0.06));
+      R.end();
+    }
+  }
   const tNear = performance.now() - tn;
 
   // --- mid / far ----------------------------------------------------------------------------
@@ -223,6 +245,7 @@ export async function build(ctx) {
   ctx.tag({ id: 'buildings-upper-interiors', module: 'buildings', tier: 'period-plausible-generic', note: 'Upper windows use an interior-mapping shader (procedural rooms, curtains, blinds); not evidence of any interior.' });
   ctx.tag({ id: 'buildings-rooftops', module: 'buildings', tier: 'period-plausible-generic', note: 'Parapets, stair/elevator penthouses, elevated FRP/steel water tanks and TV antennas; placed toward the back of roofs.' });
   ctx.tag({ id: 'buildings-weathering', module: 'buildings', tier: 'period-plausible-generic', note: 'Procedural grime atlas: rain streaks under sills/bands/copings, ground splash, mottling; visual only.' });
+  if (U.mat) ctx.tag({ id: 'buildings-r05-material-ageing', module: 'buildings', tier: 'period-plausible-generic', note: 'Optional mat=1 shader layer (buildings/weather.js): soot/dirt mottling, per-tile colour and dirty grout on mosaic/scratch tile, patched and cracked mortar, efflorescence on exposed concrete, fine rain streaks, rust on painted steel, roughness variation. Generic 1970s ageing; no specific building depicted.' });
   ctx.tag({ id: 'buildings-mid-far-lod', module: 'buildings', tier: 'period-plausible-generic', note: `Buildings beyond ${NEAR} m use painted window/shopfront textures on the adopted massing.` });
 
   const info = `buildings: ${near.length} near+lite (${near.filter(isLite).length} lite; ${nearFacades} front facades), ${midCount} mid, ${farCount} far; ${tris} tris in ${group.children.length} meshes; atlas 4096x${atlasH} used ${(100 * atlas.used / (4096 * atlasH)).toFixed(0)}% (failed ${atlas.failed}, scale ${scale.toFixed(2)}); near build ${tNear.toFixed(0)} ms, total ${(performance.now() - t0).toFixed(0)} ms`;

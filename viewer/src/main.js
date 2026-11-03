@@ -29,6 +29,17 @@ import { prepareSignFonts } from './core/fonts.js';
 //   (r05 parallel trial)   optional appearance parameters read by the modules themselves through
 //                          ctx.params; each is off when omitted, so the default image is unchanged.
 //                          The render script passes them with --set k=v[,k=v]
+//   atmo=1                 atmosphere/light bundle (core/atmosphere.js; clear-afternoon only, other looks
+//                          throw): ltm=0.2, lut=reversal, lutmix=1, haze=1, skygrad=1; each key below
+//                          overrides the bundle (0 or lut=none switches that part off)
+//   ltm=<s>                local tone mapping: edge-aware log-luminance base compressed (shadow lift
+//                          saturating at ~2 stops x s, highlights x(1-0.3 s)), detail kept
+//   lut=<name>             code-generated display LUT after OutputPass (reversal); lutmix=<0..1> blend
+//   haze=<s>               aerial perspective: per-channel extinction (s x 7.8e-4/9.5e-4/1.22e-3 per m
+//                          from 18 m) towards a sky-coloured in-scatter, on top of the preset FogExp2
+//   skygrad=<s>            visible sky only: deeper blue towards the zenith, paler/warmer at the horizon
+//   mat=1                  buildings: material ageing shader (soot mottling, per-tile colour + dirty grout, patched/cracked mortar, efflorescence, fine rain streaks, rust on steel, roughness variation)
+//   sign=1                 signage: per-sign ageing (sun fade, chalking, dirt, bolt rust runs, rusty frames) + complexity-capped kanji strokes
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
