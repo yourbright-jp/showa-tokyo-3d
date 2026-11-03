@@ -245,7 +245,7 @@ def write_sidecars(published, mrel, date):
     ids = []
     for rel, meta in published:
         rec = image_record(rel, date, meta)
-        rec["id"] = "kabukicho-r04-" + Path(rel).stem
+        rec["id"] = "kabukicho-r04-" + Path(rel).stem.removeprefix("r04-")
         if meta.get("how") == "contact sheet":
             rec["type"] = "rendered-reconstruction-contact-sheet"
             rec.pop("renderer"); rec.pop("render_resolution_px"); rec.pop("published_resolution_px")
