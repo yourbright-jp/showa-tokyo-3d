@@ -146,7 +146,7 @@ export function buildMilano(ctx, kit) {
     const m = new THREE.Matrix4().makeTranslation(0, 9.85, WALL_Z + 0.2).premultiply(fb.F.matrix);
     if (ML.face) fb.B.add('milanoFace', ML.face, m);
     if (ML.side) fb.B.add('milanoSide', ML.side, m);
-    ctx.tag({ id: 'milano-latin-letters', module: 'landmarks', tier: 'period-plausible-generic', note: 'MILANO latin letters follow R03/R09 (source photos 1971-1972); presence in 1976 assumed (year gap 4-5 years). Position/size authored.' });
+    ctx.tag({ id: 'milano-latin-letters', module: 'landmarks', tier: 'period-plausible-generic', note: 'MILANO latin letters after the 1971-1972 owner photographs (tokyu-milano-1971, tokyu-milano-1972, read via the generated colour masters R09/R03); presence in 1976 assumed (year gap 4-5 years). Position, size and letterform authored; the letterform is not matched to the photographs.' });
   }
   // wall studs (small dark square fixtures at panel nodes, R09 cue), skipping signs/boards
   for (const x of gx) for (const y of [8.56, 10.16, 11.76, 6.96, 5.36]) {

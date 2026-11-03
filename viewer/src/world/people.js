@@ -61,7 +61,7 @@ export function build(ctx) {
   const fixedCams = [...Object.values(data.cameras || {}), ...Object.values(data.reviewCameras || {})];
   const camPts = fixedCams.map((c) => c.position_m);
   // View cones: nobody stands right in front of a diagnostic camera or of the walk camera
-  // (the walk turns and looks around, so the 1.2 m corridor alone does not keep its view clear).
+  // (the walk turns and looks around, so the corridor alone does not keep its view clear).
   const cones = [];
   const addCone = (pos, look, focal, reach) => {
     const dx = look[0] - pos[0], dz = look[2] - pos[2];
@@ -411,7 +411,7 @@ export function build(ctx) {
   });
   ctx.tag({
     id: 'people-placement-rule', module: 'people', tier: 'period-plausible-generic',
-    note: `Placement rule: adopted asphalt/paving + plaza boundary, ≥${MIN_ROUTE.toFixed(2)} m from the walk centreline (1.2 m corridor + body), ≥0.72 m from facades, off adopted ground obstacles and off other modules' body-height props; foreground of the six diagnostic cameras thinned. Densities 0.16/m² Ichibangai, 0.1/m² plaza, ≤0.034/m² side streets are working choices.`,
+    note: `Placement rule: adopted asphalt/paving + plaza boundary, ≥${MIN_ROUTE.toFixed(2)} m from the walk centreline (${CORRIDOR_M} m corridor + body), ≥0.72 m from facades, off adopted ground obstacles and off other modules' body-height props; foreground of the six diagnostic cameras thinned. Densities 0.16/m² Ichibangai, 0.1/m² plaza, ≤0.034/m² side streets are working choices.`,
   });
   const tEnd = performance.now();
   ctx.log && ctx.log(`people: ${people.length} persons, ${Math.round(tris)} tris, ${writers.size} chunks; grid ${(tGrid - t0).toFixed(0)} ms (terrainHeights=${terrainHeights}, propCells=${propCells}), place ${(tPlace - tGrid).toFixed(0)} ms, looks ${(tLook - tPlace).toFixed(0)} ms, mesh ${(tEnd - tLook).toFixed(0)} ms; mix ${JSON.stringify(counts)}`);

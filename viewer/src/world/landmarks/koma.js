@@ -107,6 +107,9 @@ export function buildKoma(ctx, kit) {
   }
   // threshold steps (adopted 2 x 0.15 m, 1.6 m out, entrance-span width)
   fb.steps(0, W * (P.entrance_span_fraction[1] - P.entrance_span_fraction[0]), stepH, P.threshold_step_count, P.threshold_steps_outward_depth_m, { backTo: -0.36 });
+  // round c: dark expansion-joint strips at both ends so the Koma front reads as a separate building
+  // from the abutting Toho Kaikan front (history review: the near-identical adopted colours ran together)
+  for (const s of [-1, 1]) fb.add('steelDark', boxMinMax(s * (W / 2) - 0.09, 0, WALL_Z - 0.02, s * (W / 2) + 0.09, H + 0.12, WALL_Z + 0.012));
   // downpipes, coping
   for (const s of [-1, 1]) fb.downpipe(s * (W / 2 - 0.3), H);
   fb.add('concrete', boxMinMax(-W / 2 - 0.03, H, -0.25, W / 2 + 0.03, H + 0.12, WALL_Z + 0.06));

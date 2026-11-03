@@ -98,6 +98,6 @@ export function placeStreetLamps(ctx, site, streets, B, avoid) {
     }
     if (!placed) stats.skipped++;
   }
-  ctx.tag({ id: 'streetprops/ichibangai-lamps', module: 'streetprops', tier: 'period-plausible-generic', note: `${stats.lamps} twin chrome-bell shopping-street lamps after R08 (generated master of a 1972 photo); 1976 design and spacing undocumented; 1972 temporary streamers/flowers ${ctx.options && ctx.options.decor1972 ? 'ON (optional layer)' : 'off (not treated as permanent)'}. Not placed in the plaza (adopted plaza lamps).` });
+  ctx.tag({ id: 'streetprops/ichibangai-lamps', module: 'streetprops', tier: 'period-plausible-generic', note: `${stats.lamps} twin chrome-bell shopping-street lamps after the 1972 street scene (museum photo candidate shinjuku-museum-gate-7378, read via the generated colour master R08, not checked against the original); 1976 design and spacing undocumented; 1972 temporary streamers/flowers ${ctx.options && ctx.options.decor1972 ? 'ON (optional layer)' : 'off (not treated as permanent)'}. Not placed in the plaza (adopted plaza lamps).` });
   return { stats, footprints };
 }

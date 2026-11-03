@@ -1,5 +1,5 @@
 // Crowd placement on the adopted ground: where people may stand without touching walls,
-// adopted obstacles, other modules' street furniture, or the 1.2 m walk corridor.
+// adopted obstacles, other modules' street furniture, or the walk corridor (CORRIDOR_M).
 //
 // Walkable = adopted ground triangles classed asphalt/paving (data.ground) or the adopted plaza
 // boundary; minus building footprints (+ margin), ground obstacles (+ margin), the route
@@ -8,7 +8,7 @@
 // the built terrain group when present (so feet sit on kerbs/paving), else data.heightAt.
 import { pointInPolygon } from '../../core/facades.js';
 
-export const CORRIDOR_M = 1.2;     // clear corridor on each side of the walk (brief)
+export const CORRIDOR_M = 0.85;    // clear corridor on each side of the walk (round c: 1.2 left an empty lane down every street view)
 export const BODY_R = 0.32;        // body + carried bag half-width
 export const WALL_CLEAR = 0.72;    // 0.35 m facade protrusions + body
 const CELL = 0.5;

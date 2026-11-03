@@ -281,7 +281,7 @@ export function plan(ctx, env) {
       band: r.chance(0.85) ? { h: r.range(0.05, 0.12), top: r.chance(0.8), bottom: r.chance(0.7), color: sch.ac, stripe: r.chance(0.3) ? sch.fg : null } : null,
       borderColor: r.chance(0.5) ? shade(sch.ac, -0.3) : null,
       side: null,
-      emblem: r.chance(0.35) ? { ch: tnode ? [...tnode.text][0] : '店', bg: sch.ac, fg: '#f4f1ea', round: r.chance(0.5) } : null,
+      emblem: !tnode && r.chance(0.3) ? { ch: '店', bg: sch.ac, fg: '#f4f1ea', round: r.chance(0.5) } : null, // round c: no 喫|喫茶 doubling on adopted words
       lit: r.chance(0.4) ? 'backlit' : 'none',
     };
     if (tnode) {

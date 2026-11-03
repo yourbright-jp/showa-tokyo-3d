@@ -25,6 +25,8 @@ export function colour(r, hex, vj = 0.08, sj = 0.1, fade = 0) {
   const l = 0.3 * R + 0.59 * G + 0.11 * B;
   const s = 1 + (r() * 2 - 1) * sj - fade;
   R = l + (R - l) * s; G = l + (G - l) * s; B = l + (B - l) * s;
+  // round c: cap chroma (dyed cloth seen on film; near-primary garments read as plastic, visual review)
+  { const mx = Math.max(R, G, B), mn = Math.min(R, G, B); const sat = mx > 0 ? (mx - mn) / mx : 0; if (sat > 0.72) { const k = 0.72 / sat; R = mx - (mx - R) * k; G = mx - (mx - G) * k; B = mx - (mx - B) * k; } }
   // a slight warm/cool cast so neighbouring garments of the same palette entry differ
   const t = (r() * 2 - 1) * 0.025;
   R *= v * (1 + t); G *= v; B *= v * (1 - t);
@@ -86,7 +88,7 @@ function hairFor(r, sex, age, style) {
 function maleHair(r, age) {
   if (age > 50) return r.pick(['side-part', 'side-part', 'slick', 'balding', 'balding']);
   if (age > 35) return r.pick(['side-part', 'side-part', 'slick', 'perm', 'balding']);
-  return r.pick(['side-part', 'side-part', 'long70', 'long70', 'perm', 'mop']);
+  return r.pick(['side-part', 'long70', 'long70', 'long70', 'perm', 'mop', 'mop']); // round c: longer hair commoner on young men
 }
 function femaleHair(r, age) {
   if (age > 50) return r.pick(['short-perm', 'short-perm', 'bun']);

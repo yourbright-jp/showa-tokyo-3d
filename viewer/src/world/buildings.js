@@ -150,6 +150,8 @@ export async function build(ctx) {
     const frontEdges = [];
     let pipeDone = false;
     const kinds = [];
+    let area2 = 0; for (let i = 0; i < n; i++) { const a = fp[i], c = fp[(i + 1) % n]; area2 += a[0] * c[1] - c[0] * a[1]; }
+    const smallFree = Math.abs(area2) / 2 < 40;
     for (let i = 0; i < n; i++) {
       const meta = metas.get(i);
       let kind = 'plain';
@@ -159,6 +161,9 @@ export async function build(ctx) {
         else kind = 'party';
       }
       const a = fp[i], c = fp[(i + 1) % n];
+      // round c: tiny free-standing structures facing open space (e.g. the small modern plaza structure
+      // kept by the adopted context rule at 6.4 m) read as blank grey boxes; give them shop fronts
+      if (kind === 'side' && smallFree && meta && (meta.inPlaza || meta.openDistance > 6)) kind = 'front';
       if (kind === 'front' && Math.hypot(c[0] - a[0], c[1] - a[1]) < 2.0) kind = 'side';
       kinds.push(kind);
     }

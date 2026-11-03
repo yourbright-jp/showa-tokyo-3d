@@ -81,6 +81,12 @@ export const TRADES = [
   { w: '靴', g: 1, u: 0, sch: ['blackOnWhite', 'whiteOnBrown'], fmt: 'suf', suf: ['靴店'] },
   { w: '洋菓子', g: 1, u: 0, sch: ['pinkOnWhite', 'brownOnCream', 'navyOnSky'], fmt: 'pre', kana: 1 },
   { w: 'ゲームセンター', g: 1, u: 0, sch: ['whiteOnRed', 'yellowOnBlack', 'whiteOnBlue'], fmt: 'bare' },
+  // round c (history review): more of the entertainment trades of the district relative to clinics/loans
+  { w: 'キャバレー', g: 0, u: 1, sch: ['goldOnMaroon', 'whiteOnPurple', 'yellowOnBlack', 'whiteOnRed'], fmt: 'pre', kana: 1 },
+  { w: 'コンパ', g: 0, u: 1, sch: ['whiteOnBlue', 'yellowOnBlack', 'whiteOnRed', 'whiteOnTeal'], fmt: 'pre', kana: 1 },
+  { w: 'パブ', g: 0, u: 1, sch: ['goldOnMaroon', 'whiteOnBlack', 'whiteOnBrown'], fmt: 'pre', kana: 1 },
+  { w: 'スナック', g: 0, u: 1, sch: ['goldOnMaroon', 'whiteOnPurple', 'pinkOnWhite', 'whiteOnTeal'], fmt: 'pre', kana: 1 },
+  { w: '大衆酒場', g: 0, u: 1, sch: ['blackOnWhite', 'whiteOnRed', 'redOnCream'], fmt: 'pre', noren: 1 },
   { w: '診療所', g: 0, u: 1, sch: ['greenOnWhite', 'blueOnWhite'], fmt: 'suf', suf: ['診療所', '医院'] },
   { w: '歯科', g: 0, u: 1, sch: ['greenOnWhite', 'blueOnWhite'], fmt: 'suf', suf: ['歯科'] },
 ];
@@ -130,6 +136,7 @@ const TRADE_PHRASES = {
   喫茶: ['cafe'], 純喫茶: ['cafe'], 喫茶室: ['cafe'], 麻雀: ['game'], ビリヤード: ['game'], 碁会所: ['game'], パチンコ: [],
   中華料理: ['meal', 'takeaway'], ラーメン: ['takeaway'], 寿司: ['meal', 'takeaway'], 焼鳥: ['takeaway', 'izakaya'], 酒場: ['izakaya', 'drink'],
   大衆酒場: ['izakaya', 'drink'], 居酒屋: ['izakaya', 'drink'], スナック: ['drink'], バー: ['drink'], クラブ: ['drink'], 洋酒: ['drink'],
+  キャバレー: ['drink'], コンパ: ['drink'], パブ: ['drink'],
   洋食: ['meal'], とんかつ: ['meal', 'takeaway'], 天ぷら: ['meal'], そば: ['meal'], 甘味: ['takeaway'], レストラン: ['meal'],
   焼肉: ['meal'], お好み焼: ['meal', 'takeaway'], 割烹: ['meal'], 定食: ['meal'], 洋菓子: ['takeaway'], サウナ: ['game'],
 };

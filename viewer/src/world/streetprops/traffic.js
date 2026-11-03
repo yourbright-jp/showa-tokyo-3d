@@ -182,7 +182,9 @@ export function buildTraffic(ctx, kit) {
     }
     return false;
   };
-  placeSign(13.5, +1, ['pedestrian'], 'plateHokousha');
+  // round c: no auxiliary plate (歩行者専用 repeated the sign's meaning; real plates give hours or
+  // exempt vehicles, which are undocumented here)
+  placeSign(13.5, +1, ['pedestrian'], null);
   placeSign(13.0, -1, ['noEntry'], null);
 
   // ---- speed limit and no-parking on the main road (face the eastbound traffic) ----
@@ -192,9 +194,9 @@ export function buildTraffic(ctx, kit) {
   }
 
   // ---- portable barricades flanking the entrance (R08) ----
-  // round b: the west barricade moved 0.7 m west; from entrance-approach the pedestrian sign behind
-  // it covered the 歩 of 歩行者専用
-  for (const [E, s] of [[-4.1, 2.3], [5.0, 2.0]]) {
+  // round c: portable barricades are part of the optional 1972 temporary layer (?decor=1972), like the
+  // lamp streamers: their only basis is the 1972 traffic-control scene (history review)
+  for (const [E, s] of (ctx.options && ctx.options.decor1972 ? [[-3.4, 2.3], [5.0, 2.0]] : [])) {
     const [x, z] = M.toWorld(E, s);
     const ry = yaw(S[0], S[1]);
     if (site.footprintClear(x, z, 0.68, 0.34, ry, { h: 1.0, corridor: 1.35 })) {
@@ -221,6 +223,6 @@ export function buildTraffic(ctx, kit) {
   }
   for (const f of footprints) if (f.kind === 'signal-pole' || f.kind === 'sign-post') kit.D.add(site, f.x, f.z, 0.4, 0.4, 0, 0.45);
 
-  ctx.tag({ id: 'streetprops/traffic', module: 'streetprops', tier: 'period-plausible-generic', note: 'Signalised crossing in front of the gate, 1970s three-lamp vehicle and two-box pedestrian signals, pedestrian-only sign + plate (R08), vehicle no-entry (R01), speed-limit 40 (R01), barricades (R08), guard rails and arm street lights. Positions, kerb line (s≈12 m from the gate line) and lane layout are production estimates.' });
+  ctx.tag({ id: 'streetprops/traffic', module: 'streetprops', tier: 'period-plausible-generic', note: `Signalised crossing in front of the gate, 1970s three-lamp vehicle and two-box pedestrian signals, pedestrian-only sign, vehicle no-entry and speed-limit 40 signs, guard rails and arm street lights. Sign types follow the 1972 street scene (source: museum photo candidate shinjuku-museum-gate-7378, read via the generated colour master R08, not checked against the original) and the 1978 entrance photo (toyokeizai-gate-1978, via R01). Portable barricades only in the optional 1972 layer (${ctx.options && ctx.options.decor1972 ? 'ON' : 'off'}). Positions, kerb line and lane layout are production estimates.`});
   return { footprints, stats, lights };
 }

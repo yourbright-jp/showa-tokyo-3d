@@ -629,7 +629,7 @@ function emitShoe(w, P, D, f, ankle, s) {
     rfn: (lx, ly, lz) => (ly < 0 ? Math.max(0.8, 1 - 0.5 * (-ly) ** 1.6) : 1 - 0.18 * Math.max(0, lz) * ly) * (lz > 0.5 && sh.kind === 'pump' ? 1 - (lz - 0.5) * 0.25 : 1),
   });
   // sole/welt: a flat slab, slightly wider than the upper, darker (or white rubber for sneakers)
-  const soleCol = sh.kind === 'sneaker' ? lin(0xd8d4c8) : col.map((x) => x * 0.55 + 0.004);
+  const soleCol = sh.kind === 'sneaker' ? lin(0xa8a498) : col.map((x) => x * 0.55 + 0.004); // round c: greyed rubber (a white sole read as a plate)
   // the r02 sole ellipsoid reached c - 0.94 ry (the ground); a thin lens (not a slab, which read as
   // a plate under the foot) spans c - 0.94 ry .. c - 0.76 ry and stays inside the upper's outline
   ellipsoid(w, madd(madd(c, ey, -ry * 0.85), ez, rz * 0.02), B, rx * 0.99, ry * 0.09, rz * 1.0, 10, 3, { col: soleCol, rough: 0.6 });
