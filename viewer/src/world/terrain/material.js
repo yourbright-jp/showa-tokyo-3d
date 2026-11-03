@@ -70,7 +70,7 @@ void groundSurface() {
     vec4 g1 = textureGrad(uAsphN, u1, dpx * s1, dpy * s1);
     vec4 g2 = textureGrad(uAsphN, u2, (R2 * dpx) * s2, (R2 * dpy) * s2);
     float b = smoothstep(0.32, 0.68, nB.r);
-    vec3 c = mix(a1.rgb, a2.rgb, b) * vec3(1.07, 1.0, 0.9);
+    vec3 c = mix(a1.rgb, a2.rgb, b) * vec3(1.02, 1.0, 0.96); // round d: less sand-coloured (R-B was ~3x the references)
     vec2 gra = mix((g1.rg - 0.5) * 4.0, transpose(R2) * ((g2.rg - 0.5) * 4.0), b);
     float h = mix(a1.a, a2.a, b);
     float cav = mix(g1.b, g2.b, b);
