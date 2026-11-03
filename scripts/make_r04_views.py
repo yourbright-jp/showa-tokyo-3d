@@ -145,7 +145,7 @@ def main():
             if not out.exists() or out.read_text(encoding="utf-8") != text:
                 raise SystemExit(f"{out.relative_to(ROOT)} is stale")
             continue
-        out.write_text(text, encoding="utf-8")
+        out.write_text(text, encoding="utf-8", newline="\n")
         print(f"wrote {out.relative_to(ROOT)} pitch {data['camera_pitch_degrees']} deg")
     if a.check:
         print("ok")

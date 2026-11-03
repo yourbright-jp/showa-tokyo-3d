@@ -38,7 +38,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, default=ROOT / "renders/r03/period-final")
     args = parser.parse_args()
-    source_manifest = json.loads((args.input / "render-manifest.json").read_text())
+    source_manifest = json.loads((args.input / "render-manifest.json").read_text(encoding="utf-8"))
     OUT.mkdir(parents=True, exist_ok=True)
     copied, fixed, walk = [], [], []
     for frame in source_manifest["images"]:

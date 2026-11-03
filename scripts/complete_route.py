@@ -262,9 +262,9 @@ def main():
     parser.add_argument("--decisions-only", action="store_true", help="Prepare the adopted paving/arrival decisions before building the period model; do not issue a route audit")
     parser.add_argument("--allow-missing-period-obstacles", action="store_true", help="Development only; output explicitly marks incomplete prop checks")
     args = parser.parse_args()
-    route = json.loads((SCENE / "cameras/route-proposal.json").read_text())
-    layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text())
-    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
+    route = json.loads((SCENE / "cameras/route-proposal.json").read_text(encoding="utf-8"))
+    layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text(encoding="utf-8"))
+    h = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
     terrain = load_terrain(layout["config"])
     connector_pixels = [[185.5, 287], [189.5, 287], [192, 280], [188, 280]]
     connector = {"id": "ichibangai-plaza-paving-join", "category": "adopted-connector-paving", "boundary_pixels": connector_pixels,
@@ -273,7 +273,7 @@ def main():
     for pixel in connector_pixels:
         x, z = horizontal(*pixel_latlon(pixel, h["pixel_space"]), layout["config"]["origin_jgd2011"])
         connector["boundary_m"].append([round(x, 7), round(terrain.height(x, z), 7), round(z, 7)])
-    koma = json.loads((ROOT / "data/decisions/kabukicho-koma-plaza-1976.json").read_text())
+    koma = json.loads((ROOT / "data/decisions/kabukicho-koma-plaza-1976.json").read_text(encoding="utf-8"))
     theatre = next(b for b in koma["buildings"] if b["proxy_id"] == "koma-south-roof-proxy")
     edge = [horizontal(*pixel_latlon(p, h["pixel_space"]), layout["config"]["origin_jgd2011"]) for p in theatre["frontage_edge_pixels"]]
     width = math.dist(*edge)
@@ -350,7 +350,7 @@ def main():
     if args.decisions_only:
         print(json.dumps({"route_decisions_prepared": True, "audit_performed": False, "connector_surfaces": len(decision["connector_surfaces"])}))
         return
-    gate = json.loads((ROOT / "data/decisions/kabukicho-gate-1976.json").read_text())
+    gate = json.loads((ROOT / "data/decisions/kabukicho-gate-1976.json").read_text(encoding="utf-8"))
     walk = make_walk(route, terrain, surfaces, dict(arrival), gate)
     adopted_controls = walk["route_control_points_m"]
     continuous_gaps = []
@@ -359,7 +359,7 @@ def main():
             if category == "unclassified":
                 continuous_gaps.append({"segment_index": si, "t_interval": [lo, hi], "horizontal_length_m": (hi - lo) * math.dist(xz(a), xz(b))})
     unclassified = [i for i, sample in enumerate(walk["samples"]) if sample["surface_category"] == "unclassified"]
-    period = json.loads(PERIOD_PATH.read_text()) if PERIOD_PATH.exists() else {}
+    period = json.loads(PERIOD_PATH.read_text(encoding="utf-8")) if PERIOD_PATH.exists() else {}
     obstacles_complete = bool(period.get("construction_complete"))
     if not obstacles_complete and not args.allow_missing_period_obstacles:
         raise ValueError("Build the complete period features with explicit obstacle footprints before the final route audit")

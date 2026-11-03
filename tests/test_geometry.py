@@ -91,9 +91,9 @@ class GeometryContracts(unittest.TestCase):
         self.assertIsNone(missing["source_survey_year"])
 
     def test_committed_buildings_preserve_source_elevations(self):
-        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text())
+        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text(encoding="utf-8"))
         datum = config["origin_jgd2011"]["height_m"]
-        data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
+        data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
         buildings = [f for f in data["features"] if f["kind"] == "building"]
         self.assertTrue(buildings)
         bases = []
@@ -108,9 +108,9 @@ class GeometryContracts(unittest.TestCase):
         self.assertGreater(max(bases) - min(bases), 1.0)
 
     def test_station_eyes_follow_source_terrain(self):
-        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text())
+        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text(encoding="utf-8"))
         terrain = load_terrain(config)
-        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text())
+        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text(encoding="utf-8"))
         for station in route["stations"]:
             x, y, z = station["position_m"]
             self.assertAlmostEqual(y - terrain.height(x, z), 1.6, places=3)
@@ -132,9 +132,9 @@ class GeometryContracts(unittest.TestCase):
             drape_zero_height_roads([real_elevations], terrain)
 
     def test_committed_road_vertices_follow_terrain(self):
-        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text())
+        config = json.loads((ROOT / "data/kabukicho-intake.json").read_text(encoding="utf-8"))
         terrain = load_terrain(config)
-        data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
+        data = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
         roads = [f for f in data["features"] if f["kind"] == "road"]
         self.assertTrue(roads)
         for feature in roads:
@@ -144,12 +144,12 @@ class GeometryContracts(unittest.TestCase):
 
     def test_committed_gltf_buffers_and_camera_rotations(self):
         scene = ROOT / "scenes/shinjuku/kabukicho/1976"
-        route = json.loads((scene / "cameras/route-proposal.json").read_text())
-        definition = json.loads((scene / "scene.json").read_text())
+        route = json.loads((scene / "cameras/route-proposal.json").read_text(encoding="utf-8"))
+        definition = json.loads((scene / "scene.json").read_text(encoding="utf-8"))
         for key in ["distance_m", "geometry", "stations", "validation"]:
             self.assertEqual(definition["route"][key], route[key], "Scene must not retain stale camera or route data")
         for name in ["modern-baseline", "layout-study"]:
-            doc = json.loads((scene / f"models/{name}.gltf").read_text())
+            doc = json.loads((scene / f"models/{name}.gltf").read_text(encoding="utf-8"))
             data = base64.b64decode(doc["buffers"][0]["uri"].split(",", 1)[1], validate=True)
             self.assertEqual(len(data), doc["buffers"][0]["byteLength"])
             for a in doc["accessors"]:
@@ -185,14 +185,14 @@ class GeometryContracts(unittest.TestCase):
 
     def test_proposal_remains_uncertified_and_clear_of_static_footprints(self):
         p = ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json"
-        route = json.loads(p.read_text())
+        route = json.loads(p.read_text(encoding="utf-8"))
         self.assertEqual(route["historical_confidence"], "unverified")
         self.assertEqual(route["validation"]["building_interior_collisions"], 0)
         self.assertGreater(route["validation"]["minimum_sampled_building_edge_clearance_m"], .5)
 
     def test_bend_and_arrival_stations_have_their_declared_spatial_roles(self):
-        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
-        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text())
+        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
+        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text(encoding="utf-8"))
         stations = route["stations"]
         d_index = next(i for i, s in enumerate(stations) if s["id"] == "towards-koma-corner")
         before, bend, after = [stations[i]["position_m"] for i in (d_index - 1, d_index, d_index + 1)]
@@ -216,9 +216,9 @@ class GeometryContracts(unittest.TestCase):
             self.assertAlmostEqual(abs(angle), 2 * math.pi, places=6, msg=station["id"])
 
     def test_inferred_period_removals_preserve_the_modern_baseline(self):
-        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text())
-        modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text())
-        layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text())
+        hypothesis = json.loads((ROOT / "data/kabukicho-layout-hypothesis.json").read_text(encoding="utf-8"))
+        modern = json.loads((ROOT / "data/derived/kabukicho-modern-features.json").read_text(encoding="utf-8"))
+        layout = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text(encoding="utf-8"))
         modern_ids = {f["id"] for f in modern["features"]}
         layout_ids = {f["id"] for f in layout["features"]}
         decisions = hypothesis["removal_decisions"]
@@ -232,7 +232,7 @@ class GeometryContracts(unittest.TestCase):
             self.assertNotIn(decision["feature_id"], layout_ids)
 
     def test_proxy_roof_normals_point_up(self):
-        data = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text())
+        data = json.loads((ROOT / "data/derived/kabukicho-layout-features.json").read_text(encoding="utf-8"))
         for f in data["features"]:
             if f.get("historical_status") != "inferred-roof-proxy":
                 continue

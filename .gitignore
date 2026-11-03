@@ -7,6 +7,9 @@ node_modules/
 __pycache__/
 .DS_Store
 
+# Sign font files for machines where the fonts cannot be installed (never committed or distributed)
+local-fonts/
+
 # Reproducible upstream downloads and temporary work
 data/raw/
 downloads/

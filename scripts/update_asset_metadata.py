@@ -33,7 +33,7 @@ def write(path, value):
     path = ROOT / path
     path.parent.mkdir(parents=True, exist_ok=True)
     pending = path.with_name(path.name + ".pending")
-    pending.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    pending.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     pending.replace(path)
 
 

@@ -34,7 +34,7 @@ MASTER_SHA256 = {
 
 
 def read(path):
-    return json.loads((ROOT / path).read_text())
+    return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 
 def decision_ids(spec):
@@ -219,7 +219,7 @@ class AdoptedReconstruction(unittest.TestCase):
         sidecars = list((SCENE / "references/master-v1").glob("*.asset.json"))
         self.assertEqual(len(sidecars), 9)
         for path in sidecars:
-            record = json.loads(path.read_text())
+            record = json.loads(path.read_text(encoding="utf-8"))
             sha = hashlib.sha256((ROOT / record["path"]).read_bytes()).hexdigest()
             self.assertEqual(sha, MASTER_SHA256[record["id"]])
 
@@ -315,7 +315,7 @@ class AdoptedReconstruction(unittest.TestCase):
             for path in directory.rglob("*.asset.json"):
                 if "raw" in path.relative_to(ROOT).parts:
                     continue
-                record = json.loads(path.read_text())
+                record = json.loads(path.read_text(encoding="utf-8"))
                 graph[record["id"]] = record.get("dependencies", [])
         active, visited = set(), set()
 

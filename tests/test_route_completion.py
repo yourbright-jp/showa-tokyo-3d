@@ -46,11 +46,11 @@ class ContinuousGeometry(unittest.TestCase):
 
 class PublishedAdoptedRoute(unittest.TestCase):
     def setUp(self):
-        self.report = json.loads((ROOT / "data/derived/kabukicho-route-completion.json").read_text())
-        self.walk = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/adopted-walk.json").read_text())
+        self.report = json.loads((ROOT / "data/derived/kabukicho-route-completion.json").read_text(encoding="utf-8"))
+        self.walk = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/adopted-walk.json").read_text(encoding="utf-8"))
 
     def test_original_gap_is_explicitly_inferred_and_every_adopted_interval_is_covered(self):
-        decision = json.loads((ROOT / "data/decisions/kabukicho-route-surfaces-1976.json").read_text())
+        decision = json.loads((ROOT / "data/decisions/kabukicho-route-surfaces-1976.json").read_text(encoding="utf-8"))
         self.assertEqual(len(decision["original_unclassified_samples"]), 4)
         self.assertEqual(decision["historical_confidence"], "inferred")
         self.assertTrue(decision["decision_complete"])
@@ -72,7 +72,7 @@ class PublishedAdoptedRoute(unittest.TestCase):
             self.assertGreaterEqual(passage["underside_clearance_m"], 2.2)
 
     def test_walk_sees_the_gate_and_reaches_the_adopted_theatre_entrance(self):
-        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text())
+        route = json.loads((ROOT / "scenes/shinjuku/kabukicho/1976/cameras/route-proposal.json").read_text(encoding="utf-8"))
         arrival = self.walk["terminal_station"]
         self.assertEqual(arrival["id"], "theatre-arrival")
         self.assertEqual(self.walk["route_control_points_m"][:6], route["geometry"]["coordinates"])

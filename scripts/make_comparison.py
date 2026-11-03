@@ -27,7 +27,8 @@ STATION_REFS = {
     "r04-gate-rear": ["R01", "R08"],
     "r04-milano-front": ["R03", "R09"],
 }
-FONT_PATHS = ["/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf", "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf"]
+FONT_PATHS = ["/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf", "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf",
+              str(ROOT / "local-fonts/ipag.ttf")]  # docs/SETUP_GPU_PC.md: machines without installed fonts
 
 
 def font(size):

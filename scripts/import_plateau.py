@@ -31,7 +31,8 @@ def write_json(path, data, compact=False):
     path.parent.mkdir(parents=True, exist_ok=True)
     pending = path.with_name(path.name + ".pending")
     pending.write_text(json.dumps(data, ensure_ascii=False, allow_nan=False,
-                                 **({"separators": (",", ":")} if compact else {"indent": 2})) + "\n")
+                                 **({"separators": (",", ":")} if compact else {"indent": 2})) + "\n",
+                       encoding="utf-8", newline="\n")
     pending.replace(path)
 
 
@@ -107,7 +108,7 @@ class TerrainSampler:
 def load_terrain(config=None):
     """Load the committed terrain crop and check that the datum matches config."""
     path = ROOT / (config or {}).get("terrain_derived_path", "data/derived/kabukicho-terrain.json")
-    terrain = TerrainSampler(json.loads(path.read_text()))
+    terrain = TerrainSampler(json.loads(path.read_text(encoding="utf-8")))
     if config and terrain.data["origin_jgd2011"] != config["origin_jgd2011"]:
         raise ValueError("Terrain and scene use different geographic origins or height datums")
     return terrain
@@ -395,7 +396,7 @@ def main():
     ap.add_argument("--archive", type=Path)
     ap.add_argument("--download", action="store_true", help="Download the pinned official archive")
     args = ap.parse_args()
-    config = json.loads(args.config.read_text())
+    config = json.loads(args.config.read_text(encoding="utf-8"))
     raw = ROOT / "data/raw/plateau-13104-2025"
     raw.mkdir(parents=True, exist_ok=True)
     archive = args.archive

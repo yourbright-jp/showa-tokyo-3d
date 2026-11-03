@@ -134,10 +134,22 @@ function patchWall(mat, U, key, { tintMask = true, streak = 0.22 } = {}) {
   return mat;
 }
 
-const GLASS_PARS = `
+// Integer hash (PCG) -> [0, 1). Identical on every WebGL implementation: the former
+// fract(sin(x) * 43758.5) depends on the precision of sin() for large arguments, so a GPU (D3D11)
+// and SwiftShader picked different curtains, wall colours and lit rooms for the same window.
+const UHASH = `
+float uhash(int n){
+  uint v = uint(n & 0x7fffffff) * 747796405u + 2891336453u;
+  uint w = ((v >> ((v >> 28u) + 4u)) ^ v) * 277803737u;
+  w = (w >> 22u) ^ w;
+  return float(w >> 8u) / 16777216.0;
+}
+`;
+
+const GLASS_PARS = UHASH + `
 uniform sampler2D uCurtain; uniform float uInterior; uniform float uNight; uniform float uLitShare; uniform vec3 uSkyRefl;
 flat varying vec4 vWin; varying vec3 vWPos; varying vec3 vWNorm; varying vec2 vPane;
-float bh(float n){ return fract(sin(mod(n, 263.0) * 12.9898 + 78.233) * 43758.5453); }
+float bh(float n){ return uhash(int(floor(n * 10.0 + 0.5))); }
 vec3 interiorColour() {
   vec3 N = normalize(vWNorm);
   vec3 T = normalize(vec3(-N.z, 0.0, N.x));
@@ -238,7 +250,7 @@ function patchMid(mat, U, key) {
       .replace('#include <common>', '#include <common>\nvarying vec2 vWallUv;')
       .replace('#include <uv_vertex>', '#include <uv_vertex>\nvWallUv = uv;');
     shader.fragmentShader = shader.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform sampler2D uStreak; uniform float uNight; varying vec2 vWallUv;')
+      .replace('#include <common>', '#include <common>\nuniform sampler2D uStreak; uniform float uNight; varying vec2 vWallUv;\n' + UHASH)
       .replace('#include <map_fragment>', `
         vec4 mTex = texture2D( map, vMapUv );
         diffuseColor.rgb *= mTex.rgb * mix(vec3(1.0), vColor, mTex.a);
@@ -249,7 +261,8 @@ function patchMid(mat, U, key) {
       .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = mix(0.12, roughness, mTex.a);')
       .replace('#include <emissivemap_fragment>', `#include <emissivemap_fragment>
         if (uNight > 0.5) {
-          float cell = fract(sin(dot(floor(vMapUv * vec2(4.0, 2.0)), vec2(12.9898, 78.233))) * 43758.5453);
+          ivec2 ci = ivec2(floor(vMapUv * vec2(4.0, 2.0)));
+          float cell = uhash(ci.x * 7919 + ci.y * 104729);
           totalEmissiveRadiance += (1.0 - mTex.a) * step(0.62, cell) * vec3(1.0, 0.85, 0.62) * 0.9;
         }`);
   };
