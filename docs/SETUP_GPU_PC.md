@@ -113,6 +113,18 @@ node scripts/render_stills.mjs --gpu --channel chrome --batch --spp 64 --out ren
 - `--batch`なしでは、従来どおり1ページ1地点で描く（`--spp`なしならr04と同じ1回描き）。
 - 測定の結果は[r05ラウンド記録](rounds/shinjuku-kabukicho-1976-r05.md)。
 
+**動画のコマ（r05、段階5の道具）**：長回しの歩行軌道を、世界を1回だけ作ってコマごとに描き、H.264にする。試写を描くのは、静止画のユーザー承認の後（制作計画）。
+
+```sh
+node scripts/render_walk.mjs --from 0 --to 15 --fps 30 --spp 32 --out renders/walk-entrance
+py -3 scripts/encode_frames.py renders/walk-entrance
+```
+
+- コマは`<出力先>/frames/frame-000000.png`から連番、記録は`walk-report.json`。途中で止まったら`--resume`で続きから描く（世界は毎回同じなので、続きも同じコマになる）。
+- フィルムの粒子はコマごとに変える（固定だと、画面に汚れが付いたように見える）。
+- ffmpegは`imageio-ffmpeg`（`requirements-render.txt`）に含まれるものを使う。OSへの導入は要らない。
+- 任意：`--shutter <秒>`（動きのぶれ。例：1/60秒なら0.0167）、`--shadow <画素>`、`--w`・`--h`。
+
 ## 5. 歩いて見る
 
 ```sh
