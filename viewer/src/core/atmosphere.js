@@ -18,15 +18,15 @@ import { LUTPass } from 'three/addons/postprocessing/LUTPass.js';
 // All of these are VISUAL WORKING CHOICES for matching the approved colour references; none is a
 // historical claim about 1976 film stock, weather or air quality.
 
-export const ATMO_BUNDLE = { ltm: 0.2, lut: 'reversal', lutmix: 1, haze: 1, skygrad: 1 };
+export const ATMO_BUNDLE = { ltm: 0.06, lut: 'reversal', lutmix: 1, haze: 1, skygrad: 1 };
 
 // Per-preset constants. Only the daylight preset is tuned; asking for these effects with another
 // preset is an error rather than a silent reuse of daylight values.
 const ATMO_TUNING = {
   'clear-afternoon': {
     hazeColor: 0xbccfe4,          // in-scatter colour, a little darker than the rendered horizon sky
-    hazeBeta: [0.00078, 0.00095, 0.00122], // per-metre extinction at haze=1 (R, G, B)
-    hazeStart: 18,                // metres from the camera before any aerial perspective
+    hazeBeta: [0.00070, 0.00080, 0.00095], // per-metre extinction at haze=1 (R, G, B); r2: weaker blue bias (it turned near reds crimson)
+    hazeStart: 40,                // metres from the camera before any aerial perspective (r2: 18 -> 40, near stays clean)
     ltmAnchor: 0.32,              // linear luminance the base layer is compressed around
     zenithGain: [0.66, 0.80, 0.94], // sky multiplier towards the zenith at skygrad=1 (linear)
     horizonPale: 0.22, horizonWarm: [1.025, 1.0, 0.96],
@@ -150,27 +150,53 @@ export function applyAtmosphere(ctx, sky, presetName, P) {
 
 const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
 
-/** Subtle 1970s reversal-film-like response (Ektachrome/Fujichrome-like, by eye). */
-function reversal([r, g, b]) {
-  // 1. gentle per-channel S-curve (mid slope ~1.12, denser toe, soft shoulder)
-  const s = (x) => x + 0.24 * x * (1 - x) * (2 * x - 1);
-  let c = [s(r), s(g), s(b)];
-  let y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-  // 2. split toning: cool-ish shadows, warm highlights (small)
-  const ws = Math.pow(1 - smooth(0.0, 0.55, y), 2);
-  const wh = smooth(0.5, 1.0, y);
-  c = [c[0] - 0.010 * ws + 0.014 * wh, c[1] + 0.002 * ws + 0.004 * wh, c[2] + 0.016 * ws - 0.016 * wh];
-  // 3. hue-selective density: deeper, richer blue sky; denser reds; otherwise untouched
-  const [R, G, B] = c;
-  const blue = smooth(0.06, 0.32, B - R) * smooth(0.0, 0.10, B - G);
-  c = [R * (1 - 0.07 * blue), G * (1 - 0.045 * blue), B * (1 - 0.01 * blue)];
-  const red = smooth(0.10, 0.40, c[0] - Math.max(c[1], c[2]));
-  c = [c[0] * (1 - 0.005 * red), c[1] * (1 - 0.035 * red), c[2] * (1 - 0.03 * red)];
-  // 4. reversal film loses saturation towards white: pull very bright colours a little to neutral
-  y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-  const hi = 0.12 * smooth(0.75, 1.0, y);
-  c = c.map((v) => v + (y - v) * hi);
-  return c.map((v) => Math.min(1, Math.max(0, v)));
+function rgb2hsv([r, g, b]) {
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b), d = mx - mn;
+  let h = 0;
+  if (d > 1e-9) {
+    if (mx === r) h = ((g - b) / d) % 6; else if (mx === g) h = (b - r) / d + 2; else h = (r - g) / d + 4;
+    h *= 60; if (h < 0) h += 360;
+  }
+  return [h, mx > 0 ? d / mx : 0, mx];
+}
+function hsv2rgb(h, s, v) {
+  const c = v * s, hp = (((h % 360) + 360) % 360) / 60, x = c * (1 - Math.abs((hp % 2) - 1)), m = v - c;
+  const [r, g, b] = hp < 1 ? [c, x, 0] : hp < 2 ? [x, c, 0] : hp < 3 ? [0, c, x] : hp < 4 ? [0, x, c] : hp < 5 ? [x, 0, c] : [c, 0, x];
+  return [r + m, g + m, b + m];
+}
+
+/**
+ * Subtle 1970s reversal-film-like response (Ektachrome/Fujichrome-like, by eye). r05 round 2: hue
+ * preserving. The tone curve acts on the max and min channels (HSV hue kept exactly); saturated
+ * colours only change saturation/value, so adopted paint hues (gate red #A92B1D) do not drift; near
+ * neutrals lose a little chroma (a warm-lit neutral does not turn beige) and only they get the
+ * cool shadow tint.
+ */
+function reversal(rgb) {
+  // 1. S-curve (mid slope ~1.12, denser toe, soft shoulder) on max/min channels: hue unchanged
+  const sc = (x) => x + 0.24 * x * (1 - x) * (2 * x - 1);
+  const [h0, s0, v0] = rgb2hsv(rgb);
+  const mx = sc(v0), mn = sc(v0 * (1 - s0));
+  let h = h0, s = mx > 1e-9 ? (mx - mn) / mx : 0, v = mx;
+  // 2. near-neutral protection: chroma below ~0.3 saturation pulled towards neutral
+  const wN = 1 - smooth(0.10, 0.30, s0);
+  s *= 1 - 0.45 * wN;
+  // 3. reds (the tone curve already makes them a little richer): reds already pushed towards crimson by the blue sky fill are turned
+  //    back part of the way towards the adopted paint hue (~4-6 deg); reds at/above 4 deg untouched
+  const hd = h > 180 ? h - 360 : h;
+  const wr = smooth(0.45, 0.70, s0);
+  if (hd > -28 && hd < 4) h = hd + 0.3 * wr * (1 - smooth(18, 28, 4 - hd)) * (4 - hd);
+  // 4. sky blues: denser (more saturated, slightly darker), hue unchanged
+  const wb = smooth(0.15, 0.32, s0) * (1 - smooth(18, 32, Math.abs(h0 - 212)));
+  s *= 1 + 0.07 * wb; v *= 1 - 0.03 * wb;
+  // 5. reversal film loses saturation towards white (not the sky blues)
+  s *= 1 - 0.12 * smooth(0.8, 1.0, v) * (1 - wb);
+  let c = hsv2rgb(h, Math.min(1, Math.max(0, s)), Math.min(1, v));
+  // 6. cool-ish shadows, near-neutrals only (saturated colours keep their hue)
+  const y = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  const ws = (1 - smooth(0.05, 0.55, y)) * wN;
+  c = [c[0] - 0.012 * ws, c[1] - 0.002 * ws, c[2] + 0.020 * ws];
+  return c.map((x) => Math.min(1, Math.max(0, x)));
 }
 
 const LUTS = { reversal };

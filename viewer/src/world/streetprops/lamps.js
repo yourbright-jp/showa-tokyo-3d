@@ -37,7 +37,12 @@ export function buildStreetLamp(B, o) {
     B.lathe(W, sx, hy, 0, BELL, chrome, [0.24, 1.0, 0.4], 18);
     B.sphere(W, sx, hy + 0.35, 0, 0.03, 0.03, 0.03, chrome, MAT.chrome, 8, 6);
     // frosted bulb
-    B.add(prim.sphere(10, 8), mul(W, mat4(sx, hy - 0.08, 0, 0, 0, 0, 0.1, 0.11, 0.1)), lin('#fff3dc'), MAT.lens, { emit: [4.0, 0.0] });
+    if (o.opal) {
+      // r05 mat=1: unlit opal milk glass by day: greyer satin glass so the shade side reads darker,
+      // a soft highlight instead of a mirror one, and a sooty crown just below the chrome shade
+      B.add(prim.sphere(12, 10), mul(W, mat4(sx, hy - 0.08, 0, 0, 0, 0, 0.1, 0.11, 0.1)), lin('#cfcac0'), [0.34, 0.0, 0.15], { emit: [4.0, 0.0] });
+      B.add(prim.sphere(10, 4), mul(W, mat4(sx, hy - 0.035, 0, 0, 0, 0, 0.088, 0.072, 0.088)), lin('#8f897d'), [0.7, 0.0, 0.4]);
+    } else B.add(prim.sphere(10, 8), mul(W, mat4(sx, hy - 0.08, 0, 0, 0, 0, 0.1, 0.11, 0.1)), lin('#fff3dc'), MAT.lens, { emit: [4.0, 0.0] });
     heads.push([sx, hy]);
     // ribbon streamers hanging from the rim (optional 1972 temporary-decoration layer)
     const n = rng.int(6, 9) * (o.decor ? 1 : 0);
@@ -90,7 +95,7 @@ export function placeStreetLamps(ctx, site, streets, B, avoid) {
       if (!site.boxFree(x, z, 0.2, 0.2, ry, gy + 0.2, gy + 3.1)) continue;
       if (!site.boxFree(x, z, 1.05, 0.45, ry, gy + 3.1, gy + 5.2)) continue;
       const rng = ctx.rng(`streetprops/lamp/${slot.s}`);
-      buildStreetLamp(B, { x, z, gy, ry, rng, flowers: rng.chance(0.85), decor: !!(ctx.options && ctx.options.decor1972) });
+      buildStreetLamp(B, { x, z, gy, ry, rng, flowers: rng.chance(0.85), decor: !!(ctx.options && ctx.options.decor1972), opal: !!(ctx.params && ctx.params.get('mat') === '1') });
       site.markBox(x, z, 0.2, 0.2, ry, gy, gy + 3.1);
       site.markBox(x, z, 1.05, 0.45, ry, gy + 3.1, gy + 5.2);
       footprints.push({ x, z, r: 0.25, kind: 'street-lamp' });

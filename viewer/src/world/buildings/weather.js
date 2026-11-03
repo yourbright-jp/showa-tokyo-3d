@@ -19,7 +19,7 @@ float uhash(int n){
 `;
 
 const MAT_PARS = `
-uniform vec4 uMatTile; uniform vec4 uMatA; uniform vec4 uMatB; uniform vec4 uMatC;
+uniform vec4 uMatTile; uniform vec4 uMatA; uniform vec4 uMatB; uniform vec4 uMatC; uniform sampler2D uAgeMap;
 varying vec3 vMatPos; varying vec3 vMatN;
 int mh3(ivec3 i) { return (i.x * 73856093) ^ (i.y * 19349663) ^ (i.z * 83492791); }
 float vn3(vec3 p) {
@@ -58,21 +58,20 @@ const MAT_FRAG = `
   float m1 = vn3(matP * vec3(0.42, 0.22, 0.42));
   float m2 = vn3(matP * vec3(1.6, 0.7, 1.6) + 11.0);
   float m3 = vn3(matP * 5.5 + 23.0);
-  float m4 = vn3(matP * vec3(3.0, 0.16, 3.0) + 57.0);
   float matRough = roughness;
   vec3 matTilt = vec3(0.0);
   float matFace = 1.0;
+  vec3 matPre = diffuseColor.rgb;
+  // where the r04 atlas already stains the wall (below openings, sills, bands, copings, ground soot)
+  float matAtl = smoothstep(0.1, 0.32, 1.0 - dot(matGr, vec3(0.3333)));
   {
-    // mottling: large soot/dirt clouds, medium blotches, fine unevenness, vertical wash-down
+    // mottling: large soot/dirt clouds, medium blotches, fine unevenness
     float mot = ((m1 - 0.5) * 1.1 + (m2 - 0.5) * 0.8 + (m3 - 0.5) * 0.45) * 2.2;
     float dk = clamp(-mot, 0.0, 1.0);
     diffuseColor.rgb *= (1.0 + uMatA.x * mot) * mix(vec3(1.0), vec3(0.9, 0.87, 0.82), clamp(dk * uMatA.x * 3.0, 0.0, 1.0));
     // soot stains: patchy darker areas with a defined (not gaussian) edge
     float stain = smoothstep(0.5, 0.7, m1 * 0.55 + m2 * 0.3 + m3 * 0.15);
     diffuseColor.rgb *= mix(vec3(1.0), vec3(0.7, 0.67, 0.62), clamp(stain * uMatA.x * 3.0, 0.0, 1.0));
-    // long soot wash-down bands (exhaust soot carried down the wall by rain), patchy along the facade
-    float wd = smoothstep(0.42, 0.72, m4) * (0.4 + 0.6 * m1) * matVert * uMatC.w;
-    diffuseColor.rgb *= mix(vec3(1.0), vec3(0.55, 0.53, 0.5), wd);
   }
   #ifdef USE_MAP
   matFace = wTex.a;
@@ -115,17 +114,17 @@ const MAT_FRAG = `
     diffuseColor.rgb *= 1.0 - uMatA.z * 0.6 * line * vis;
   }
   if (uMatB.y > 0.0) {
-    // fine rain streaks: two scales, clustered by the large mottle
-    float sd = mStreak(vWallUv, matSeed, 0.085, 0.35 + 0.5 * m1);
-    float sd2 = mStreak(vWallUv * vec2(1.0, 0.6) + vec2(0.37, 0.0), matSeed ^ 0x3b9, 0.23, 0.22 + 0.3 * m2);
-    float sd3 = mStreak(vWallUv * vec2(1.0, 0.3) + vec2(0.71, 0.0), matSeed ^ 0x51f, 0.55, 0.3 + 0.3 * m1);
-    float s = clamp(0.8 * sd + 0.6 * sd2 + 0.55 * sd3, 0.0, 1.0) * matVert * uMatB.y;
-    diffuseColor.rgb *= mix(vec3(1.0), vec3(0.5, 0.48, 0.44), s);
+    // fine rain streaks: short, sparse, and only inside the atlas stains below openings, sills,
+    // bands and copings (no continuous streaking over whole walls)
+    float sd = mStreak(vWallUv * vec2(1.0, 1.8), matSeed, 0.085, 0.2 + 0.25 * m1);
+    float sd2 = mStreak(vWallUv * vec2(1.0, 1.4) + vec2(0.37, 0.0), matSeed ^ 0x3b9, 0.23, 0.15 + 0.2 * m2);
+    float s = clamp(0.7 * sd + 0.5 * sd2, 0.0, 1.0) * matVert * matAtl * uMatB.y;
+    diffuseColor.rgb *= mix(vec3(1.0), vec3(0.55, 0.53, 0.49), s);
     matRough += 0.06 * s;
   }
   if (uMatA.w > 0.0) {
     // efflorescence: whitish lime run-off streaks and blooms
-    float ef = mStreak(vWallUv + vec2(0.05, 0.9), matSeed ^ 0x77, 0.17, 0.18) * matVert;
+    float ef = mStreak(vWallUv * vec2(1.0, 1.6) + vec2(0.05, 0.9), matSeed ^ 0x77, 0.17, 0.1) * matVert * (0.3 + 0.7 * matAtl);
     float bloom = smoothstep(0.68, 0.88, m2) * smoothstep(0.45, 0.75, m3) * 0.3;
     diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.62, 0.61, 0.57), clamp(uMatA.w * (ef + bloom), 0.0, 0.55));
   }
@@ -140,6 +139,8 @@ const MAT_FRAG = `
     matRough += 0.3 * rr;
   }
   matRough = mix(uMatB.w, uMatB.z, matFace) + (m2 - 0.5) * uMatC.z + (m3 - 0.5) * uMatC.z * 0.6 + (matRough - roughness);
+  // building age class (buildings.js age map): new and mid buildings get only part of the ageing
+  diffuseColor.rgb = mix(matPre, diffuseColor.rgb, matAge);
 `;
 
 // per material kind: tile = [cols, rows, bond, per-tile variation] (cols/rows per texture repeat,
@@ -175,6 +176,7 @@ export function patchWallMat(mat, U, key, { tintMask = true, streak = 0.22, WALL
     shader.uniforms.uMatA = { value: new THREE.Vector4(...k.A) };
     shader.uniforms.uMatB = { value: new THREE.Vector4(...k.B) };
     shader.uniforms.uMatC = { value: new THREE.Vector4(...k.C) };
+    shader.uniforms.uAgeMap = U.ageMap;
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', '#include <common>\nattribute vec2 aGrime;\nvarying vec2 vGrime;\nvarying vec2 vWallUv;' + VERT_COMMON)
       .replace('#include <uv_vertex>', '#include <uv_vertex>\nvGrime = aGrime;\nvWallUv = uv;')
@@ -188,11 +190,14 @@ export function patchWallMat(mat, U, key, { tintMask = true, streak = 0.22, WALL
         #else
           diffuseColor.rgb *= vColor;
         #endif
+        float matAge = texture2D(uAgeMap, vGrime).r;
+        vec3 matGr = texture2D(uGrime, vGrime).rgb;
         {
-          vec3 gr = texture2D(uGrime, vGrime).rgb;
+          // r04 atlas stains scaled by the building age class; the tileable streak texture is
+          // weakened (it read as continuous vertical siding over whole walls)
           float sk = texture2D(uStreak, vWallUv * vec2(0.333, 0.111)).r;
-          vec3 g2 = mix(vec3(1.0), gr, clamp(0.5 + 1.1 * (1.0 - sk), 0.0, 1.4) * uGrimeAmt);
-          diffuseColor.rgb *= g2 * (1.0 - uStreakAmt * (1.0 - sk));
+          vec3 g2 = mix(vec3(1.0), matGr, clamp(0.75 + 0.5 * (1.0 - sk), 0.0, 1.4) * uGrimeAmt * mix(0.5, 1.0, matAge));
+          diffuseColor.rgb *= g2 * (1.0 - uStreakAmt * 0.35 * (1.0 - sk));
         }
       ` + MAT_FRAG)
       .replace('#include <color_fragment>', '')
@@ -225,8 +230,8 @@ export function patchMidMat(mat, U) {
           vec3 Pm = vMatPos;
           float a1 = vn3(Pm * vec3(0.3, 0.12, 0.3) + 7.0), a2 = vn3(Pm * vec3(1.1, 0.5, 1.1) + 13.0);
           float a3 = vn3(Pm * vec3(2.6, 0.12, 2.6) + 57.0);
-          float mot = ((a1 - 0.5) * 1.1 + (a2 - 0.5) * 0.7) * 2.0 - smoothstep(0.42, 0.75, a3) * 0.9;
-          vec3 mc = (1.0 + 0.2 * mot) * mix(vec3(1.0), vec3(0.92, 0.9, 0.86), clamp(-mot * 1.2, 0.0, 1.0));
+          float mot = ((a1 - 0.5) * 1.1 + (a2 - 0.5) * 0.7) * 2.0 - smoothstep(0.5, 0.8, a3) * 0.25;
+          vec3 mc = (1.0 + 0.07 * mot) * mix(vec3(1.0), vec3(0.95, 0.94, 0.92), clamp(-mot * 0.5, 0.0, 1.0));
           diffuseColor.rgb *= mix(vec3(1.0), mc, mTex.a);
         }
       `)

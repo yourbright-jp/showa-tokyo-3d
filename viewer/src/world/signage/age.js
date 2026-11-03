@@ -168,6 +168,47 @@ export function ageFace(P, f, S, age, rr) {
     g.fillStyle = `rgba(${lite ? '255,250,238' : '40,34,28'},${(lite ? 0.006 + rr() * 0.01 : 0.012 + rr() * 0.025) * (0.4 + a)})`;
     g.fillRect(x, y + rr() * h, w, h * (0.03 + rr() * 0.12));
   }
+  // 2b. large-scale field ageing (r05 round 2: faces read slightly too clean): one side of the face
+  // more sun-bleached than the other, a soft bleached cloud, and faint water marks running down from
+  // the top edge. All low contrast and non-uniform (no all-over speckle).
+  {
+    const L = Math.hypot(w, h), ang = rr() * Math.PI * 2, cx0 = x + w / 2, cy0 = y + h / 2;
+    const gx = (Math.cos(ang) * L) / 2, gy = (Math.sin(ang) * L) / 2;
+    const kf = (0.04 + 0.11 * a) * (0.6 + 0.8 * rr());
+    const gr = g.createLinearGradient(cx0 - gx, cy0 - gy, cx0 + gx, cy0 + gy);
+    gr.addColorStop(0, `rgba(238,233,218,${kf.toFixed(3)})`);
+    gr.addColorStop(0.45 + 0.3 * rr(), 'rgba(238,233,218,0)');
+    gr.addColorStop(1, `rgba(58,50,40,${(kf * 0.45).toFixed(3)})`);
+    g.fillStyle = gr; g.fillRect(x, y, w, h);
+    const rx = x + rr() * w, ry = y + rr() * h * 0.6, rad = (0.25 + rr() * 0.5) * Math.max(w, h);
+    const rg = g.createRadialGradient(rx, ry, 0, rx, ry, rad);
+    rg.addColorStop(0, `rgba(240,236,224,${(0.03 + 0.08 * a).toFixed(3)})`); rg.addColorStop(1, 'rgba(240,236,224,0)');
+    g.fillStyle = rg; g.fillRect(x, y, w, h);
+  }
+  if (!cloth && h > 4) {
+    const nwm = Math.round((w / ppm) * (0.6 + 2.2 * a) * (0.4 + rr()));
+    for (let i = 0; i < nwm; i++) {
+      const x0 = x + rr() * w, wd = (0.02 + rr() * 0.08) * ppm, len = h * (0.12 + rr() * 0.55 * (0.4 + a));
+      const al = (0.03 + 0.07 * a) * (0.5 + rr());
+      const lite = rr() < 0.3; // rain-washed track through the settled dirt
+      const col = lite ? '238,234,222' : '70,62,50';
+      const drift = (rr() - 0.5) * wd;
+      const wg = g.createLinearGradient(0, y, 0, y + len);
+      wg.addColorStop(0, `rgba(${col},${al.toFixed(3)})`); wg.addColorStop(0.75, `rgba(${col},${(al * 0.5).toFixed(3)})`); wg.addColorStop(1, `rgba(${col},0)`);
+      g.fillStyle = wg;
+      g.beginPath();
+      g.moveTo(x0 - wd / 2, y);
+      g.quadraticCurveTo(x0 - wd * 0.45 + drift, y + len * 0.6, x0 - wd * 0.3 + drift, y + len);
+      g.quadraticCurveTo(x0 + drift, y + len + wd * 0.35, x0 + wd * 0.3 + drift, y + len);
+      g.quadraticCurveTo(x0 + wd * 0.45 + drift, y + len * 0.6, x0 + wd / 2, y);
+      g.closePath(); g.fill();
+      if (!lite) {
+        // tide line where the run stopped
+        g.strokeStyle = `rgba(62,54,42,${(al * 1.4).toFixed(3)})`; g.lineWidth = Math.max(0.6, 0.004 * ppm);
+        g.beginPath(); g.moveTo(x0 - wd * 0.32 + drift, y + len * 0.97); g.quadraticCurveTo(x0 + drift, y + len + wd * 0.35, x0 + wd * 0.32 + drift, y + len * 0.97); g.stroke();
+      }
+    }
+  }
   // 3. dirt cap on the top edge (dust and soot settle on the upper frame and run down a little)
   const capH = Math.min(h * 0.5, (0.08 + 0.3 * a * rr() + 0.04) * ppm);
   if (capH > 1.5) {

@@ -284,6 +284,7 @@ export function makeMaterials(ctx, atlas) {
     grime: { value: atlas.texture() },
     streak: { value: streakTexture(rng) },
     grimeAmt: { value: ctx.params && ctx.params.get('mat') === '1' ? 1.35 : 1.0 }, // mat=1: stronger r04 atlas stains
+    ageMap: { value: null }, // mat=1: per-building age class texture (set by buildings.js)
     bounce: { value: night ? new THREE.Color(0.0, 0.0, 0.0) : new THREE.Color(0.1, 0.082, 0.06) },
     curtain: { value: curtainAtlas(rng) },
     interior: { value: 0.2 },

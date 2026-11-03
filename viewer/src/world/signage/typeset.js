@@ -235,8 +235,20 @@ export function drawGlyphs(g, glyphs, style) {
     });
     g.restore();
   }
-  for (const o of outlines) {
+  for (const [oi, o] of outlines.entries()) {
     g.strokeStyle = o.color;
+    if (LEGIBLE) {
+      // r05 sign=1: a ring that ends up thinner than ~1.6 atlas px (after the complexity cap) only
+      // tints the letter edge (colour fringe at distance); skip it for that glyph
+      const inner = oi + 1 < outlines.length ? outlines[oi + 1].w * px * 2 : 0;
+      eachGlyph(g, glyphs, (q) => {
+        const k = Math.min(q.sx, q.sy || 1);
+        const band = (lw(weight + o.w * px * 2, q) - lw(weight + inner, q)) * 0.5 * k;
+        if (band < 1.6) return;
+        g.lineWidth = lw(weight + o.w * px * 2, q); g.strokeText(q.ch, 0, 0);
+      });
+      continue;
+    }
     eachGlyph(g, glyphs, (q) => { g.lineWidth = lw(weight + o.w * px * 2, q); g.strokeText(q.ch, 0, 0); });
   }
   if (style.fill) {
@@ -260,6 +272,10 @@ export function drawGlyphs(g, glyphs, style) {
     // glass tube following the letter edge; dark offset shadow (tube stands off the board), body, highlight
     const t = style.tube;
     const tw = t.w * px;
+    // r05 sign=1: unlit (daytime, the style with a tube shadow) glass tubes doubling every stroke edge
+    // crushed dense kanji on small neon signs; leave the tubes off glyphs whose stroke gaps are < 5 tube widths
+    if (LEGIBLE && t.shadow) glyphs = glyphs.filter((q) => isAscii(q.ch) || (q.px * 0.8) / (strokesPerEm(q.ch) + 1) >= 5 * tw);
+    if (!glyphs.length) return;
     if (t.shadow) {
       g.strokeStyle = t.shadow;
       eachGlyph(g, glyphs.map((q) => ({ ...q, x: q.x + tw * 0.9, y: q.y + tw * 1.3 })), (q) => { g.lineWidth = lw(tw * 1.1, q); g.strokeText(q.ch, 0, 0); });

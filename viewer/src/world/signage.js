@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { AtlasSet, makeStamps, makeMetalGrime } from './signage/atlas.js';
-import { PAINTERS } from './signage/paint.js';
+import { PAINTERS, setAged } from './signage/paint.js';
 import { Batch } from './signage/geo.js';
 import { Space } from './signage/space.js';
 import { plan } from './signage/plan.js';
@@ -31,6 +31,7 @@ export async function build(ctx) {
   // r05 optional: sign=1 ages faces/frames and thins strokes of complex glyphs (signage/age.js)
   const aged = !!(ctx.params && ctx.params.get('sign') === '1');
   setLegibility(aged);
+  setAged(aged);
 
   const items = plan(ctx, env);
   const tPlan = performance.now();
