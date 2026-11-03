@@ -246,8 +246,8 @@ export class FacadeBuilder {
   }
 
   /** wall-mounted poster showcase with lamp hood (neutral abstract poster from the atlas) */
-  showcase(xc, y0, w, hgt, cell) {
-    const z0 = WALL_Z, z1 = WALL_Z + 0.11, f = 0.045;
+  showcase(xc, y0, w, hgt, cell, zOff = 0) {
+    const z0 = WALL_Z + zOff, z1 = WALL_Z + zOff + 0.11, f = 0.045;
     const x0 = xc - w / 2, x1 = xc + w / 2, y1 = y0 + hgt;
     this.add('alu', boxMinMax(x0, y0, z0, x1, y0 + f, z1));
     this.add('alu', boxMinMax(x0, y1 - f, z0, x1, y1, z1));

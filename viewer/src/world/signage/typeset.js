@@ -173,8 +173,11 @@ export function drawGlyphs(g, glyphs, style) {
   g.lineJoin = 'round';
   g.miterLimit = 2;
   const px = glyphs[0].px;
-  const weight = (style.weight || 0) * px;
-  const outlines = (style.outline || []).slice().sort((a, b) => b.w - a.w);
+  // r04: heavy strokes/outlines closed up small glyphs into blobs (e.g. 鈴蘭, 眼鏡 on distant
+  // boards); thin them progressively below ~50 px per em
+  const small = Math.min(1, Math.max(0.3, (px - 10) / 40));
+  const weight = (style.weight || 0) * px * small;
+  const outlines = (style.outline || []).slice().sort((a, b) => b.w - a.w).map((o) => ({ ...o, w: o.w * (0.5 + 0.5 * small) }));
   const lw = (w, q) => (w * (q.jw || 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1));
   if (style.shadow) {
     const s = style.shadow;

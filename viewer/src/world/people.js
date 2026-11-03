@@ -240,7 +240,15 @@ export function build(ctx) {
         groupLook.set(p.group, { arch: arch.id, pairPartner: pp ? r.pick(pp) : null });
       }
     }
-    const P = dressPerson(r, arch);
+    let P = dressPerson(r, arch);
+    // r04: group members in the same archetype must not look like twins (visual review)
+    if (p.group) {
+      const mates = people.filter((q) => q !== p && q.group === p.group && q.look && q.archetype === arch.id);
+      const close = (a, b) => a && b && Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) + Math.abs(a[2] - b[2]) < 0.12;
+      for (let k = 1; k <= 4 && mates.some((q) => close(q.look.top && q.look.top.col, P.top && P.top.col) || (q.look.hair && P.hair && q.look.hair.style === P.hair.style && close(q.look.bottom && q.look.bottom.col, P.bottom && P.bottom.col))); k++) {
+        P = dressPerson(ctx.rng(`people/look/${p.id}/redress${k}`), arch);
+      }
+    }
     p.look = P;
     p.archetype = arch.id;
 
@@ -357,15 +365,18 @@ export function build(ctx) {
   }
 
   // soft contact occlusion under each person (people often stand in building shade)
+  // alphaMap reads the GREEN channel: the r02 map drew black with alpha (green = 0), so the contact
+  // shadows never showed. Paint a grey-level falloff on an opaque black canvas instead.
   const blobTex = canvasTexture(64, 64, (g, W, H) => {
+    g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
     const grd = g.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W / 2);
-    grd.addColorStop(0, 'rgba(0,0,0,0.9)');
-    grd.addColorStop(0.35, 'rgba(0,0,0,0.62)');
-    grd.addColorStop(0.7, 'rgba(0,0,0,0.22)');
-    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    grd.addColorStop(0, 'rgba(255,255,255,0.85)');
+    grd.addColorStop(0.35, 'rgba(255,255,255,0.55)');
+    grd.addColorStop(0.7, 'rgba(255,255,255,0.18)');
+    grd.addColorStop(1, 'rgba(255,255,255,0)');
     g.fillStyle = grd; g.fillRect(0, 0, W, H);
   }, { srgb: false });
-  const blobMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: blobTex, transparent: true, opacity: look === 'neon-night' ? 0.8 : 0.78, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
+  const blobMat = new THREE.MeshBasicMaterial({ color: 0x000000, alphaMap: blobTex, transparent: true, opacity: look === 'neon-night' ? 0.75 : 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -4, polygonOffsetUnits: -4 });
   const blobGeo = new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2);
   const blobs = new THREE.InstancedMesh(blobGeo, blobMat, people.length);
   const m4 = new THREE.Matrix4(), qn = new THREE.Quaternion(), sc = new THREE.Vector3(), ps = new THREE.Vector3();

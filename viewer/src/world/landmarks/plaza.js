@@ -31,9 +31,10 @@ function stoneTexture(rng) {
   // 2 m x 0.6 m tile: granite-terrazzo coping blocks with joints every ~1.0 m
   const W = 512, H = 154; const c = makeCanvas(W, H); const g = c.getContext('2d');
   g.fillStyle = '#8a877e'; g.fillRect(0, 0, W, H);
-  for (let i = 0; i < 4200; i++) { const v = rng(); g.fillStyle = v < 0.35 ? 'rgba(60,58,54,0.35)' : v < 0.7 ? 'rgba(170,166,156,0.3)' : 'rgba(110,102,92,0.3)'; g.fillRect(rng() * W, rng() * H, 1 + rng() * 2, 1 + rng() * 2); }
+  // round b: finer, fainter aggregate (the r02 speckle read as a dalmatian pattern) and broader mottling
+  for (let i = 0; i < 5200; i++) { const v = rng(); g.fillStyle = v < 0.35 ? 'rgba(70,68,62,0.16)' : v < 0.7 ? 'rgba(170,166,156,0.16)' : 'rgba(110,102,92,0.14)'; g.fillRect(rng() * W, rng() * H, 1 + rng() * 1.2, 1 + rng() * 1.2); }
   const n = noiseCanvas(rng, 128, 4, 4, 4, 1.4);
-  g.save(); g.globalAlpha = 0.3; g.globalCompositeOperation = 'overlay'; const p = g.createPattern(n, 'repeat'); g.fillStyle = p; g.fillRect(0, 0, W, H); g.restore();
+  g.save(); g.globalAlpha = 0.42; g.globalCompositeOperation = 'overlay'; const p = g.createPattern(n, 'repeat'); g.fillStyle = p; g.fillRect(0, 0, W, H); g.restore();
   for (const x of [0, 256]) { g.fillStyle = 'rgba(50,48,44,0.7)'; g.fillRect(x, 0, 2, H); g.fillStyle = 'rgba(230,226,216,0.3)'; g.fillRect(x + 2, 0, 1, H); }
   return toTexture(c, { repeat: [1 / 2, 1 / 0.6] });
 }
@@ -135,8 +136,10 @@ function buildFountain(ctx, kit, fx, prop) {
   }, 'fountain'));
   // r04: the r02 water (normalScale 0.2, env 0.9) mirrored the sky as one flat pale sheet at
   // grazing angles; stronger ripples and a weaker sky term let the dark basin read through.
-  const wmat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.01, 0.026, 0.022), roughness: 0.09, metalness: 0.0, normalMap: rippleNormal(rng), normalScale: new THREE.Vector2(0.65, 0.65), transparent: true, opacity: 0.86, envMapIntensity: 0.5, depthWrite: false });
-  wmat.normalMap.repeat.set(1 / 1.2, 1 / 1.2); // 1.2 m ripple period (r02: 2.4 m)
+  // round b: 0.65 / 1.2 m ripples sparkled as white speckle ("snow/granite"); long gentle swell, a
+  // dimmer sky term and a darker body so it reads as water
+  const wmat = new THREE.MeshStandardMaterial({ color: new THREE.Color(0.008, 0.02, 0.018), roughness: 0.16, metalness: 0.0, normalMap: rippleNormal(rng), normalScale: new THREE.Vector2(0.28, 0.28), transparent: true, opacity: 0.9, envMapIntensity: 0.38, depthWrite: false });
+  wmat.normalMap.repeat.set(1 / 3.2, 1 / 3.2); // 3.2 m swell period
   const wm = new THREE.Mesh(waterGeo, wmat); wm.castShadow = false; wm.userData.noShadow = true; wm.receiveShadow = true; wm.renderOrder = 1;
   g.add(wm);
   // water jet: column, umbrella sheet, splash ring (translucent, subtle)

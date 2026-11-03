@@ -79,7 +79,7 @@ function textStyle(r, scheme, kind) {
   switch (kind) {
     case 'heavy': return { ...base, fill: scheme.fg, weight: 0.07 * k };
     case 'outlined': return { ...base, fill: scheme.fg, weight: 0.05 * k, outline: [{ color: dark ? scheme.ac : shade(scheme.fg, -0.45), w: 0.035 }] };
-    case 'double': return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: scheme.ac, w: 0.09 }, { color: rim, w: 0.045 }] };
+    case 'double': return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: scheme.ac, w: 0.06 }, { color: rim, w: 0.035 }] }; // r04: thinner (read as a daytime glow)
     case 'shadow': return { ...base, fill: scheme.fg, weight: 0.05 * k, shadow: { dx: 0.045, dy: 0.05, color: rgba(dark ? '#000000' : shade(scheme.fg, -0.6), dark ? 0.55 : 0.45) } };
     case 'thin': return { ...base, fill: scheme.fg, weight: 0.0 };
     default: return { ...base, fill: scheme.fg, weight: 0.035 * k };
@@ -137,11 +137,13 @@ export function weather(P, stamps, amount, { chips = true, rust = true, streaks 
   // stamps applied as transformed repeating patterns (drawImage between canvases is ~10x slower
   // on the accelerated canvas used by headless Chromium)
   const pats = patternsFor(g, stamps);
-  const pfill = (pat, sc, ox, oy, a, x0, y0, w0, h0) => {
-    pat.setTransform(new DOMMatrix().translate(ox, oy).scale(sc, sc));
+  const pfill = (pat, sc, ox, oy, a, x0, y0, w0, h0, rot = 0, sy = 1) => {
+    pat.setTransform(new DOMMatrix().translate(ox, oy).rotate(rot).scale(sc, sc * sy));
     g.globalAlpha = a; g.fillStyle = pat; g.fillRect(x0, y0, w0, h0);
   };
-  pfill(pats.blotch, (ppm / 22) * (0.7 + r() * 0.6), x - r() * 256, y - r() * 256, Math.min(1, 0.25 + amount * 0.6), x, y, w, h);
+  // r04: the same cloudy blotch read as one stamp repeated on every board (visual review); vary its
+  // orientation, scale and aspect per board and keep it lighter
+  pfill(pats.blotch, (ppm / 22) * (0.45 + r() * 1.2), x - r() * 256, y - r() * 256, Math.min(1, 0.12 + amount * 0.45), x, y, w, h, r.pick([0, 90, 180, 270]), 0.6 + r() * 0.8);
   if (streaks) {
     const sc = (ppm / 45) * (0.6 + r() * 0.8);
     const hh = Math.min(h, 256 * sc * 0.98);

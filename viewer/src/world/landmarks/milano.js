@@ -60,7 +60,17 @@ export function buildMilano(ctx, kit) {
     },
   });
   const latticeHole = { x0: -W / 2 + 0.01, x1: W / 2 - 0.01, y0: 12.25, y1: 13.55 };
-  fb.add('frontWall', wallWithHoles(-W / 2, 0, W / 2, springY, [loggia, ticket, shop, shop2, latticeHole], WALL_Z, painter));
+  // round b: restore the adopted upper windows (r03 fixtures milano-upper-window-<row>-<col>, 2 x 10).
+  // r02 had covered them with authored billboards without recording the change (history review).
+  const winHoles = [];
+  for (const f of ctx.data.fixtures.concat(ctx.data.facadeFeatures || []).filter((q) => /^milano-upper-window-\d+-\d+$/.test(q.id))) {
+    const pts = f.polygons.flat().map((p) => fb.F.toLocal(p[0], p[1], p[2]));
+    const xs = pts.map((v) => v.x), ys = pts.map((v) => v.y);
+    winHoles.push({ x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys), id: f.id });
+  }
+  fb.add('frontWall', wallWithHoles(-W / 2, 0, W / 2, springY, [loggia, ticket, shop, shop2, latticeHole, ...winHoles], WALL_Z, painter));
+  { let wi = 0; for (const h of winHoles) fb.windowUnit(h, { recess: 0.14, mullion: true, cell: (wi++ * 5 + 1) % 16 }); }
+  ctx.log(`landmarks/milano: adopted upper windows restored ${winHoles.length}`);
   edgeQuadReturns(fb, W, springY);
   // loggia: columns on the wall line, recessed doors, soffit with downlights
   fb.add('concrete', revealGeo({ x0: loggia.x0, x1: loggia.x1, y0: stepH, y1: canopyY }, loggiaZ - 0.05, WALL_Z));
@@ -75,7 +85,9 @@ export function buildMilano(ctx, kit) {
     const holes = bayX.map((x) => ({ x0: x - doorW / 2, x1: x + doorW / 2, y0: stepH, y1: stepH + doorH }));
     fb.add('loggiaWall', wallWithHoles(sx[0], stepH, sx[1], canopyY, holes, loggiaZ - 0.02, null));
   }
-  for (let i = 0; i < bays - 1; i++) fb.showcase((bayX[i] + bayX[i + 1]) / 2, stepH + 0.55, 1.0, 1.45, (i * 3 + 2) % 8);
+  // round b: the cases sat on the column line (midpoints between doors) and the columns pierced
+  // them; mount narrower cases on the column faces, in front of the shafts (front at z = 0.22)
+  for (let i = 0; i < bays - 1; i++) fb.showcase((bayX[i] + bayX[i + 1]) / 2, stepH + 0.55, 0.62, 1.4, (i * 3 + 2) % 8, 0.09);
   fb.add('soffit', boxMinMax(sx[0], canopyY, loggiaZ - 0.05, sx[1], canopyY + 0.05, WALL_Z));
   for (const x of bayX) { const d = new THREE.CircleGeometry(0.09, 10); d.rotateX(Math.PI / 2); d.translate(x, canopyY - 0.003, (loggiaZ + WALL_Z) / 2); fb.add('downlight', d); }
   const lobby = lobbyInterior(fb, sx[0], sx[1], stepH, stepH + doorH + 0.3, loggiaZ - 0.04, 3.2, { cells: 7, wallTint: '#bfa07e' });
@@ -96,8 +108,9 @@ export function buildMilano(ctx, kit) {
   fb.steps(0, W * 0.7, stepH, 2, 1.6, { backTo: loggiaZ - 0.05 });
 
   // ---------------- billboards (neutral abstract panels), name panel, MILANO letters
-  const bbY0 = 4.05, bbY1 = 7.55;
-  const boards = [[-W / 2 + 2.0, -3.5], [3.5, W / 2 - 2.0]];
+  // round b: authored boards sit above the adopted window rows (r02: 4.05-7.55 m, over the windows)
+  const bbY0 = 8.05, bbY1 = 11.35;
+  const boards = [[-W / 2 + 2.0, -4.6], [4.6, W / 2 - 2.0]]; // clear of the MILANO letters (|x| < ~3.8 m)
   let cell = 1;
   for (const [x0, x1] of boards) {
     fb.add('steelDark', boxMinMax(x0 - 0.1, bbY0 - 0.1, WALL_Z, x1 + 0.1, bbY1 + 0.1, WALL_Z + 0.2));
@@ -137,8 +150,8 @@ export function buildMilano(ctx, kit) {
   }
   // wall studs (small dark square fixtures at panel nodes, R09 cue), skipping signs/boards
   for (const x of gx) for (const y of [8.56, 10.16, 11.76, 6.96, 5.36]) {
-    if (y < 8 && Math.abs(x) > 3.2 && Math.abs(x) < W / 2 - 1.8) continue;
-    if (y < 8 && Math.abs(x) <= 3.2) continue;
+    if (y < 8) continue; // adopted window rows and the name panel occupy this band
+    if (y > 7.9 && y < 11.5 && Math.abs(x) > 4.4 && Math.abs(x) < W / 2 - 1.8) continue; // billboards
     if (Math.abs(y - 9.85) < 1.0 && Math.abs(x) < 7.5) continue;
     if (Math.abs(x) > W / 2 - 0.3) continue;
     fb.add('stud', boxMinMax(x - 0.06, y - 0.06, WALL_Z, x + 0.06, y + 0.06, WALL_Z + 0.05));
@@ -246,6 +259,6 @@ export function buildMilano(ctx, kit) {
   const g = new THREE.Group(); g.name = 'milano-za';
   g.add(fb.build(mats, 'milano'));
   ctx.tag({ id: 'milano-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Milano-za east front: stable name ミラノ座 / 入口 at adopted text nodes, 7 entrance bays, canopy 3.1/1.5 m and 2-step threshold as adopted in r03; dimensions/colours authored assumptions (milano-facade-adoption-rule).' });
-  ctx.tag({ id: 'milano-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Pink tile wall, lattice band, barrel roof, yellow fascia, studs, columns follow R03/R09 (1971-72) carried to 1976 by assumption; billboards neutral abstract panels; no corporate emblem (TR mark omitted), no film titles.' });
+  ctx.tag({ id: 'milano-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Pink tile wall, lattice band, barrel roof, yellow fascia, studs, columns are authored after the generated colour masters R03/R09 (of 1971-72 sources tokyu-milano-1971/1972) carried to 1976 by assumption; billboards are neutral abstract panels placed above the adopted 2 x 10 upper windows (restored in r04 round b); no corporate emblem (TR mark omitted), no film titles.' });
   return g;
 }

@@ -426,7 +426,14 @@ function poleAd(g, rng, x, y, w, h, words, col, sub) {
   g.fillStyle = '#b8261e';
   let sy = y + h - 12 - subH + subStep * 0.7;
   for (const ch of sub) { g.fillText(ch, x + w / 2, sy); sy += subStep; }
-  grungeRect(g, rng, x, y, w, h, 0.22);
+  // round b: soft rain streaks and a dusty top instead of grungeRect blocks (read as a mosaic)
+  for (let i = 0; i < 7; i++) {
+    const sx = x + rng() * w, len = h * (0.15 + rng() * 0.5), wd = 1 + rng() * 3;
+    const gr = g.createLinearGradient(0, y, 0, y + len); gr.addColorStop(0, `rgba(90,80,60,${0.12 + rng() * 0.12})`); gr.addColorStop(1, 'rgba(90,80,60,0)');
+    g.fillStyle = gr; g.fillRect(sx, y + 8, wd, len);
+  }
+  const gt = g.createLinearGradient(0, y, 0, y + h); gt.addColorStop(0, 'rgba(120,110,90,0.12)'); gt.addColorStop(1, 'rgba(120,110,90,0.0)');
+  g.fillStyle = gt; g.fillRect(x, y, w, h);
   g.restore();
 }
 

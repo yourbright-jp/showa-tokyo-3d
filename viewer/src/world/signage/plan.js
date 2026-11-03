@@ -84,7 +84,9 @@ export function plan(ctx, env) {
     }
     return [tx, tz, px, pz];
   }
-  const uniq = (r, fn, tries = 6) => { let v; for (let i = 0; i < tries; i++) { v = fn(); if (!used.has(v.key || v)) break; } used.add(v.key || v); return v; };
+  // r04: returns null when every try collides (the r02 version silently returned the duplicate,
+  // which put the same business on neighbouring boards); callers treat null as a vacant floor
+  const uniq = (r, fn, tries = 10) => { for (let i = 0; i < tries; i++) { const v = fn(); if (!used.has(v.key || v)) { used.add(v.key || v); return v; } } return null; };
 
   // ---------------------------------------------------------------- tenants
   function tenantsFor(b, pl, groundWord) {
@@ -98,12 +100,14 @@ export function plan(ctx, env) {
         trade = r.pick(TRADES.filter((t) => t.u));
       }
       const t = uniq(r, () => {
+        if (fl > 1 && r.chance(0.35)) trade = r.pick(TRADES.filter((x) => x.u)); // vary the trade on retries
         const nm = shopName(r, trade, stemUse);
         const showName = nm.name && /(店|局|社|所|科|院|産|事|堂|房)$/.test(nm.name) ? nm.name : null;
         const display = nm.name ? (showName || `${trade.w} ${nm.name}`) : trade.w;
         const sch = r.chance(0.45) ? r.pick(LIGHT_BG) : r.pick(trade.sch || ALL_SCHEMES);
-        return { key: display, trade: trade.w, name: nm.name, display, fictional: nm.fictional, scheme: SCHEMES[sch], noren: !!trade.noren, floor: fl, uses: 0 };
+        return { key: display, trade: trade.w, name: nm.name, display, fictional: nm.fictional, scheme: SCHEMES[sch], noren: !!trade.noren, floor: fl, uses: 0, flabel: floorLabel(fl, r) }; // r04: one floor-label style per tenant
       });
+      if (!t) { out.push(null); continue; }
       if (t.fictional && t.name) fictionalNames.add(t.name);
       t.__b = b.id;
       out.push(t);
@@ -439,6 +443,8 @@ export function plan(ctx, env) {
     const pl = B.pl;
     const r = env.rng(`signage/fascia/${f.id}/${idx}`);
     const g = (idx === 0 ? B.tenants[0] : null) || uniq(r, () => { const t = r.pick(TRADES.filter((x) => x.g)); const nm = shopName(r, t, stemUse); const d = nm.name ? `${t.w} ${nm.name}` : t.w; return { key: d, display: d, trade: t.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(t.sch)] }; });
+    if (!g) return null;
+    g.uses = (g.uses || 0) + 1; // r04: the ground tenant's fascia counts, so no projecting sign repeats it beside it
     if (g.fictional && g.name) fictionalNames.add(g.name);
     const y0 = pl.fasciaY0 - r.range(0, 0.06), y1 = pl.fasciaY1 + r.range(0, 0.2);
     const depth = r.range(0.12, 0.26);
@@ -491,10 +497,13 @@ export function plan(ctx, env) {
     const panels = [];
     let fictional = false;
     if (directory) {
-      const ten = B.tenants.slice(1).filter(Boolean).reverse();
+      // r04: list only tenants that have no sign yet (a tenant already on a flush board or wall
+      // board would otherwise appear twice side by side)
+      const ten = B.tenants.slice(1).filter((t) => t && !(t.uses > 0)).reverse();
+      if (ten.length < 2) return null;
       for (const t of ten.slice(0, 6)) {
         t.uses++; // r04: listed tenants count as used, so the building's next sign is a different business
-        panels.push({ label: floorLabel(t.floor, r), text: t.name ? t.display.replace(' ', '') : t.trade, trade: t.trade, name: t.name && !t.display.endsWith(t.name) ? null : t.name, scheme: r.chance(0.6) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], kind: pickTextKind(r), labelStyle: r.chance(0.4) ? 'disc' : 'band' });
+        panels.push({ label: (t.flabel || floorLabel(t.floor, r)), text: t.name ? t.display.replace(' ', '') : t.trade, trade: t.trade, name: t.name && !t.display.endsWith(t.name) ? null : t.name, scheme: r.chance(0.6) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], kind: pickTextKind(r), labelStyle: r.chance(0.4) ? 'disc' : 'band' });
         if (t.fictional) fictional = true;
       }
     } else {
@@ -530,7 +539,7 @@ export function plan(ctx, env) {
     space.addVolume(vol);
     const neon = !directory && dmin < 45 && r.chance(0.22) ? neonStyle(r, panels[0].scheme) : null;
     if (neon) panels.forEach((p) => { p.scheme = { ...p.scheme, bg: r.pick(['#1d1c1a', '#203028', '#2a1a22', '#1a2233', '#3a2a1a']) }; });
-    const header = !directory && panels[0].tenant && panels[0].tenant.floor > 1 && r.chance(0.45) ? { text: floorLabel(panels[0].tenant.floor, r), scheme: SCHEMES[r.pick(['whiteOnRed', 'whiteOnBlue', 'blackOnYellow', 'whiteOnGreen'])] } : null;
+    const header = !directory && panels[0].tenant && panels[0].tenant.floor > 1 && r.chance(0.45) ? { text: (panels[0].tenant.flabel || floorLabel(panels[0].tenant.floor, r)), scheme: SCHEMES[r.pick(['whiteOnRed', 'whiteOnBlue', 'blackOnYellow', 'whiteOnGreen'])] } : null;
     const cls = r.chance(0.6) ? 'gloss' : 'paint';
     const spec = { panels, header, neon, weather: r.range(0.35, 0.9), lit: neon ? 'neon' : cls === 'gloss' ? 'backlit' : 'none', bulbs: (neon || r.chance(0.12)) ? r.range(0.12, 0.18) : 0, frame: r.pick(['#3a3631', '#2a2825', '#6a6660', '#8a1f18']) };
     for (const p of panels) if (p.name) fictionalNames.add(p.name);
@@ -630,7 +639,7 @@ export function plan(ctx, env) {
     const vol = volF(fr, u0, u1, 0, dF + 0.03, y0, y1);
     if (space.hits(vol, 0.1)) return null;
     space.addVolume(vol);
-    const label = floorLabel(t.floor, r);
+    const label = t.trade === 'ビル' ? null : (t.flabel || floorLabel(t.floor, r)); // r04: no floor label on a building-name board
     const spec = { text: t.name ? t.display.replace(' ', vertical ? '' : ' ') : t.trade, label, sub: !vertical && r.chance(0.6) ? (r.chance(0.3) ? r.pick(UPPER_ONLY_PHRASES) : phraseFor(r, t.trade)) : null, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], textKind: pickTextKind(r), weather: r.range(0.45, 0.95) };
     if (t.fictional && t.name) fictionalNames.add(t.name);
     const fq = req('wallboard', spec, u1 - u0, y1 - y0, ppmFor(dmin, 0.85), 'paint');
@@ -727,10 +736,10 @@ export function plan(ctx, env) {
       const cat = /喫茶|純喫茶|喫茶室/.test(t.trade) ? '喫茶' : /酒|バー|スナック|クラブ|焼鳥|居酒屋/.test(t.trade) ? '酒' : '食事';
       const items = [...MENU[cat]].sort(() => r() - 0.5).slice(0, 4);
       spec = menu ? { layout: 'menu', title: t.name ? t.name : t.trade, items, scheme: SCHEMES[r.pick(['blackOnWhite', 'whiteOnBlack', 'redOnCream', 'whiteOnGreen', 'brownOnCream'])], weather: r.range(0.3, 0.8) }
-        : { layout: 'vname', label: t.floor > 1 ? floorLabel(t.floor, r) : null, title: t.name ? t.display.replace(' ', '') : t.trade, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], weather: r.range(0.3, 0.8) };
+        : { layout: 'vname', label: t.floor > 1 ? (t.flabel || floorLabel(t.floor, r)) : null, title: t.name ? t.display.replace(' ', '') : t.trade, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(LIGHT_BG)], weather: r.range(0.3, 0.8) };
       fw = type === 'board' ? r.range(0.45, 0.6) : r.range(0.42, 0.55); fh = type === 'board' ? r.range(1.0, 1.3) : r.range(0.75, 0.95);
     } else {
-      spec = { layout: 'vname', label: t.floor > 1 ? floorLabel(t.floor, r) : null, title: t.name ? t.display.replace(' ', '') : t.trade, scheme: SCHEMES[r.pick(['blackOnWhite', 'redOnWhite', 'whiteOnPurple', 'goldOnMaroon', 'pinkOnWhite'])], lit: 'backlit', weather: r.range(0.3, 0.6) };
+      spec = { layout: 'vname', label: t.floor > 1 ? (t.flabel || floorLabel(t.floor, r)) : null, title: t.name ? t.display.replace(' ', '') : t.trade, scheme: SCHEMES[r.pick(['blackOnWhite', 'redOnWhite', 'whiteOnPurple', 'goldOnMaroon', 'pinkOnWhite'])], lit: 'backlit', weather: r.range(0.3, 0.6) };
       fw = r.range(0.26, 0.34); fh = r.range(0.75, 1.0);
     }
     if (t.fictional && t.name) fictionalNames.add(t.name);
@@ -806,7 +815,7 @@ export function plan(ctx, env) {
       sub = r.chance(0.6) ? `${r.pick(['歌舞伎町', '新宿', '当ビル'])}${r.pick(['', ' ' + floorLabel(r.int(2, 6), r)])}` : null;
     } else {
       text = t.display; fictional = !!t.fictional;
-      sub = `当ビル ${floorLabel(t.floor, r)}`;
+      sub = `当ビル ${(t.flabel || floorLabel(t.floor, r))}`;
     }
     const spec = { text, top, sub, scheme: SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blueOnWhite', 'blackOnYellow', 'redOnYellow', 'whiteOnGreen', 'whiteOnOrange', 'blackOnWhite'])], motif: r.pick(['none', 'none', 'burst', 'stripes', 'disc', 'panel']), discCh: [...text][0], textKind: r.pick(['shadow', 'heavy', 'double', 'outlined']), weather: r.range(0.5, 1.0), bulbs: dmin < 40 && r.chance(0.2) ? r.range(0.25, 0.35) : 0 };
     const ppm = ppmFor(dmin + 6, 0.8);
@@ -851,7 +860,7 @@ export function plan(ctx, env) {
     space.addVolume(vol);
     const t = B.tenants.slice(1).find((x) => x && r.chance(0.6)) || B.tenants.find(Boolean);
     if (!t) return null;
-    const label = t.floor > 1 ? floorLabel(t.floor, r) : null;
+    const label = t.floor > 1 ? (t.flabel || floorLabel(t.floor, r)) : null;
     const spec = { text: t.name ? t.display.replace(' ', '') : t.trade, label, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(['redOnWhite', 'whiteOnRed', 'whiteOnBlue', 'blackOnYellow'])], textKind: pickTextKind(r), weather: r.range(0.5, 1.0) };
     if (t.fictional && t.name) fictionalNames.add(t.name);
     const fq = req('wallboard', spec, w, h, ppmFor(dmin + 4, 0.85), 'paint');
@@ -893,7 +902,7 @@ export function plan(ctx, env) {
     if (!t) return null;
     t.uses++;
     const strong = ['whiteOnRed', 'whiteOnBlue', 'whiteOnGreen', 'blackOnYellow', 'redOnYellow', 'whiteOnOrange', 'goldOnMaroon', 'whiteOnTeal', 'redOnWhite', 'blueOnWhite'];
-    const spec = { text: t.name ? t.display.replace(' ', '') : t.trade, label: t.floor > 1 && r.chance(0.7) ? floorLabel(t.floor, r) : null, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(strong)], textKind: pickTextKind(r), weather: r.range(0.4, 0.95) };
+    const spec = { text: t.name ? t.display.replace(' ', '') : t.trade, label: t.floor > 1 && r.chance(0.7) ? (t.flabel || floorLabel(t.floor, r)) : null, scheme: r.chance(0.5) ? t.scheme : SCHEMES[r.pick(strong)], textKind: pickTextKind(r), weather: r.range(0.4, 0.95) };
     if (t.fictional && t.name) fictionalNames.add(t.name);
     const fq = req('wallboard', spec, u1 - u0, y1 - y0, ppmFor(dmin, 0.9), r.chance(0.4) ? 'gloss' : 'paint');
     const steel = lin('#55524c');
@@ -952,7 +961,8 @@ export function plan(ctx, env) {
     }
     // off-site advertiser
     const tr = r.pick(TRADES.filter((x) => x.u));
-    const t = uniq(r, () => { const nm = shopName(r, tr, stemUse); const d = nm.name ? `${tr.w} ${nm.name}` : tr.w; return { key: d, display: d, trade: tr.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(tr.sch)], floor: 0, uses: 0 }; });
+    const t = uniq(r, () => { const tr2 = r.chance(0.5) ? tr : r.pick(TRADES.filter((x) => x.u)); const nm = shopName(r, tr2, stemUse); const d = nm.name ? `${tr2.w} ${nm.name}` : tr2.w; return { key: d, display: d, trade: tr2.w, name: nm.name, fictional: nm.fictional, scheme: SCHEMES[r.pick(tr2.sch)], floor: 0, uses: 0 }; });
+    if (!t) return bnames.get(key) || null;
     if (t.name) fictionalNames.add(t.name);
     return t;
   }

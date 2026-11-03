@@ -395,7 +395,8 @@ function emitTopAndBottom(w, P, D, S, q) {
   if (kind === 'jacket' || kind === 'gakuran') {
     const inf = (top.casual ? 0.008 : 0.01) * H;
     const hem = (top.hem || 0.445) * H;
-    const rings = torsoRings(D, S, hem, D.topY, inf, { pad: kind === 'gakuran' ? 0.002 * H : 0.006 * H, hemFlare: 0.0015 * H, fit: legR });
+    // r04: hemFlare 0.0015H let striding thighs and flared skirts cut through the hem (jagged edge)
+    const rings = torsoRings(D, S, hem, D.topY, inf, { pad: kind === 'gakuran' ? 0.002 * H : 0.006 * H, hemFlare: (bot.kind === 'skirt' ? 0.012 : 0.007) * H, fit: legR });
     sweepRings(w, rings, seg, T, { ptx: S.ptx, capTop: true });
     coversPelvis = hem < 0.47 * H;
     if (kind === 'gakuran') {
@@ -491,7 +492,7 @@ function emitTopAndBottom(w, P, D, S, q) {
     const tucked = top.tucked && kind !== 'cardigan' && kind !== 'sailor' && kind !== 'blouson';
     const inf = kind === 'blouson' ? 0.012 * H : kind === 'cardigan' ? 0.01 * H : kind === 'knit' ? 0.007 * H : 0.005 * H;
     const hem = tucked ? waist - 0.008 * H : kind === 'cardigan' ? 0.48 * H : kind === 'sailor' ? 0.555 * H : kind === 'blouson' ? 0.54 * H : 0.505 * H;
-    const rings = torsoRings(D, S, hem, D.topY, inf, { hemFlare: !tucked && kind !== 'blouson' ? 0.003 * H : 0, hemTight: kind === 'blouson' ? 0.004 * H : 0, fit: legR });
+    const rings = torsoRings(D, S, hem, D.topY, inf, { hemFlare: !tucked && kind !== 'blouson' ? (bot.kind === 'skirt' ? 0.01 : 0.006) * H : 0, hemTight: kind === 'blouson' ? 0.004 * H : 0, fit: legR });
     sweepRings(w, rings, seg, T, { ptx: S.ptx, capTop: true });
     if (kind === 'cardigan') {
       // r04: the open cardigan front read as a flat white sticker (visual review): narrower, a
@@ -629,8 +630,9 @@ function emitShoe(w, P, D, f, ankle, s) {
   });
   // sole/welt: a flat slab, slightly wider than the upper, darker (or white rubber for sneakers)
   const soleCol = sh.kind === 'sneaker' ? lin(0xd8d4c8) : col.map((x) => x * 0.55 + 0.004);
-  // the r02 sole ellipsoid reached c - 0.94 ry (the ground); the slab spans c - 0.94 ry .. c - 0.78 ry
-  box(w, madd(madd(c, ey, -ry * 0.86), ez, rz * 0.04), B, rx * 1.04, ry * 0.08, rz * 1.04, { col: soleCol, rough: 0.6 });
+  // the r02 sole ellipsoid reached c - 0.94 ry (the ground); a thin lens (not a slab, which read as
+  // a plate under the foot) spans c - 0.94 ry .. c - 0.76 ry and stays inside the upper's outline
+  ellipsoid(w, madd(madd(c, ey, -ry * 0.85), ez, rz * 0.02), B, rx * 0.99, ry * 0.09, rz * 1.0, 10, 3, { col: soleCol, rough: 0.6 });
   if (sh.kind === 'pump' || f.heelH > 0.02) {
     const hc = madd(madd(c, ez, -rz * 0.72), ey, -ry * 0.55 - f.heelH * 0.5);
     box(w, hc, B, rx * 0.4, f.heelH * 0.5 + 0.004, rz * 0.13, { col: col.map((x) => x * 0.6), rough: 0.5 });
@@ -704,11 +706,11 @@ function emitHand(w, P, D, A, s) {
   // a slightly curled finger block separated by a knuckle crease, and a thumb set off the palm.
   const palm = madd(A.wrist, ez, 0.03 * H * k);
   ellipsoid(w, palm, [ex, ey, ez], 0.025 * H * k, 0.0125 * H * k, 0.031 * H * k, 7, 5, handSkin);
-  const fz = nrm(madd(ez, ey, 0.32));
+  const fz = nrm(madd(ez, ey, 0.6)); // relaxed curl towards the palm
   const fx = nrm(cross(ey, fz));
   const fy = cross(fz, fx);
   const fingers = madd(madd(palm, ez, 0.047 * H * k), ey, 0.006 * H * k);
-  ellipsoid(w, fingers, [fx, fy, fz], 0.022 * H * k, 0.0095 * H * k, 0.025 * H * k, 7, 4, { ...handSkin, col: handSkin.col.map((v) => v * 0.96) });
+  ellipsoid(w, fingers, [fx, fy, fz], 0.021 * H * k, 0.0092 * H * k, 0.022 * H * k, 7, 4, { ...handSkin, col: handSkin.col.map((v) => v * 0.96) });
   const tz = nrm(madd(madd(ez, ex, 0.55), ey, 0.35));
   const tx = nrm(cross(ey, tz));
   const ty = cross(tz, tx);
@@ -759,13 +761,20 @@ function emitHead(w, P, D, S, q, seed) {
   const dark = { col: P.hair.col.map((c) => c * 0.8 + 0.004), rough: 0.5 };
   const eyeC = [0.03, 0.025, 0.024];
   const surfZ = (x, y) => { const a = (x / 0.34) ** 2 + ((y - 0.08) / 0.42) ** 2; return -0.01 + 0.42 * Math.sqrt(Math.max(0, 1 - a)); };
+  // round b: per-person facial proportions (the same eyes/brows/mouth on every head read as one
+  // repeated face on neighbours, visual review). Deterministic from the person's seed.
+  const fr = (k) => { const v = Math.sin((seed + 1) * 12.9898 + k * 78.233) * 43758.5453; return v - Math.floor(v); };
+  const eyeX = 0.115 + fr(1) * 0.025, eyeY = 0.0 + fr(2) * 0.04, eyeW = 0.05 + fr(3) * 0.02, eyeH = 0.02 + fr(4) * 0.01;
+  const browY = eyeY + 0.06 + fr(5) * 0.03, browT = 0.012 + fr(6) * 0.014 * (D.f ? 0.6 : 1), browW = 0.065 + fr(7) * 0.02;
+  const noseL = 0.08 + fr(8) * 0.05, noseW = 0.042 + fr(9) * 0.02, mouthW = 0.06 + fr(10) * 0.035, mouthY = -0.235 - fr(11) * 0.03;
+  const lipCol = P.skin.map((c, i) => c * [0.82, 0.62, 0.6][i] * (D.f && fr(12) < 0.55 ? [1.05, 0.8, 0.82][i] : 1));
   for (const s of [1, -1]) {
-    ellipsoid(w, headLocal(hc, B, s * 0.125, 0.02, surfZ(0.125, 0.02) - 0.004, hh), B, 0.06 * hh, 0.026 * hh, 0.015 * hh, 6, 4, { col: eyeC, rough: 0.3 });
-    ellipsoid(w, headLocal(hc, B, s * 0.13, 0.088, surfZ(0.13, 0.088) + 0.003, hh), B, 0.075 * hh, 0.019 * hh, 0.016 * hh, 6, 3, dark);
+    ellipsoid(w, headLocal(hc, B, s * eyeX, eyeY, surfZ(eyeX, eyeY) - 0.004, hh), B, eyeW * hh, eyeH * hh, 0.015 * hh, 6, 4, { col: eyeC, rough: 0.3 });
+    ellipsoid(w, headLocal(hc, B, s * (eyeX + 0.005), browY, surfZ(eyeX + 0.005, browY) + 0.003, hh), B, browW * hh, browT * hh, 0.016 * hh, 6, 3, dark);
     ellipsoid(w, headLocal(hc, B, s * 0.335, 0.0, 0.0, hh), B, 0.035 * hh, 0.11 * hh, 0.07 * hh, 6, 4, skin);
   }
-  ellipsoid(w, headLocal(hc, B, 0, -0.07, 0.375, hh), B, 0.05 * hh, 0.1 * hh, 0.075 * hh, 6, 4, skin);
-  ellipsoid(w, headLocal(hc, B, 0, -0.245, 0.382, hh), B, 0.08 * hh, 0.018 * hh, 0.014 * hh, 6, 3, { col: P.skin.map((c, i) => c * [0.82, 0.62, 0.6][i]), rough: 0.5 });
+  ellipsoid(w, headLocal(hc, B, 0, -0.07 - (noseL - 0.1) * 0.5, 0.375, hh), B, noseW * hh, noseL * hh, 0.075 * hh, 6, 4, skin);
+  ellipsoid(w, headLocal(hc, B, 0, mouthY, 0.382, hh), B, mouthW * hh, 0.018 * hh, 0.014 * hh, 6, 3, { col: lipCol, rough: 0.5 });
   emitHair(w, P, D, hc, B, q, seed);
   if (P.hat) emitHat(w, P, D, hc, B);
   if (P.glasses) emitGlasses(w, P, D, hc, B, surfZ);

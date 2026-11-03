@@ -192,7 +192,9 @@ export function buildTraffic(ctx, kit) {
   }
 
   // ---- portable barricades flanking the entrance (R08) ----
-  for (const [E, s] of [[-3.4, 2.3], [5.0, 2.0]]) {
+  // round b: the west barricade moved 0.7 m west; from entrance-approach the pedestrian sign behind
+  // it covered the 歩 of 歩行者専用
+  for (const [E, s] of [[-4.1, 2.3], [5.0, 2.0]]) {
     const [x, z] = M.toWorld(E, s);
     const ry = yaw(S[0], S[1]);
     if (site.footprintClear(x, z, 0.68, 0.34, ry, { h: 1.0, corridor: 1.35 })) {

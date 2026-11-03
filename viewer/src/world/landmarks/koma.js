@@ -49,7 +49,7 @@ export function buildKoma(ctx, kit) {
   // joints: vertical every 3.2 m (adopted spacing), horizontal at authored courses
   const jx = []; for (let x = -Math.floor(W / 2 / 3.2) * 3.2; x <= W / 2; x += 3.2) jx.push(x);
   const jy = [0.32, 3.46, 4.05, 5.55, 7.05, 8.2];
-  const wallRgb = lin2srgb(P.wall_base_color_rgb).map((v, i) => v * [0.85, 0.83, 0.78][i]); // adopted pale mineral colour, aged/sooted (authored weathering)
+  const wallRgb = lin2srgb(P.wall_base_color_rgb).map((v, i) => v * [0.87, 0.83, 0.75][i]); // adopted pale mineral colour, aged/sooted towards warm grime (authored weathering; round b: slightly warmer)
   const painter = paintFacade(fb, -W / 2, W / 2, 0, H + 0.12, { key: 'front', baseRgb: wallRgb, ppm: 56, joints: { xs: jx, ys: jy }, sills, coping: H, canopyTop: P.canopy_height_m + P.canopy_thickness_m, dirtH: 1.1, stains: 26, shadeBelow: P.canopy_height_m, age: 1.3 });
   fb.add('frontWall', wallWithHoles(-W / 2, 0, W / 2, H, holes, WALL_Z, painter));
   edgeQuadReturns(fb, W, H);

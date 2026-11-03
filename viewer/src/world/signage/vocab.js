@@ -88,20 +88,27 @@ export const TRADE_BY_WORD = Object.fromEntries(TRADES.map((t) => [t.w, t]));
 
 // FICTIONAL name parts (invented; generic words that are not trademarks of period businesses).
 export const NAME_STEMS = [
-  '白鳥', '千鳥', '若葉', '桔梗', '花月', '月光', '銀河', '紫苑', '鈴蘭', '白樺', '千草', '夕霧', '志野', '葵', '楓', '桂',
+  '白鳥', '千鳥', '若葉', '桔梗', '月光', '銀河', '紫苑', '鈴蘭', '白樺', '千草', '夕霧', '志野', '葵', '楓', '桂',
   '藤', '梅', '浜', '松葉', '若竹', '寿', '福', '春日', '秋月', '雪', '星', '虹', '泉', '都', '京', '雅', '栄', '鶴', '亀',
   '鈴', '蘭', '舞', '渚', '港', '岬', '柳', '桜', '椿', '萩', '蓮', '牡丹', '撫子', '水仙', '朝顔', '山茶花', '小菊', '芙蓉',
-  '大吉', '万福', '八重', '三笠', '加賀', '伊予', '浪花', '小町', '静', '紅葉', '翠', '琥珀',
+  '大吉', '万福', '八重', '三笠', '加賀', '伊予', '浪花', '小町',
+  '青葉', '若草', '朝霧', '白萩', '夕顔', '桐', '杉', '竹', '笹', '菊', '桃', '杏', '梢', '霞', '澪', '汐', '灯', '暁', '宵', '凪',
+  '千代', '小春', '初音', '朱鷺', '雲雀', '千秋', '弥生', '皐月', '葉月', '長月', '睦', '清水', '帆影', '扇', '錦', '有明', '春風', '秋草', '静', '紅葉', '翠', '琥珀',
 ];
 export const KANA_NAMES = [
-  'ルミ', 'エミ', 'マリ', 'ユキ', 'リラ', 'ミモザ', 'カトレア', 'ポエム', 'ロマン', 'モナ', 'ジュン', 'アカネ', 'ミキ', 'サチ',
-  'ナナ', 'ルナ', 'エリカ', 'ララ', 'ピエロ', 'ベル', 'ノエル', 'シャルム', 'パピヨン', 'マロン', 'オリーブ', 'ルージュ', 'コロン',
+  'ルミ', 'エミ', 'マリ', 'ユキ', 'リラ', 'ミモザ', 'カトレア', 'ロマン', 'モナ', 'アカネ', 'ミキ', 'サチ',
+  'ナナ', 'ルナ', 'エリカ', 'ララ', 'ピエロ', 'ベル', 'ノエル', 'シャルム', 'マロン', 'オリーブ', 'ルージュ', 'コロン',
   'カメリア', 'アゼリア', 'セーヌ', 'ローザ', 'ブーケ', 'フルール', 'アミ', 'ロンド', 'メルシー', 'ドンナ', 'ジョイ', 'メロディ',
-  'オアシス', 'カルメン', 'ボレロ', 'ナポリ', 'ローマ', 'ウィーン', 'シャトー', 'エトワール', 'ラビアン', 'モンテ', 'リリー',
+  'オアシス', 'ナポリ', 'ローマ', 'ウィーン', 'シャトー', 'エトワール', 'ラビアン', 'モンテ', 'リリー',
   'さゆり', 'みどり', 'あけみ', 'ひろみ', 'ゆかり', 'しのぶ', 'かおる', 'のぞみ',
+  'ミナ', 'リエ', 'ナオミ', 'マユミ', 'レイコ', 'ヨーコ', 'サユリ', 'ケイ', 'ルリ', 'ユリ', 'チェリー', 'ポプラ', 'アカシア', 'ライラック', 'ミント', 'コスモス', 'ダリア', 'フリージア', 'ベゴニア', 'マーガレット',
 ];
 // Never generate these (real local/period businesses, brands, landmark names reserved for adopted text).
-export const BLOCKLIST = ['コマ', 'ミラノ', 'ハイツ', 'スカラ', 'ジャンボ', 'ロッテ', 'ルノアール', '滝沢', '風月堂', '中村屋', '高野',
+// r04 round b (history review): ポエム (possible period coffee-house chain), パピヨン (1973 film title),
+// カルメン/ボレロ (stage works), ジュン (period fashion label), 花月 (theatre house name) removed from the
+// name lists and blocked. A full check against period trade directories is still outstanding.
+export const BLOCKLIST = ['ポエム', 'パピヨン', 'カルメン', 'ボレロ', 'ジュン', '花月',
+  'コマ', 'ミラノ', 'ハイツ', 'スカラ', 'ジャンボ', 'ロッテ', 'ルノアール', '滝沢', '風月堂', '中村屋', '高野',
   '紀伊國屋', '伊勢丹', '三越', '丸井', '東宝', '松竹', '東映', '日活', '大映', 'キリン', 'サッポロ', 'アサヒ', 'サントリー', '宝'];
 
 // r04: phrases are chosen per trade (phraseFor). The r02 pool was drawn regardless of trade, giving
@@ -114,7 +121,7 @@ const PHRASE_GROUPS = {
   any: ['営業中', '冷房完備', '冷暖房完備', '年中無休'],
   meal: ['お食事', 'ご宴会承ります', '御予約承ります', '各種宴会'],
   takeaway: ['お持ち帰り'],
-  drink: ['生ビール', '洋酒', '明朗会計', '深夜営業', '朝まで営業'],
+  drink: ['生ビール', '洋酒', '明朗会計', '深夜営業'], // round b: 朝まで営業 dropped (period closing-hour rules)
   cafe: ['喫茶・軽食'],
   game: ['初心者歓迎', '深夜営業'],
   izakaya: ['大衆割烹', '生ビール', 'ご宴会承ります'],
@@ -167,8 +174,9 @@ export function shopName(r, trade, used = null) {
   const kana = t.kana && r.chance(0.65);
   const pool = SURNAME_TRADES.has(t.w) ? SURNAMES : kana ? KANA_NAMES : NAME_STEMS;
   let stem = r.pick(pool);
+  for (let i = 0; i < 20 && BLOCKLIST.some((b) => stem.includes(b)); i++) stem = r.pick(pool);
   if (used) {
-    for (let i = 0; i < 12 && used.has(stem) && used.get(stem) !== t.w; i++) stem = r.pick(pool);
+    for (let i = 0; i < 40 && used.has(stem) && used.get(stem) !== t.w; i++) stem = r.pick(pool);
     if (!used.has(stem)) used.set(stem, t.w);
   }
   if (t.fmt === 'suf') {
