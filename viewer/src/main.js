@@ -183,6 +183,8 @@ async function main() {
         shadowRadius: 90,
       });
       if (post) post.setInput(texture); else post = makeComposer(ctx, camera, width, height, texture);
+      // film grain: a video passes a per-frame seed so the grain is not fixed on the screen
+      if (v.seed !== undefined) post.passes.find((p) => p.uniforms && p.uniforms.uSeed).uniforms.uSeed.value = v.seed;
       post.render();
       target.dispose();
       log(`view ${JSON.stringify(v)}: accumulated ${stats.spp} samples in ${stats.ms} ms, view total ${(performance.now() - tv).toFixed(0)} ms`);
