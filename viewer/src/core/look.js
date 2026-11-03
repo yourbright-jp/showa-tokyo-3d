@@ -5,6 +5,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { applyAtmosphere, atmospherePasses } from './atmosphere.js';
 
 // Lighting presets are VISUAL WORKING CHOICES for comparison with the approved colour
 // references. They are not historical claims about the 1976 season, time or weather.
@@ -113,6 +114,8 @@ export function applyLook(ctx, presetName = 'clear-afternoon') {
   ctx.sun = sun;
 
   scene.fog = new THREE.FogExp2(P.fogColor, P.fogDensity);
+  // optional r05 atmosphere (haze, sky gradation; core/atmosphere.js): no-op unless its URL parameters are set
+  applyAtmosphere(ctx, sky, presetName, P);
   // Khronos PBR Neutral keeps hue and saturation of paint colours (adopted reds, enamel signs) far
   // better than AgX, which desaturates mid-tones; night keeps AgX for its graceful neon roll-off.
   renderer.toneMapping = P.toneMapping === 'neutral' ? THREE.NeutralToneMapping : P.toneMapping === 'aces' ? THREE.ACESFilmicToneMapping : THREE.AgXToneMapping;
@@ -163,6 +166,8 @@ export function makeComposer(ctx, camera, width, height, input = null) {
   } else {
     composer.addPass(new RenderPass(scene, camera));
   }
+  const atmo = atmospherePasses(ctx, width, height); // empty unless the atmosphere parameters are set
+  for (const pass of atmo.pre) composer.addPass(pass);
   const bloom = new UnrealBloomPass(new THREE.Vector2(width, height), P.bloom.strength, P.bloom.radius, P.bloom.threshold);
   composer.addPass(bloom);
   const grade = new ShaderPass(GradeShader);
@@ -175,5 +180,6 @@ export function makeComposer(ctx, camera, width, height, input = null) {
   grade.uniforms.uAspect.value = width / height;
   composer.addPass(grade);
   composer.addPass(new OutputPass());
+  for (const pass of atmo.post) composer.addPass(pass);
   return composer;
 }

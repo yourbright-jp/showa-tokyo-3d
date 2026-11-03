@@ -12,6 +12,11 @@ export function mix(h1, h2, t) { const a = hexRgb(h1), b = hexRgb(h2); return rg
 export function rgba(h, a) { const [r, g, b] = hexRgb(h); return `rgba(${r},${g},${b},${a})`; }
 const lum = (h) => { const [r, g, b] = hexRgb(h); return (0.299 * r + 0.587 * g + 0.114 * b) / 255; };
 
+// r05 optional (sign=1, set by signage.js): fringe-free 'double' lettering, fainter uniform speckle and
+// a folding-fan emblem instead of concentric rings on rooftop billboards. Off = r04 output unchanged.
+let AGED = false;
+export function setAged(on) { AGED = !!on; }
+
 // ---------------------------------------------------------------- primitives
 function clip(P) { const { g } = P; g.save(); g.beginPath(); g.rect(P.x, P.y, P.w, P.h); g.clip(); }
 function unclip(P) { P.g.restore(); }
@@ -79,7 +84,10 @@ function textStyle(r, scheme, kind) {
   switch (kind) {
     case 'heavy': return { ...base, fill: scheme.fg, weight: 0.07 * k };
     case 'outlined': return { ...base, fill: scheme.fg, weight: 0.05 * k, outline: [{ color: dark ? scheme.ac : shade(scheme.fg, -0.45), w: 0.035 }] };
-    case 'double': return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: scheme.ac, w: 0.06 }, { color: rim, w: 0.035 }] }; // r04: thinner (read as a daytime glow)
+    case 'double':
+      // r05 sign=1: the thin accent ring read as a pink/yellow colour fringe at distance; keep only the rim
+      if (AGED) return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: rim, w: 0.04 }] };
+      return { ...base, fill: scheme.fg, weight: 0.04 * k, outline: [{ color: scheme.ac, w: 0.06 }, { color: rim, w: 0.035 }] }; // r04: thinner (read as a daytime glow)
     case 'shadow': return { ...base, fill: scheme.fg, weight: 0.05 * k, shadow: { dx: 0.045, dy: 0.05, color: rgba(dark ? '#000000' : shade(scheme.fg, -0.6), dark ? 0.55 : 0.45) } };
     case 'thin': return { ...base, fill: scheme.fg, weight: 0.0 };
     default: return { ...base, fill: scheme.fg, weight: 0.035 * k };
@@ -149,7 +157,7 @@ export function weather(P, stamps, amount, { chips = true, rust = true, streaks 
     const hh = Math.min(h, 256 * sc * 0.98);
     pfill(pats.streak, sc, x - r() * 256 * sc, y, Math.min(1, 0.2 + amount * 0.6), x, y, w, hh);
   }
-  pfill(pats.speck, Math.max(0.6, ppm / 160), x - r() * 256, y - r() * 256, 0.35 + amount * 0.4, x, y, w, h);
+  pfill(pats.speck, Math.max(0.6, ppm / 160), x - r() * 256, y - r() * 256, (0.35 + amount * 0.4) * (AGED ? 0.3 : 1), x, y, w, h); // r05 sign=1: uniform speckle was criticised
   g.globalAlpha = 1;
   // grime band along the bottom edge (dust settles on the lower frame) and under the top edge
   const gb = g.createLinearGradient(0, y + h, 0, y + h - Math.min(h * 0.35, 0.25 * ppm));
@@ -388,6 +396,21 @@ export function paintRoof(P, spec, stamps) {
     // r04: horizontal double rules (the r02 diagonal border read as a hazard/works stripe)
     g.fillStyle = rgba(S.ac, 0.9);
     for (const [f0, f1] of [[0.06, 0.1], [0.13, 0.15], [0.85, 0.87], [0.9, 0.94]]) g.fillRect(x + h * 0.06, y + h * f0, w - h * 0.12, h * (f1 - f0));
+  } else if (m === 'disc' && AGED) {
+    // r05 sign=1: concentric red/white rings recalled a modern retailer's mark; a folding fan (suehiro,
+    // an auspicious generic shop motif) in the accent colour with painted ribs instead
+    const R = h * 0.4, Ro = R * 1.15, Ri = R * 0.36, a0 = -Math.PI * 0.86, a1 = -Math.PI * 0.14;
+    g.save(); g.translate(x + h * 0.55, y + h * 0.5 + R * 0.55);
+    g.fillStyle = S.ac;
+    g.beginPath(); g.arc(0, 0, Ro, a0, a1); g.arc(0, 0, Ri, a1, a0, true); g.closePath(); g.fill();
+    g.strokeStyle = S.bg; g.lineWidth = Math.max(1, R * 0.03); g.lineCap = 'butt';
+    for (let i = 1; i < 12; i++) { const t = a0 + ((a1 - a0) * i) / 12; g.beginPath(); g.moveTo(Math.cos(t) * Ri * 1.05, Math.sin(t) * Ri * 1.05); g.lineTo(Math.cos(t) * Ro * 0.97, Math.sin(t) * Ro * 0.97); g.stroke(); }
+    g.strokeStyle = shade(S.ac, -0.35); g.lineWidth = Math.max(1, R * 0.05);
+    g.beginPath(); g.arc(0, 0, Ro * 0.985, a0, a1); g.stroke();
+    g.fillStyle = shade(S.ac, -0.4);
+    g.beginPath(); g.moveTo(Math.cos(a0) * Ri, Math.sin(a0) * Ri); g.lineTo(0, 0); g.lineTo(Math.cos(a1) * Ri, Math.sin(a1) * Ri); g.arc(0, 0, Ri, a1, a0, true); g.closePath(); g.fill();
+    g.fillStyle = S.bg; g.beginPath(); g.arc(0, 0, R * 0.06, 0, Math.PI * 2); g.fill();
+    g.restore();
   } else if (m === 'disc') {
     g.fillStyle = S.ac; g.beginPath(); g.arc(x + h * 0.55, y + h * 0.5, h * 0.4, 0, Math.PI * 2); g.fill();
     textH(P, spec.discCh || '◎', x + h * 0.55, y + h * 0.5, h * 0.55, h * 0.55, { fill: lum(S.ac) > 0.55 ? '#1b1a17' : '#f5f2ea', weight: 0.06 });

@@ -26,6 +26,24 @@ import { prepareSignFonts } from './core/fonts.js';
 //   shutter=<s>            optional motion blur along the walk (walk= only), e.g. 0.0167 for 1/60 s
 //   shadow=<px>            stills: sun shadow map size (default 4096)
 //   batch=1                stills: build the world once and expose window.__renderView({station|view|walk})
+//   (r05 parallel trial)   optional appearance parameters read by the modules themselves through
+//                          ctx.params; each is off when omitted, so the default image is unchanged.
+//                          The render script passes them with --set k=v[,k=v]
+//   atmo=1                 atmosphere/light bundle (core/atmosphere.js; clear-afternoon only, other looks
+//                          throw): ltm=0.06, lut=reversal, lutmix=1, haze=1, skygrad=1; each key below
+//                          overrides the bundle (0 or lut=none switches that part off)
+//   ltm=<s>                local tone mapping: edge-aware log-luminance base compressed (shadow lift
+//                          saturating at ~2 stops x s, highlights x(1-0.3 s)), detail kept
+//   lut=<name>             code-generated display LUT after OutputPass (reversal: hue preserving); lutmix=<0..1> blend
+//   haze=<s>               aerial perspective: per-channel extinction (s x 7.0e-4/8.0e-4/9.5e-4 per m
+//                          from 40 m) towards a sky-coloured in-scatter, on top of the preset FogExp2
+//   skygrad=<s>            visible sky only: deeper blue towards the zenith, paler/warmer at the horizon
+//   mat=1                  buildings: material ageing shader (soot mottling, per-tile colour + dirty grout, patched/cracked mortar, efflorescence, rain streaks below ledges and openings only, rust on steel, roughness variation)
+//                          scaled by a per-building age class (new/mid/old; the gate-right corner building is forced new),
+//                          plus unlit opal globes on the Ichibangai lamps (streetprops/lamps.js)
+//   sign=1                 signage: per-sign ageing (sun fade, chalking, face fade and water marks, dirt, bolt rust runs,
+//                          rusty frames), complexity-capped kanji strokes, no thin accent ring round lettering, fan emblem
+//                          instead of the concentric-ring rooftop emblem
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
@@ -81,6 +99,7 @@ async function main() {
     still,
     stationId,
     options: { decor1972: params.get('decor') === '1972' },
+    params, // URLSearchParams: optional appearance parameters owned by the modules (see the list above)
     quality: { still, shadowMap: still ? num('shadow', 4096) : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
     provenance: [],
     /** Record the evidence tier of generated content. tier: source-derived | period-plausible-generic | placeholder */

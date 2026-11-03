@@ -124,6 +124,27 @@ export async function build(ctx) {
   const published = { roofY: new Map(), rooftop: new Map() };
   ctx.buildingsInfo = published;
 
+  // r05 mat=1: remember each near facade region with its building levels for the extra soot pass
+  const matRegions = U.mat ? [] : null;
+  let matLv = null, matAge = 0;
+  if (matRegions) {
+    const alloc0 = atlas.alloc.bind(atlas);
+    atlas.alloc = (L, y0, y1, ppm) => { const R = alloc0(L, y0, y1, ppm); if (R && matLv) matRegions.push([R, matLv, matAge]); return R; };
+  }
+  // r05 r2 age classes (shader ageing strength): new 25%, mid 55%, old 100% (= round-1 strength).
+  // Drawn per building from its own stream; documented rebuilds are forced to 'new'.
+  const AGE = { new: 0.25, mid: 0.55, old: 1.0 };
+  const AGE_FORCED = new Map([
+    // gate-right corner building behind the gate's right pillar (r04-gate-establishing x~1120-1470):
+    // rebuilt as an 8-storey building in 1973 (r02-gate-evidence S8), about 3 years old in 1976
+    ['bldg_e8f50a2a-517c-486e-8d48-0565a6f0a728', AGE.new],
+  ]);
+  const ageOf = (b) => {
+    if (AGE_FORCED.has(b.id)) return AGE_FORCED.get(b.id);
+    const x = ctx.rng(`buildings/r05mat/age/${b.id}`)();
+    return x < 0.3 ? AGE.new : x < 0.75 ? AGE.mid : AGE.old;
+  };
+
   // --- near buildings -----------------------------------------------------------------------
   let nearFacades = 0;
   const tn = performance.now();
@@ -139,6 +160,7 @@ export async function build(ctx) {
       topY: b.topY, roofY: b.topY - S.parapetH,
       floorY: (k) => b.baseY + plan.groundFloorH + (k - 1) * plan.upperFloorH,
     };
+    if (matRegions) { matLv = lv; matAge = ageOf(b); }
     const fp = b.footprint; const n = fp.length;
     const metas = new Map((data.facadesByBuilding.get(b.id) || []).map((f) => [f.index, f]));
     // adopted frontage: the edge (> 3 m) nearest the walk path gets a storefront
@@ -187,6 +209,34 @@ export async function build(ctx) {
     published.roofY.set(b.id, lv.roofY);
     published.rooftop.set(b.id, env.rooftop);
   }
+  if (matRegions) {
+    // exhaust soot thickest on the lower floors, dirt under the coping and faint drip bands under
+    // each floor line (own rng stream; the facade streams are untouched)
+    delete atlas.alloc;
+    const r = ctx.rng('buildings/r05mat/atlas');
+    for (const [R, lv, age] of matRegions) {
+      R.begin();
+      R.bandAbove(0, R.L, lv.base, r.range(4.5, 8), [136, 130, 122], r.range(0.07, 0.14) * age);
+      R.bandBelow(0, R.L, lv.topY, r.range(0.4, 1.2), [118, 112, 104], r.range(0.06, 0.12) * age);
+      for (let k = 2; k <= lv.floors; k++) R.bandBelow(0, R.L, lv.floorY(k) + r.range(-0.05, 0.1), r.range(0.25, 0.8), [140, 134, 126], r.range(0.02, 0.06) * age);
+      R.end();
+    }
+    // age map: same layout as the grime atlas at half resolution, sampled with vGrime (nearest);
+    // unallocated texels (sash/trim default corner) read as 'mid'
+    const ac = document.createElement('canvas');
+    ac.width = atlas.W / 2; ac.height = atlas.H / 2;
+    const ag = ac.getContext('2d');
+    const grey = (a) => { const v = Math.round(a * 255); return `rgb(${v},${v},${v})`; };
+    ag.fillStyle = grey(AGE.mid); ag.fillRect(0, 0, ac.width, ac.height);
+    for (const [R, lv, age] of matRegions) {
+      const x0 = Math.floor(R.px / 2), y0 = Math.floor(R.py / 2);
+      const x1 = Math.ceil((R.px + R.L * R.ppm) / 2), y1 = Math.ceil((R.py + (R.y1 - R.y0) * R.ppm) / 2);
+      ag.fillStyle = grey(age); ag.fillRect(x0, y0, x1 - x0, y1 - y0);
+    }
+    const at = new THREE.CanvasTexture(ac);
+    at.colorSpace = THREE.NoColorSpace; at.minFilter = at.magFilter = THREE.NearestFilter; at.generateMipmaps = false;
+    U.ageMap.value = at;
+  }
   const tNear = performance.now() - tn;
 
   // --- mid / far ----------------------------------------------------------------------------
@@ -223,6 +273,9 @@ export async function build(ctx) {
   ctx.tag({ id: 'buildings-upper-interiors', module: 'buildings', tier: 'period-plausible-generic', note: 'Upper windows use an interior-mapping shader (procedural rooms, curtains, blinds); not evidence of any interior.' });
   ctx.tag({ id: 'buildings-rooftops', module: 'buildings', tier: 'period-plausible-generic', note: 'Parapets, stair/elevator penthouses, elevated FRP/steel water tanks and TV antennas; placed toward the back of roofs.' });
   ctx.tag({ id: 'buildings-weathering', module: 'buildings', tier: 'period-plausible-generic', note: 'Procedural grime atlas: rain streaks under sills/bands/copings, ground splash, mottling; visual only.' });
+  if (U.mat) ctx.tag({ id: 'buildings-r05-age-classes', module: 'buildings', tier: 'period-plausible-generic', note: 'mat=1: each near building gets a deterministic age class (new 30% / mid 45% / old 25%, stream buildings/r05mat/age/<id>) that scales the ageing layer; generic, not evidence of any building age.' });
+  if (U.mat) ctx.tag({ id: 'buildings-r05-gate-right-rebuilt-1973', module: 'buildings', tier: 'adopted-inferred', note: 'mat=1: bldg_e8f50a2a-517c-486e-8d48-0565a6f0a728 (right of the gate, behind its right pillar in r04-gate-establishing) is forced to the "new" age class (light soot only): per docs/research/r02-gate-evidence.md S8 the building on the right of the gate (Komatsu Building) was rebuilt as 8 storeys in 1973, about 3 years old in 1976. Footprint-to-building match by camera projection; the S8 position is the right-hand neighbour of the gate. Not recorded in data/decisions. Known contradiction: the drawn massing is the generic 24 m route cap, while 8 storeys implies at least 25.6 m, and the 1978 photograph (S5) is described as a tall narrow building; only the age class is taken from S8, not the shape or height.' });
+  if (U.mat) ctx.tag({ id: 'buildings-r05-material-ageing', module: 'buildings', tier: 'period-plausible-generic', note: 'Optional mat=1 shader layer (buildings/weather.js): soot/dirt mottling, per-tile colour and dirty grout on mosaic/scratch tile, patched and cracked mortar, efflorescence on exposed concrete, fine rain streaks, rust on painted steel, roughness variation. Generic 1970s ageing; no specific building depicted.' });
   ctx.tag({ id: 'buildings-mid-far-lod', module: 'buildings', tier: 'period-plausible-generic', note: `Buildings beyond ${NEAR} m use painted window/shopfront textures on the adopted massing.` });
 
   const info = `buildings: ${near.length} near+lite (${near.filter(isLite).length} lite; ${nearFacades} front facades), ${midCount} mid, ${farCount} far; ${tris} tris in ${group.children.length} meshes; atlas 4096x${atlasH} used ${(100 * atlas.used / (4096 * atlasH)).toFixed(0)}% (failed ${atlas.failed}, scale ${scale.toFixed(2)}); near build ${tNear.toFixed(0)} ms, total ${(performance.now() - t0).toFixed(0)} ms`;

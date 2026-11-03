@@ -7,6 +7,8 @@
 //        Accumulation (r05): --spp N averages N jittered samples per frame; optional --aa <px> --sunr <deg>
 //        --msaa <n> --fstop <N> --focus <m> --shutter <s> --shadow <px> (see viewer/src/main.js).
 //        --batch builds the world once and renders all requested cameras in one page (stations + --views + --walk).
+//        --set k=v[,k=v] adds optional appearance parameters that the viewer modules read via ctx.params
+//        (r05 parallel trial; omitted = the default image).
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -34,7 +36,12 @@ const look = opt('look', 'clear-afternoon');
 const only = opt('only');
 const timeoutMs = Number(opt('timeout', 900000));
 const ACCUM_PARAMS = ['spp', 'aa', 'sunr', 'msaa', 'fstop', 'focus', 'shutter', 'shadow'];
-const accumParams = Object.fromEntries(ACCUM_PARAMS.filter((k) => opt(k) !== undefined).map((k) => [k, opt(k)]));
+const setParams = Object.fromEntries((opt('set') ? opt('set').split(',') : []).map((kv) => {
+  const i = kv.indexOf('=');
+  if (i <= 0) throw new Error(`--set expects k=v, got "${kv}"`);
+  return [kv.slice(0, i), kv.slice(i + 1)];
+}));
+const accumParams = { ...Object.fromEntries(ACCUM_PARAMS.filter((k) => opt(k) !== undefined).map((k) => [k, opt(k)])), ...setParams };
 const spp = Number(accumParams.spp || 0);
 fs.mkdirSync(out, { recursive: true });
 
@@ -171,7 +178,7 @@ const reportPath = path.join(out, 'render-report.json');
 let merged = report;
 try {
   const prev = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-  if (prev.look === look && prev.w === w && prev.h === h && (prev.spp || 0) === spp) merged = [...prev.stations.filter((p) => !report.some((r) => r.station === p.station)), ...report];
+  if (prev.look === look && prev.w === w && prev.h === h && (prev.spp || 0) === spp && JSON.stringify(prev.accumulation_params || {}) === JSON.stringify(accumParams)) merged = [...prev.stations.filter((p) => !report.some((r) => r.station === p.station)), ...report];
 } catch { /* no previous report */ }
 fs.writeFileSync(reportPath, JSON.stringify({ look, w, h, spp, accumulation_params: accumParams, environment, stations: merged }, null, 2));
 process.exit(failed ? 1 : 0);

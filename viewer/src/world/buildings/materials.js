@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { tileTexture, renderTexture, concreteTexture, panelTexture, streakTexture, shutterTexture, roofTexture, curtainAtlas, makeDataTexture } from './textures.js';
+import { patchWallMat, patchMidMat } from './weather.js';
 
 function flatNormal() { return makeDataTexture(2, 2, new Uint8Array([128, 128, 255, 255, 128, 128, 255, 255, 128, 128, 255, 255, 128, 128, 255, 255]), { srgb: false }); }
 
@@ -101,6 +102,7 @@ varying vec2 vGrime; varying vec2 vWallUv;
 `;
 
 function patchWall(mat, U, key, { tintMask = true, streak = 0.22 } = {}) {
+  if (U.mat) return patchWallMat(mat, U, key, { tintMask, streak, WALL_PARS });
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.uGrime = U.grime;
     shader.uniforms.uStreak = U.streak;
@@ -243,6 +245,7 @@ function patchInterior(mat, U, key) {
 
 /** Mid/far LOD walls: window texture whose alpha is a wall mask (wall tinted, glass smooth). */
 function patchMid(mat, U, key) {
+  if (U.mat) return patchMidMat(mat, U, key);
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.uStreak = U.streak;
     shader.uniforms.uNight = U.night;
@@ -276,9 +279,12 @@ export function makeMaterials(ctx, atlas) {
   const rng = ctx.rng('buildings/textures');
   const night = ctx.look && ctx.look.name === 'neon-night';
   const U = {
+    // r05 optional material layer (URL parameter mat=1, buildings/weather.js); false keeps the r04 programs
+    mat: !!(ctx.params && ctx.params.get('mat') === '1'),
     grime: { value: atlas.texture() },
     streak: { value: streakTexture(rng) },
-    grimeAmt: { value: 1.0 },
+    grimeAmt: { value: ctx.params && ctx.params.get('mat') === '1' ? 1.35 : 1.0 }, // mat=1: stronger r04 atlas stains
+    ageMap: { value: null }, // mat=1: per-building age class texture (set by buildings.js)
     bounce: { value: night ? new THREE.Color(0.0, 0.0, 0.0) : new THREE.Color(0.1, 0.082, 0.06) },
     curtain: { value: curtainAtlas(rng) },
     interior: { value: 0.2 },

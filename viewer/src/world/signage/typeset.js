@@ -165,6 +165,44 @@ function personalise(glyphs, style) {
   });
 }
 
+// r05 optional (sign=1): cap the extra stroke/outline width by glyph complexity and printed size so
+// counters of dense kanji (融 鷺 観 歯 寿 雲 居) stay open. Off by default (r04 path unchanged).
+let LEGIBLE = false;
+export function setLegibility(on) { LEGIBLE = !!on; }
+const STROKES = new Map();
+let cplxG = null;
+/** Approximate strokes crossed per em: mean ink transitions per row / 2 (cached per character). */
+function strokesPerEm(ch) {
+  let n = STROKES.get(ch);
+  if (n !== undefined) return n;
+  const S = 48;
+  if (!cplxG) { const c = document.createElement('canvas'); c.width = c.height = S; cplxG = c.getContext('2d', { willReadFrequently: true }); }
+  cplxG.clearRect(0, 0, S, S);
+  cplxG.fillStyle = '#000'; cplxG.font = `40px ${FONT_JP}`; cplxG.textAlign = 'center'; cplxG.textBaseline = 'middle';
+  cplxG.fillText(ch, S / 2, S / 2);
+  const d = cplxG.getImageData(0, 0, S, S).data;
+  let tr = 0, rows = 0, trV = 0, cols = 0;
+  for (let y = 0; y < S; y++) {
+    let prev = false, t = 0;
+    for (let x = 0; x < S; x++) { const on = d[(y * S + x) * 4 + 3] > 110; if (on !== prev) t++; prev = on; }
+    if (t) { tr += t; rows++; }
+  }
+  for (let x = 0; x < S; x++) {
+    let prev = false, t = 0;
+    for (let y = 0; y < S; y++) { const on = d[(y * S + x) * 4 + 3] > 110; if (on !== prev) t++; prev = on; }
+    if (t) { trV += t; cols++; }
+  }
+  // the denser direction decides how much a stroke may grow before neighbouring strokes merge
+  n = Math.max(1, Math.max(rows ? tr / rows : 0, cols ? trV / cols : 0) / 2);
+  STROKES.set(ch, n);
+  return n;
+}
+/** Max extra stroke width (glyph space px) for glyph q: a fraction of the mean gap between strokes. */
+function strokeCap(q, frac) {
+  const n = strokesPerEm(q.ch);
+  return (frac * q.px * 0.8) / (n + 1);
+}
+
 export function drawGlyphs(g, glyphs, style) {
   if (!glyphs.length) return;
   glyphs = personalise(glyphs, style);
@@ -181,7 +219,10 @@ export function drawGlyphs(g, glyphs, style) {
   // round c: complex kanji (融, 鷺, 観, 歯, 寿) closed up under heavy strokes; kanji get 60% of the
   // stroke weight that kana/latin get
   const KANJI = /[\u4e00-\u9fff]/;
-  const lw = (w, q) => (w * (q.jw || 1) * (KANJI.test(q.ch) ? 0.45 : 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1)); // round d: 0.45 (0.6 still closed up 雲, 居)
+  const lw0 = (w, q) => (w * (q.jw || 1) * (KANJI.test(q.ch) ? 0.45 : 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1)); // round d: 0.45 (0.6 still closed up 雲, 居)
+  // r05 (sign=1): the stroke grows the glyph by lw/2 on each side, so lw closes a gap by lw; keep it
+  // below ~45% of the mean gap between strokes (outlines/tubes up to 70%: they sit behind the fill)
+  const lw = LEGIBLE ? (w, q) => (isAscii(q.ch) ? lw0(w, q) : Math.min(lw0(w, q), strokeCap(q, w > weight * 1.01 ? 0.7 : 0.45))) : lw0;
   if (style.shadow) {
     const s = style.shadow;
     const ow = outlines.length ? outlines[0].w * px * 2 : 0;
@@ -194,8 +235,20 @@ export function drawGlyphs(g, glyphs, style) {
     });
     g.restore();
   }
-  for (const o of outlines) {
+  for (const [oi, o] of outlines.entries()) {
     g.strokeStyle = o.color;
+    if (LEGIBLE) {
+      // r05 sign=1: a ring that ends up thinner than ~1.6 atlas px (after the complexity cap) only
+      // tints the letter edge (colour fringe at distance); skip it for that glyph
+      const inner = oi + 1 < outlines.length ? outlines[oi + 1].w * px * 2 : 0;
+      eachGlyph(g, glyphs, (q) => {
+        const k = Math.min(q.sx, q.sy || 1);
+        const band = (lw(weight + o.w * px * 2, q) - lw(weight + inner, q)) * 0.5 * k;
+        if (band < 1.6) return;
+        g.lineWidth = lw(weight + o.w * px * 2, q); g.strokeText(q.ch, 0, 0);
+      });
+      continue;
+    }
     eachGlyph(g, glyphs, (q) => { g.lineWidth = lw(weight + o.w * px * 2, q); g.strokeText(q.ch, 0, 0); });
   }
   if (style.fill) {
@@ -219,6 +272,10 @@ export function drawGlyphs(g, glyphs, style) {
     // glass tube following the letter edge; dark offset shadow (tube stands off the board), body, highlight
     const t = style.tube;
     const tw = t.w * px;
+    // r05 sign=1: unlit (daytime, the style with a tube shadow) glass tubes doubling every stroke edge
+    // crushed dense kanji on small neon signs; leave the tubes off glyphs whose stroke gaps are < 5 tube widths
+    if (LEGIBLE && t.shadow) glyphs = glyphs.filter((q) => isAscii(q.ch) || (q.px * 0.8) / (strokesPerEm(q.ch) + 1) >= 5 * tw);
+    if (!glyphs.length) return;
     if (t.shadow) {
       g.strokeStyle = t.shadow;
       eachGlyph(g, glyphs.map((q) => ({ ...q, x: q.x + tw * 0.9, y: q.y + tw * 1.3 })), (q) => { g.lineWidth = lw(tw * 1.1, q); g.strokeText(q.ch, 0, 0); });
