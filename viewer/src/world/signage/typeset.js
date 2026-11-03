@@ -181,7 +181,7 @@ export function drawGlyphs(g, glyphs, style) {
   // round c: complex kanji (融, 鷺, 観, 歯, 寿) closed up under heavy strokes; kanji get 60% of the
   // stroke weight that kana/latin get
   const KANJI = /[\u4e00-\u9fff]/;
-  const lw = (w, q) => (w * (q.jw || 1) * (KANJI.test(q.ch) ? 0.6 : 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1));
+  const lw = (w, q) => (w * (q.jw || 1) * (KANJI.test(q.ch) ? 0.45 : 1)) / Math.max(0.3, Math.min(q.sx, q.sy || 1)); // round d: 0.45 (0.6 still closed up 雲, 居)
   if (style.shadow) {
     const s = style.shadow;
     const ow = outlines.length ? outlines[0].w * px * 2 : 0;

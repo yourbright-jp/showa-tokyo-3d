@@ -107,7 +107,7 @@ export const KANA_NAMES = [
   'カメリア', 'アゼリア', 'セーヌ', 'ローザ', 'ブーケ', 'フルール', 'アミ', 'ロンド', 'メルシー', 'ドンナ', 'ジョイ', 'メロディ',
   'オアシス', 'ナポリ', 'ローマ', 'ウィーン', 'シャトー', 'エトワール', 'ラビアン', 'モンテ', 'リリー',
   'さゆり', 'みどり', 'あけみ', 'ひろみ', 'ゆかり', 'しのぶ', 'かおる', 'のぞみ',
-  'ミナ', 'リエ', 'ナオミ', 'マユミ', 'レイコ', 'ヨーコ', 'サユリ', 'ケイ', 'ルリ', 'ユリ', 'チェリー', 'ポプラ', 'アカシア', 'ライラック', 'ミント', 'コスモス', 'ダリア', 'フリージア', 'ベゴニア', 'マーガレット',
+  'ミナ', 'リエ', 'ナオミ', 'マユミ', 'レイコ', 'ヨーコ', 'サユリ', 'ケイ', 'ルリ', 'ユリ', 'チェリー', 'ポプラ', 'アカシア', 'ライラック', 'ミント', 'ダリア', 'フリージア', 'ベゴニア', 'マーガレット',
 ];
 // Never generate these (real local/period businesses, brands, landmark names reserved for adopted text).
 // r04 round b (history review): ポエム (possible period coffee-house chain), パピヨン (1973 film title),
@@ -115,7 +115,8 @@ export const KANA_NAMES = [
 // name lists and blocked. A full check against period trade directories is still outstanding.
 // round d (history review): 三笠会館 (long-established Ginza restaurant company), 梅園 and 初音 (well-known
 // Tokyo sweet shops) are blocked as stems/compounds.
-export const BLOCKLIST = ['ポエム', 'パピヨン', 'カルメン', 'ボレロ', 'ジュン', '花月', '三笠', '梅園', '初音',
+export const BLOCKLIST = ['ポエム', 'パピヨン', 'カルメン', 'ボレロ', 'ジュン', '花月', '三笠', '梅園', '初音', 'モス', // コスモス cropped to モス read as a brand (visual review)
+ 
   'コマ', 'ミラノ', 'ハイツ', 'スカラ', 'ジャンボ', 'ロッテ', 'ルノアール', '滝沢', '風月堂', '中村屋', '高野',
   '紀伊國屋', '伊勢丹', '三越', '丸井', '東宝', '松竹', '東映', '日活', '大映', 'キリン', 'サッポロ', 'アサヒ', 'サントリー', '宝'];
 
