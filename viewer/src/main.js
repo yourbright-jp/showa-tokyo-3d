@@ -26,6 +26,9 @@ import { prepareSignFonts } from './core/fonts.js';
 //   shutter=<s>            optional motion blur along the walk (walk= only), e.g. 0.0167 for 1/60 s
 //   shadow=<px>            stills: sun shadow map size (default 4096)
 //   batch=1                stills: build the world once and expose window.__renderView({station|view|walk})
+//   (r05 parallel trial)   optional appearance parameters read by the modules themselves through
+//                          ctx.params; each is off when omitted, so the default image is unchanged.
+//                          The render script passes them with --set k=v[,k=v]
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
@@ -81,6 +84,7 @@ async function main() {
     still,
     stationId,
     options: { decor1972: params.get('decor') === '1972' },
+    params, // URLSearchParams: optional appearance parameters owned by the modules (see the list above)
     quality: { still, shadowMap: still ? num('shadow', 4096) : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
     provenance: [],
     /** Record the evidence tier of generated content. tier: source-derived | period-plausible-generic | placeholder */
