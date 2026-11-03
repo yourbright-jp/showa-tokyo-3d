@@ -64,13 +64,12 @@ sudo apt-get install fonts-ipafont-gothic fonts-ipafont-mincho fonts-motoya-l-ma
 git clone https://github.com/yourbright-jp/showa-tokyo-3d.git
 cd showa-tokyo-3d
 git lfs install
-git checkout claude/stoic-ramanujan-2ngpfv
 npm ci
 pip install -r requirements-render.txt
 python3 -m unittest discover -s tests
 ```
 
-- PR #10が`main`へ合流した後は、`main`から作業する。
+- PR #10は2026-11-03に`main`へ合流した。`main`から作業する。
 - Windowsでは`python3`の代わりに`py -3`を使う。
 - Windowsで分かったこと（r05、2026-11-03）
   - Gitの既定（`core.autocrlf=true`）では、テキストが改行CRLFで取り出され、公開ファイルのハッシュ検査が一致しなかった。`.gitattributes`を`* text=auto eol=lf`にし、どの設定でもLFで取り出すようにした。古い取り出しが残っている場合は、`git rm -rq --cached . && git reset -q --hard`で取り出し直す。
