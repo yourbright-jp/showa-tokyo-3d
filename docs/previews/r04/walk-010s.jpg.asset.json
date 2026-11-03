@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-r04-walk-010s",
+  "path": "docs/previews/r04/walk-010s.jpg",
+  "type": "rendered-reconstruction-preview",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-03",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html"
+  ],
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "scope": "Modern building footprints, road polygons and DEM used as the spatial underlay; not evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Inherited through the adopted r03 layout (theatre roof outlines, plaza); raw tiles are not embedded."
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_scope": "Project-derived render/configuration; keep the PLATEAU and GSI attribution. Does not license cited archival photographs or the approved colour masters.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 / 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工 / showa-tokyo-3d project によるコード生成",
+  "source_years": [
+    2025,
+    {
+      "from": 1974,
+      "to": 1978,
+      "exact_capture_date": null
+    }
+  ],
+  "source_years_scope": "Underlay data years. The adopted landmark decisions cite 1957-1979 sources; see the linked decision records for each year's role.",
+  "target_year": 1976,
+  "dependencies": [
+    "kabukicho-period-features",
+    "kabukicho-gate-1976",
+    "kabukicho-koma-plaza-1976",
+    "kabukicho-route-surfaces-1976",
+    "kabukicho-adopted-walk",
+    "plateau-13104-2025-terrain-crop",
+    "kabukicho-r01-kabukicho-layout-features",
+    "kabukicho-r04-render-manifest"
+  ],
+  "sha256": "b337b3dc5f994109d6a6bd06c6716a0d5afd7272689b45eb67d44d01fd68f7e7",
+  "size_bytes": 451467,
+  "geographic_confidence": "approximate",
+  "historical_confidence": "inferred",
+  "adoption_status": "adopted-with-inference",
+  "historical_fact_certification": false,
+  "redistribution_review": "Only code-generated output is published. No photograph, scanned texture, external 3D model or HDR is embedded; the approved colour masters were used only for side-by-side comparison outside these images.",
+  "source_photographs_embedded": false,
+  "processing": "scripts/render_stills.mjs (adopted walk pose at t=10 s) at 1920x1080; scripts/publish_r04_previews.py re-encodes as JPEG q92 resized to 1280x720.",
+  "format": "jpeg",
+  "units": "pixels",
+  "coordinate_system": null,
+  "inferred_elements": "Shopfronts, sign trades and fictional shop names, window interiors, people, clothing, vehicles, street furniture, weathering, lighting and colour grade are period-plausible-generic code generation. Gate, theatre fronts, fountain and lamps follow the adopted r03 inferred decisions. Building heights follow the r03 adopted context rule over modern PLATEAU footprints. The clear-afternoon light is a visual working choice, not a 1976 date/time/weather claim.",
+  "appearance_reference_role": "Approved colour masters R01-R09 were compared side by side as a visual target only; never counted as historical evidence and not copied into the image.",
+  "font_provenance": {
+    "fonts": [
+      {
+        "family": "IPAGothic",
+        "package": "fonts-ipafont-gothic 00303",
+        "license": "IPA Font License Agreement v1.0",
+        "license_url": "https://moji.or.jp/ipafont/license/",
+        "font_binary_redistributed": false
+      },
+      {
+        "family": "WenQuanYi Zen Hei (fallback only)",
+        "package": "fonts-wqy-zenhei 0.9.45",
+        "license": "GPL-2.0 with font embedding exception",
+        "license_url": "http://wenq.org/wqy2/index.cgi?ZenHei",
+        "font_binary_redistributed": false
+      }
+    ],
+    "scope": "Sign text is rasterised from system fonts into generated canvas textures or extruded glyph outlines; no font binary is redistributed. Typeface details are a production choice, not matched period lettering."
+  },
+  "renderer": {
+    "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
+    "look": "clear-afternoon",
+    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "worktree_dirty": false
+  },
+  "camera_id": "kabukicho-adopted-walk",
+  "walk_time_s": 10.0,
+  "render_resolution_px": [
+    1920,
+    1080
+  ],
+  "published_resolution_px": [
+    1280,
+    720
+  ],
+  "render_manifest": "docs/previews/r04/render-manifest.json"
+}
