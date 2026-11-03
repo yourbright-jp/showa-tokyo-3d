@@ -124,6 +124,7 @@ export function plan(ctx, env) {
   const buildings = data.buildings.filter((b) => !b.landmark);
   for (const b of buildings) {
     const pl = data.plans.get(b.id);
+    if (pl.minor) continue; // r05: low background structures carry no tenants or signs
     const fs = (data.facadesByBuilding.get(b.id) || []).map((f) => {
       const fr = frameOf(f);
       const ds = [0.15, 0.5, 0.85].map((t) => { const p = W(fr, f.length * t, 0, 0.5); return data.routeDistance(p[0], p[2]); });

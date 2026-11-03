@@ -20,7 +20,9 @@
     "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
     "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
     "https://www.city.shinjuku.lg.jp/content/000121601.pdf",
-    "https://www.mlit.go.jp/plateau/open-data/"
+    "https://www.mlit.go.jp/plateau/open-data/",
+    "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
+    "https://tokyu.shibuyaphotomuseum.jp/detail/1402/"
   ],
   "source_components": [
     {
@@ -165,7 +167,7 @@
       "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
       "source_year": 1957,
       "publication_year": null,
-      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "what_supports": "Inspected photograph shows a pale panelled long facade, rows of small windows, a deep canopy, repeated entrances and freestanding box lettering on the canopy that reads コマ東宝 and, on a second ledge, コマシネマ (corrected on r05 re-inspection; earlier records read the second string as コマ劇場). Which face of the theatre it shows is not established. Carrying these motifs into 1976 is an explicit assumption.",
       "evidence_only": true,
       "license": null,
       "license_url": null,
@@ -195,7 +197,7 @@
       "source_url": "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
       "source_year": 1979,
       "publication_year": null,
-      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, stairs, Club Heights sign and setback tower. Right of the stairs, a windowless white wall carries a ring emblem with the latin letters KOMA, poster cases and a cinema banner ending 上映中 コマ東宝, followed by a large freestanding latin K (corrected on r05 re-inspection: the ring belongs to the Koma side, not the Toho Kaikan). Adopted as a nearby-year shape reference; programmes are not carried back.",
       "evidence_only": true,
       "license": null,
       "license_url": null,
@@ -267,15 +269,97 @@
       "license_url": null,
       "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
       "decision_asset_id": "kabukicho-route-surfaces-1976"
+    },
+    {
+      "source_id": "tokyu-milano-1971",
+      "evidence_id": "tokyu-milano-1971",
+      "provider": "ミラノ 東急レクリエーション",
+      "source_url": "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
+      "source_year": 1971,
+      "publication_year": null,
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser (watermarked 626 x 460 preview; no pixels copied). The taller north neighbour meets the gable's right end; at this resolution the arc is already low there, so how much of the gable it hides cannot be told. The MILANO letters and the emblem are centred left (south) of the gable crown.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-milano-1976",
+      "year_role": "catalogued capture year"
+    },
+    {
+      "source_id": "tokyu-milano-1972",
+      "evidence_id": "tokyu-milano-1972",
+      "provider": "東急レクリエーション 新宿東急文化会館",
+      "source_url": "https://tokyu.shibuyaphotomuseum.jp/detail/1402/",
+      "source_year": 1972,
+      "publication_year": null,
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown. This is the main photographic support for the hidden north part.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-milano-1976",
+      "year_role": "catalogued capture year"
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "evidence_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 国土画像情報1974〜1978",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_year": [
+        1974,
+        1978
+      ],
+      "publication_year": null,
+      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip read as about 1.5-4 px (about 1.5-4 m) depending on where it is measured; projecting the neighbour roof's south end onto the Milano edge gives a fraction of about 0.63-0.66. The southern part faces open street.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-milano-1976",
+      "year_role": "captioned capture year or capture-year range"
+    },
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "evidence_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "Project PLATEAU",
+      "source_url": "https://www.mlit.go.jp/plateau/open-data/",
+      "source_year": 2025,
+      "publication_year": null,
+      "what_supports": "Modern footprints and heights used as the spatial scaffold; not evidence of 1976 buildings.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-context-massing-1976",
+      "year_role": "data release year"
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "evidence_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 国土画像情報1974〜1978",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_year": [
+        1974,
+        1978
+      ],
+      "publication_year": null,
+      "what_supports": "Re-inspected 2026-11-03 with footprints overlaid: at bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 (aerial pixels about x 219-223, y 213-219, about 13.6 m west of the adopted Toho Kaikan front) the mosaic shows the light street in front of the Toho Kaikan and no separate roof. Absence on the mosaic is not proof of absence. The modern footprint shares two vertices with the modern Toho building (bldg_7506fc9f), which suggests a modern appendage of that building.",
+      "evidence_only": true,
+      "license": null,
+      "license_url": null,
+      "rights_status": "Cited research evidence only. No source photograph, aerial raster or page image is embedded; this citation grants no redistribution right in the source material.",
+      "decision_asset_id": "kabukicho-context-massing-1976",
+      "year_role": "captioned capture year or capture-year range"
     }
   ],
   "license": "CC-BY-4.0",
   "license_url": "https://creativecommons.org/licenses/by/4.0/",
   "license_scope": "Project-derived scene/render; preserve PLATEAU/GSI attribution where present. This output license does not apply to cited archival photographs or generated colour master images.",
-  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 東洋経済新報社 歌舞伎町商店街振興組合事務局 新宿歴史博物館 歌舞伎町文化新聞 東宝 歌舞伎町の不動産史 toho-corporate-history toho-redevelopment-2011 shinjuku-koma-1957 劇場前広場のイベント shinjuku-plaza-1979 国土地理院 国土画像情報1974〜1978 shinjuku-former-fountain-record Project PLATEAU",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。 東洋経済新報社 歌舞伎町商店街振興組合事務局 新宿歴史博物館 歌舞伎町文化新聞 東宝 歌舞伎町の不動産史 toho-corporate-history toho-redevelopment-2011 shinjuku-koma-1957 劇場前広場のイベント shinjuku-plaza-1979 国土地理院 国土画像情報1974〜1978 shinjuku-former-fountain-record Project PLATEAU ミラノ 東急レクリエーション 東急レクリエーション 新宿東急文化会館",
   "source_years": [
     1957,
     1969,
+    1971,
     1972,
     1975,
     1978,
@@ -299,8 +383,8 @@
     "kabukicho-r01-kabukicho-modern-features",
     "kabukicho-period-scene-spec"
   ],
-  "sha256": "e258fb317809b862844fdca21e020d7d8ea0e94d7704e886d83be616e55f450d",
-  "size_bytes": 465022,
+  "sha256": "181011cbca054ba398965a8f50a87d937ec22839a2a15adaa05a3e9fad164568",
+  "size_bytes": 464771,
   "format": "json",
   "units": "feature identifiers and classification records",
   "coordinate_system": null,

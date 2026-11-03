@@ -27,7 +27,8 @@
       "evidence_ids": [
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
-      ]
+      ],
+      "parameters_path": "data/decisions/kabukicho-context-massing-1976.json"
     },
     {
       "id": "period-ground-adoption-rule",
@@ -49,22 +50,22 @@
       ]
     },
     {
-      "id": "milano-facade-adoption-rule",
-      "historical_truth_status": "inferred",
-      "rule": "Retain aerial roof mass and adopt the east-facing public facade with repeated doors/windows and stable Milano name; dimensions/colours remain authored assumptions.",
-      "evidence_ids": [
-        "tokyu-milano-1971",
-        "tokyu-milano-1972",
-        "gsi-gazo1-1974-1978"
-      ]
-    },
-    {
       "id": "kabukicho-gate-1976",
       "path": "data/decisions/kabukicho-gate-1976.json"
     },
     {
       "id": "kabukicho-koma-plaza-1976",
       "path": "data/decisions/kabukicho-koma-plaza-1976.json"
+    },
+    {
+      "id": "kabukicho-milano-1976",
+      "path": "data/decisions/kabukicho-milano-1976.json",
+      "supersedes": "milano-facade-adoption-rule"
+    },
+    {
+      "id": "kabukicho-context-massing-1976",
+      "path": "data/decisions/kabukicho-context-massing-1976.json",
+      "rule_id": "period-background-context-rule"
     },
     {
       "id": "kabukicho-route-surfaces-1976",
@@ -84,7 +85,7 @@
           181
         ]
       ],
-      "frontage_width_m": 37.022,
+      "frontage_width_m": 24.434,
       "outward_direction_xz": [
         0.9400675695964661,
         0.3409882176747364
@@ -108,8 +109,25 @@
             "fraction": 0.5,
             "height_m": 5.4
           }
+        ],
+        "fraction_reference": "Door, window, canopy and sign fractions are measured within the public frontage span, not the whole roof edge.",
+        "sign_height_reference": "Visible glyph bounding-box centre above grade."
+      },
+      "edge_width_m": 37.022,
+      "public_frontage_span_fraction": [
+        0.0,
+        0.66
+      ],
+      "public_frontage_endpoints_xz": [
+        [
+          -93.3812,
+          -118.17316
+        ],
+        [
+          -85.04934,
+          -141.14322
         ]
-      }
+      ]
     },
     {
       "id": "koma-south-roof-proxy",
@@ -174,18 +192,28 @@
           {
             "text": "コマ劇場",
             "fraction": 0.38,
-            "height_m": 3.8
+            "height_m": 3.895
           },
           {
             "text": "コマ東宝",
             "fraction": 0.81,
-            "height_m": 3.9
+            "height_m": 3.895
           }
         ],
         "threshold_steps_total_height_m": 0.3,
         "threshold_step_count": 2,
         "threshold_steps_outward_depth_m": 1.6,
-        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height.",
+        "sign_mounting": {
+          "mode": "freestanding-letters-on-canopy-top",
+          "face_setback_from_canopy_outer_edge_m": 0.25,
+          "support_rail_height_m": 0.15,
+          "applies_to": [
+            "コマ劇場",
+            "コマ東宝"
+          ],
+          "reference": "Glyph faces stand 0.25 m behind the canopy's outer edge (canopy_depth_m + 0.12 m from the frontage line); glyph bottoms sit on a 0.15 m support rail on the canopy top. Sign height_m remains the visible-glyph bounding-box centre above plaza grade."
+        }
       }
     },
     {
@@ -244,7 +272,7 @@
           {
             "text": "クラブハイツ",
             "fraction": 0.5,
-            "height_m": 8.0
+            "height_m": 8.4
           }
         ],
         "entry_steps_total_height_m": 1.2,
@@ -259,9 +287,20 @@
   "gate_adopted_variant": "curved-incandescent",
   "context_rules": {
     "storey_height_m": 3.2,
+    "minimum_height_m": 6.4,
     "near_route_radius_m": 38,
     "near_height_cap_m": 24,
     "far_height_cap_m": 28,
+    "low_structure_exception": {
+      "source_height_below_m": 5.0,
+      "applies_at_route_distance_m_or_more": 38,
+      "adopted_height": "modern source height, unrounded",
+      "reason": "Single-storey or smaller modern structures away from the route are not raised to the two-storey minimum."
+    },
+    "omitted_feature_ids": [
+      "bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76"
+    ],
+    "low_structure_exception_feature_count": 24,
     "generic_shop_types": [
       "喫茶",
       "食堂",
@@ -291,8 +330,8 @@
     "font_mesh_feature_count": 45,
     "font_triangle_count": 69888,
     "font_mesh_file": "data/derived/kabukicho-sign-text-meshes.json",
-    "feature_count": 988,
-    "triangle_count": 143425,
+    "feature_count": 987,
+    "triangle_count": 143381,
     "text_node_count": 45,
     "obstacle_count": 16
   }

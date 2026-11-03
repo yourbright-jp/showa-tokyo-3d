@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-r05-data-review-manifest",
+  "round": "r05 adopted-data review",
+  "date": "2026-11-03",
+  "renders": {
+    "before": {
+      "folder": "renders/r05-data-before",
+      "environment": {
+        "three": "0.170.0",
+        "browser": "156.0.8078.80",
+        "node": "v24.15.0",
+        "cpus": 12,
+        "platform": "win32",
+        "mode": "gpu",
+        "launch": {
+          "headless": true,
+          "channel": "chrome",
+          "args": [
+            "--ignore-gpu-blocklist",
+            "--enable-gpu",
+            "--use-angle=d3d11",
+            "--disable-gpu-sandbox"
+          ]
+        },
+        "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "source_commit": "c2fb75a6f0ec003e0848b25370d444241973f0a9",
+        "worktree_dirty": false
+      },
+      "look": "clear-afternoon",
+      "spp": 64,
+      "accumulation_params": {
+        "spp": "64"
+      },
+      "views": {
+        "entrance-approach": {
+          "ms": 5720,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "under-gate": {
+          "ms": 420,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "ichibangai-middle": {
+          "ms": 389,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "towards-koma-corner": {
+          "ms": 308,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "plaza-reveal": {
+          "ms": 337,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "koma-front": {
+          "ms": 415,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-gate-establishing": {
+          "ms": 433,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-gate-rear": {
+          "ms": 250,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-milano-front": {
+          "ms": 250,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        }
+      }
+    },
+    "after": {
+      "folder": "renders/r05-data-after",
+      "environment": {
+        "three": "0.170.0",
+        "browser": "156.0.8078.80",
+        "node": "v24.15.0",
+        "cpus": 12,
+        "platform": "win32",
+        "mode": "gpu",
+        "launch": {
+          "headless": true,
+          "channel": "chrome",
+          "args": [
+            "--ignore-gpu-blocklist",
+            "--enable-gpu",
+            "--use-angle=d3d11",
+            "--disable-gpu-sandbox"
+          ]
+        },
+        "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "source_commit": "085280759a3f0c8512700b80ed26d534e9db0219",
+        "worktree_dirty": false
+      },
+      "look": "clear-afternoon",
+      "spp": 64,
+      "accumulation_params": {
+        "spp": "64"
+      },
+      "views": {
+        "entrance-approach": {
+          "ms": 5374,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "under-gate": {
+          "ms": 405,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "ichibangai-middle": {
+          "ms": 375,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "towards-koma-corner": {
+          "ms": 319,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "plaza-reveal": {
+          "ms": 371,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "koma-front": {
+          "ms": 351,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-gate-establishing": {
+          "ms": 522,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-gate-rear": {
+          "ms": 270,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        },
+        "r04-milano-front": {
+          "ms": 318,
+          "webgl_renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4070 (0x00002786) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+        }
+      }
+    }
+  },
+  "images": [
+    {
+      "path": "docs/previews/r05-data-review/plaza-reveal-before-after.jpg",
+      "sha256": "8aa269abd5516439b48e23381fef97c9c398be563d7db9a6e03bb4a4666eb86d",
+      "camera_id": "plaza-reveal",
+      "kind": "before-after",
+      "change": "Koma names on the canopy; lamp moved off コマ劇場; forecourt box bldg_cef4146e omitted; クラブハイツ in the top band",
+      "crop_px": null
+    },
+    {
+      "path": "docs/previews/r05-data-review/koma-front-before-after.jpg",
+      "sha256": "5157276b910d612ccba7fe0ddbab6880e576ecec0f451a22d9a8e7b7c97a2780",
+      "camera_id": "koma-front",
+      "kind": "before-after",
+      "change": "Koma names on the canopy; north lamp moved off コマ劇場",
+      "crop_px": null
+    },
+    {
+      "path": "docs/previews/r05-data-review/milano-front-before-after.jpg",
+      "sha256": "f4aea6949a01f7866e870c8223ec6aef2c9995e37101f71d73b95b1ae2d617f4",
+      "camera_id": "r04-milano-front",
+      "kind": "before-after",
+      "change": "Milano public front narrowed beside the retained north neighbour; review camera follows the name",
+      "crop_px": null
+    },
+    {
+      "path": "docs/previews/r05-data-review/koma-front-signs-before-after.jpg",
+      "sha256": "bcab0821393d7905ada51b36901d2fbe06074cb039b06d2bfe5daab976a307d9",
+      "camera_id": "koma-front",
+      "kind": "before-after",
+      "change": "crop: canopy-mounted コマ東宝 / コマ劇場",
+      "crop_px": [
+        560,
+        520,
+        1240,
+        700
+      ]
+    },
+    {
+      "path": "docs/previews/r05-data-review/plaza-reveal-toho-before-after.jpg",
+      "sha256": "31c0ac257b1e376a3922b09b3cd77985a3cf5efabe500335f19fb74aafd512a1",
+      "camera_id": "plaza-reveal",
+      "kind": "before-after",
+      "change": "crop: Toho Kaikan front, クラブハイツ band and the omitted forecourt box",
+      "crop_px": [
+        60,
+        560,
+        760,
+        760
+      ]
+    },
+    {
+      "path": "docs/previews/r05-data-review/contact-sheet-before.jpg",
+      "sha256": "e449da303e1c51e4f78952cb62dcbf06334d224f4398bee944c5f1f0d8462867",
+      "camera_id": null,
+      "kind": "contact-sheet-before",
+      "change": "all nine views",
+      "crop_px": null
+    },
+    {
+      "path": "docs/previews/r05-data-review/contact-sheet-after.jpg",
+      "sha256": "246bb87bfff8c52f00036d041ed8b450653109c10c61745a232994ad64be2124",
+      "camera_id": null,
+      "kind": "contact-sheet-after",
+      "change": "all nine views",
+      "crop_px": null
+    }
+  ],
+  "note": "Full-resolution PNGs remain in git-ignored renders/. Changes outside the revised items (distant sign texts, shop contents, people) come from the viewer's world-wide sign-name uniqueness pass, which depends on building order (r04 unresolved item 9), not from data changes at those places."
+}

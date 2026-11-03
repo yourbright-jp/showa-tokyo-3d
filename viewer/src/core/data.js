@@ -87,7 +87,7 @@ export async function loadData() {
   // The adopted 1976 reconstruction (PR #7) is the canonical world: adopted massing heights,
   // landmark forms, fixtures, stable sign text, obstacles and the long walk. The R01 layout
   // features are still loaded for the road polygons used by facade analysis.
-  const [sceneDef, layout, terrainRaw, period, walk, gateDecision, komaDecision, surfaceDecision, refIndex] = await Promise.all([
+  const [sceneDef, layout, terrainRaw, period, walk, gateDecision, komaDecision, surfaceDecision, milanoDecision, refIndex] = await Promise.all([
     getJSON(`${SCENE_DIR}/scene.json`),
     getJSON('/data/derived/kabukicho-layout-features.json'),
     getJSON('/data/derived/kabukicho-terrain.json'),
@@ -96,6 +96,7 @@ export async function loadData() {
     getJSON('/data/decisions/kabukicho-gate-1976.json'),
     getJSON('/data/decisions/kabukicho-koma-plaza-1976.json'),
     getJSON('/data/decisions/kabukicho-route-surfaces-1976.json'),
+    getJSON('/data/decisions/kabukicho-milano-1976.json'),
     getJSON(`${SCENE_DIR}/references/approved-colour-index.json`),
   ]);
   const stationIds = sceneDef.route.stations.map((s) => s.id);
@@ -186,7 +187,7 @@ export async function loadData() {
     textNodes: period.text_nodes,
     obstacles: period.obstacles,
     ground, // period terrain feature: polygons + polygon_material_keys (ground/asphalt/paving)
-    decisions: { gate: gateDecision, komaPlaza: komaDecision, routeSurfaces: surfaceDecision, list: period.decisions },
+    decisions: { gate: gateDecision, komaPlaza: komaDecision, routeSurfaces: surfaceDecision, milano: milanoDecision, list: period.decisions },
     roads,
     plaza: { ...(layout.plaza || {}), ...(period.plaza || {}), boundary_m: plazaBoundary },
     hypothesis: null,

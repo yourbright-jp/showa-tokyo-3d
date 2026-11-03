@@ -7,9 +7,9 @@
   "classified_count": 600,
   "unclassified_count": 0,
   "counts_by_disposition": {
-    "inferred-period-context": 419,
+    "inferred-period-context": 418,
+    "omitted": 3,
     "replaced": 2,
-    "omitted": 2,
     "adopted-road-alignment-reference": 176,
     "adopted-terrain-reference": 1
   },
@@ -478,7 +478,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": 2021,
       "generated_feature_ids": [
         "bldg_bbec3972-a1e3-4425-9ccf-5c949c921818"
@@ -595,7 +595,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_603e1c3e-9a8f-469d-9be3-c64775ce4fbb"
@@ -928,7 +928,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": 2021,
       "generated_feature_ids": [
         "bldg_75129deb-749f-4e97-8fba-30e5a1bcb196"
@@ -937,18 +937,15 @@
     {
       "source_feature_id": "bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76",
       "kind": "building",
-      "disposition": "inferred-period-context",
+      "disposition": "omitted",
       "historical_truth_status": "inferred",
-      "decision_id": "period-background-context-rule",
+      "decision_id": "kabukicho-context-massing-1976",
       "evidence_ids": [
-        "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Omitted from adopted period space: the 1974-1978 aerial shows the light street in front of the Toho Kaikan and no separate roof here; absence on the mosaic is not proof of absence (r05, kabukicho-context-massing-1976). Baseline retains the modern feature.",
       "source_survey_year": null,
-      "generated_feature_ids": [
-        "bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76"
-      ]
+      "generated_feature_ids": []
     },
     {
       "source_feature_id": "bldg_8da2816b-1985-4226-8991-6681e73f636f",
@@ -1008,7 +1005,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_ecf75d26-e680-4c90-8db4-f48cb35ac1f6"
@@ -1089,7 +1086,7 @@
       "kind": "building",
       "disposition": "replaced",
       "historical_truth_status": "inferred",
-      "decision_id": "milano-facade-adoption-rule",
+      "decision_id": "kabukicho-milano-1976",
       "evidence_ids": [
         "tokyu-milano-1971",
         "tokyu-milano-1972",
@@ -1191,7 +1188,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_d9baa4fa-44b6-43d4-adfb-b32dc3898f1f"
@@ -2594,7 +2591,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_14e27c85-f3cd-4ea1-8398-156c269758b4"
@@ -2831,7 +2828,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_e56a6e0b-1f8c-4bcc-8609-7b441721ade2"
@@ -2988,7 +2985,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": 2021,
       "generated_feature_ids": [
         "bldg_f6200413-25b3-490f-9a7e-25291e7138b3"
@@ -3052,7 +3049,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_7b8da8dc-9896-46ff-aca4-34ffc01aaf2f"
@@ -3637,7 +3634,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_55f3680a-5aa1-41fe-8693-0440455cb607"
@@ -4050,7 +4047,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_94899a70-cdb5-4a7d-ba21-49a4a5cb0274"
@@ -4130,7 +4127,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_5bf37a91-d40e-479e-82db-9ecd908eaa54"
@@ -4265,7 +4262,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_08afba01-2851-4d43-bdbe-7903962a0776"
@@ -4573,7 +4570,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_72d80f03-3848-4f68-be00-9b3f3714ed78"
@@ -4589,7 +4586,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_f6909f65-b641-4997-9967-35925975dee8"
@@ -4605,7 +4602,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_45d9a96c-1834-4781-b31e-bc441306b5b2"
@@ -4621,7 +4618,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": 2021,
       "generated_feature_ids": [
         "bldg_1f6162c3-8364-4a2d-8edc-c8d98f0377ce"
@@ -4749,7 +4746,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": 2021,
       "generated_feature_ids": [
         "bldg_7c87f271-03c2-47f9-b81a-dcffeb740816"
@@ -5392,7 +5389,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_b17f1bc4-6dac-43c0-9f17-7a4b05b93b7e"
@@ -6022,7 +6019,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_41f917c3-384d-4587-af11-ca1e3c70a063"
@@ -6346,7 +6343,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_9d3497c7-e7a8-48c2-b28e-21c65f0378bd"
@@ -6394,7 +6391,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_38906464-d6b5-4023-b533-6832cb3aa516"
@@ -6551,7 +6548,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_da845ae6-03f2-48a4-b707-6b6e7eda6356"
@@ -6666,7 +6663,7 @@
         "plateau-13104-shinjuku-ku-2025",
         "gsi-gazo1-1974-1978"
       ],
-      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.",
+      "reason": "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use.",
       "source_survey_year": null,
       "generated_feature_ids": [
         "bldg_cd855f90-e764-4421-838a-e8c831c8f451"

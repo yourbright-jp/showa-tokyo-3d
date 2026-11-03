@@ -165,6 +165,9 @@ export async function build(ctx) {
       // kept by the adopted context rule at 6.4 m) read as blank grey boxes; give them shop fronts
       if (kind === 'side' && smallFree && meta && (meta.inPlaza || meta.openDistance > 6)) kind = 'front';
       if (kind === 'front' && Math.hypot(c[0] - a[0], c[1] - a[1]) < 2.0) kind = 'side';
+      // r05: low background structures kept at their modern height (kabukicho-context-massing-1976) have no
+      // storey for a shop fascia; they stay plain single-storey walls
+      if (kind === 'front' && plan.minor) kind = 'side';
       kinds.push(kind);
     }
     for (let i = 0; i < n; i++) {

@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-milano-1976",
+  "status": "adopted-with-inference",
+  "target_year": 1976,
+  "decision_complete": true,
+  "historical_confidence": "inferred",
+  "authored_at": "2026-11-03",
+  "authorization": "User decision of 2026-11-03: revisit the unresolved adopted-data items as revisions of the adoption decisions, recording evidence, counter-evidence and alternatives; inference allowed under the instruction of 2026-11-02.",
+  "scope": "Adopted Milano-za (Shinjuku Tokyu Bunka Kaikan) east front. Replaces the r03 inline rule milano-facade-adoption-rule of scripts/build_period_scene.py; that rule's values are kept below as the previous revision.",
+  "supersedes": "milano-facade-adoption-rule",
+  "coordinate_space": {
+    "pixels": "native 512 x 512 GSI gazo1 mosaic",
+    "zoom": 17,
+    "tile_x": 116399,
+    "tile_y": 51606,
+    "horizontal_uncertainty_m_assumption": 5,
+    "datum": "EPSG:3857 geographic pixels approximately mapped to JGD2011; local Y is source DEM orthometric height minus 32 m"
+  },
+  "building": {
+    "proxy_id": "milano-roof-proxy",
+    "adopted_identity": "ミラノ座",
+    "identity_status": "Milano-za / Tokyu Bunka Kaikan front identified from the 1971/1972 owner photographs; aerial roof correspondence inferred",
+    "frontage_edge_pixels": [
+      [
+        146,
+        217
+      ],
+      [
+        159,
+        181
+      ]
+    ],
+    "frontage_direction": "east-facing roof edge toward the plaza approach; fractions run from the southern pixel",
+    "public_frontage_span_fraction": [
+      0.0,
+      0.66
+    ],
+    "height_assumption_m": 16,
+    "parameters": {
+      "lower_front_height_m": 10,
+      "canopy_depth_m": 1.5,
+      "upper_window_rows_m": [
+        5,
+        7.0
+      ],
+      "upper_window_columns": 10,
+      "signs": [
+        {
+          "text": "ミラノ座",
+          "fraction": 0.5,
+          "height_m": 5.4
+        }
+      ],
+      "fraction_reference": "Door, window, canopy and sign fractions are measured within the public frontage span, not the whole roof edge.",
+      "sign_height_reference": "Visible glyph bounding-box centre above grade."
+    },
+    "inferred_elements": [
+      "Public front limited to the southern 0.66 of the east roof edge; the northern part is a plain wall behind the north neighbour",
+      "All dimensions, door/window modules and the 16 m roof height",
+      "1971-1972 facade motifs carried to 1976"
+    ]
+  },
+  "north_neighbour": {
+    "feature_id": "bldg_448c2b6d-9aad-4dbe-b3ca-81e048c21d4b",
+    "treatment": "retained as inferred period context (period-background-context-rule, 28 m cap)",
+    "relation": "Stands 0.7-2.4 m in front of the northern third of the Milano roof edge; the public front stops 0.5 m short of it.",
+    "historical_status": "inferred: a separate roof is visible at this place in the 1974-1978 aerial, but its outline, height and frontage come from the modern PLATEAU footprint"
+  },
+  "evidence": [
+    {
+      "id": "tokyu-milano-1971",
+      "url": "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
+      "year": 1971,
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser (watermarked 626 x 460 preview; no pixels copied). The taller north neighbour meets the gable's right end; at this resolution the arc is already low there, so how much of the gable it hides cannot be told. The MILANO letters and the emblem are centred left (south) of the gable crown.",
+      "source_kind": "owner photograph catalogue",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "catalogued capture year"
+    },
+    {
+      "id": "tokyu-milano-1972",
+      "url": "https://tokyu.shibuyaphotomuseum.jp/detail/1402/",
+      "year": 1972,
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown. This is the main photographic support for the hidden north part.",
+      "source_kind": "owner photograph catalogue",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "catalogued capture year"
+    },
+    {
+      "id": "gsi-gazo1-1974-1978",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "year": [
+        1974,
+        1978
+      ],
+      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip read as about 1.5-4 px (about 1.5-4 m) depending on where it is measured; projecting the neighbour roof's south end onto the Milano edge gives a fraction of about 0.63-0.66. The southern part faces open street.",
+      "source_kind": "historical aerial imagery",
+      "evidence_only": true,
+      "license": "CC-BY-4.0",
+      "year_role": "captioned capture year or capture-year range"
+    }
+  ],
+  "assumptions": [
+    "The bright aerial roof is the Milano auditorium and its east edge is the gable/front line; roof displacement and the 5 m georeferencing assumption remain.",
+    "The public front (doors, canopy, windows, name) spans the southern 0.66 of that edge, ending 0.5 m short of the retained north neighbour; the gable and roof still span the whole edge.",
+    "The north neighbour's 1976 outline is approximated by the modern footprint; its height is the 28 m context cap, not a measurement.",
+    "No corporate emblem, film title or programme is reproduced."
+  ],
+  "contradictions": [
+    {
+      "issue": "Full-width r03 front versus the neighbour in front of it",
+      "resolution": "r05: the front is narrowed rather than the aerial-supported neighbour being removed."
+    },
+    {
+      "issue": "Photograph resolution",
+      "resolution": "The photographs are small watermarked previews in perspective; the 0.66 span comes from the aerial footprints, and the photographs are used only for the qualitative arrangement."
+    },
+    {
+      "issue": "Appearance of the north neighbour (r05 independent history critique)",
+      "resolution": "Recorded only: the 1971/1972 photographs show a light-coloured tall building with stacked horizontal window bands; the model's generic period facade for this inferred context building does not follow them. Not changed in r05."
+    }
+  ],
+  "alternatives": [
+    {
+      "variant": "remove or cut back the north neighbour",
+      "adopted": false,
+      "reason": "The aerial shows a separate roof there and both owner photographs show a taller building forward of the gable's north part."
+    },
+    {
+      "variant": "keep the full-width r03 front",
+      "adopted": false,
+      "reason": "Places doors, windows and signs behind the neighbour (r04 history critique, round b)."
+    },
+    {
+      "variant": "public front on the unobstructed southern part of the edge",
+      "adopted": true,
+      "reason": "Agrees with the aerial and with the off-centre MILANO lettering in both photographs."
+    }
+  ],
+  "revisions": [
+    {
+      "id": "r05-milano-public-frontage",
+      "date": "2026-11-03",
+      "resolves": "r04 unresolved item 3 (Milano-za front and the inferred background building)",
+      "issue": "An inferred background building (28 m) stood about 0.7-2.4 m in front of the northern 12 m of the adopted full-width front.",
+      "previous": {
+        "rule": "milano-facade-adoption-rule (scripts/build_period_scene.py, r03)",
+        "public_frontage_span_fraction": [
+          0.0,
+          1.0
+        ],
+        "frontage_width_m": 37.022,
+        "parameters": "same values, measured over the whole edge"
+      },
+      "adopted": {
+        "public_frontage_span_fraction": [
+          0.0,
+          0.66
+        ],
+        "public_frontage_width_m_derived": 24.43
+      },
+      "counter_evidence": [
+        "The neighbour outline is the modern (2021 survey) footprint; the 1976 south face may differ by metres.",
+        "Perspective and preview resolution prevent measuring how much of the gable the neighbour hid.",
+        "A narrower front changes the spacing of doors/windows; those modules remain inferred.",
+        "The review camera r04-milano-front now faces the centre of the public front, so the junction with the north neighbour is only at the right edge of the frame; an oblique diagnostic view of that junction does not exist yet."
+      ],
+      "inferred_parameters": [
+        "public span 0.66 (0.5 m short of the neighbour's footprint)",
+        "name centred on the public span",
+        "unchanged heights and modules"
+      ],
+      "checks": "tests/test_adopted_data_review.py: no other building footprint lies within 3 m in front of the public front; the name and doors stay inside the public span.",
+      "historical_fact_certification": false
+    }
+  ],
+  "redistribution": "No owner photograph, watermark preview or aerial raster is embedded in this decision file or licensed by its citations."
+}

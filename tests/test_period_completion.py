@@ -11,6 +11,7 @@ import json
 import math
 from pathlib import Path
 import struct
+import subprocess
 import sys
 import unittest
 
@@ -335,8 +336,18 @@ class AdoptedReconstruction(unittest.TestCase):
     def test_published_period_frames_match_the_rendered_model_and_manifest(self):
         manifest = read(PATHS["render_manifest"])
         model_sha = hashlib.sha256((ROOT / PATHS["model"]).read_bytes()).hexdigest()
-        self.assertEqual(manifest["source_render"]["model_sha256"], model_sha,
-                         "The published images must use the actual final model")
+        rendered_sha = manifest["source_render"]["model_sha256"]
+        archived_model = None
+        if rendered_sha != model_sha:
+            # An earlier study kept for comparison must say which committed model it shows.
+            archive = manifest.get("archived_study")
+            self.assertIsNotNone(archive, "The published images must use the actual final model or be recorded as an archived study")
+            self.assertEqual(archive["status"], "superseded")
+            self.assertEqual(archive["model_sha256"], rendered_sha)
+            self.assertEqual(archive["model_path"], PATHS["model"])
+            self.assertRegex(archive["model_commit"], r"^[0-9a-f]{40}$")
+            self.assertTrue(archive["superseded_by"] and archive["note"])
+            archived_model = archive
         images = manifest["images"]
         self.assertEqual(len(images), 14, "Six shared views and eight sparse walk frames must be present")
         self.assertEqual(len({item["path"] for item in images}), len(images))
@@ -359,6 +370,13 @@ class AdoptedReconstruction(unittest.TestCase):
             self.assertEqual(item["look_at_m"], expected["look_at_m"])
         for path in manifest["sheet_paths"]:
             self.assertTrue((ROOT / path).is_file())
+        if archived_model:
+            # Where the history is available (not a shallow clone), confirm the archived model bytes.
+            shown = subprocess.run(["git", "-C", str(ROOT), "show", f"{archived_model['model_commit']}:{archived_model['model_path']}"],
+                                   capture_output=True)
+            if shown.returncode != 0:
+                self.skipTest("archived model commit not in this clone's history")
+            self.assertEqual(hashlib.sha256(shown.stdout).hexdigest(), archived_model["model_sha256"])
 
     def test_entrance_stills_use_the_adopted_gate_and_current_terrain_specification(self):
         manifest = read("docs/previews/r03/entrance-render-manifest.json")

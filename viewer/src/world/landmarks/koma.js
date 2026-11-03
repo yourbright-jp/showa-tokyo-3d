@@ -101,6 +101,28 @@ export function buildKoma(ctx, kit) {
       const pw = L.width + 0.26, ph = node.height_m + 0.16;
       fb.add('labelPlate', boxMinMax(loc.x - pw / 2, loc.y - ph / 2, loc.z - 0.05, loc.x + pw / 2, loc.y + ph / 2, loc.z - 0.018));
       for (const s of [-1, 1]) { const g = cylGeo(0.008, 0.008, loc.y + ph / 2, P.canopy_height_m, 5, true); g.translate(loc.x + s * (pw / 2 - 0.06), 0, loc.z - 0.034); fb.add('steelDark', g); }
+    } else if (P.sign_mounting && P.sign_mounting.applies_to.includes(node.text)) {
+      // r05 (r05-koma-name-canopy): freestanding letters on the canopy slab, as in the 1957 photograph:
+      // a channel rail on the slab carries the letters; a light frame behind them is stayed back to the wall.
+      const depth = 0.075;
+      const { L } = fb.letters(node, { depth, stroke: 4, pins: false });
+      const loc = fb.local(node);
+      const slabTop = P.canopy_height_m + P.canopy_thickness_m, railTop = slabTop + P.sign_mounting.support_rail_height_m;
+      const x0 = loc.x - L.width / 2 - 0.12, x1 = loc.x + L.width / 2 + 0.12, zBack = loc.z - depth;
+      fb.add('steelDark', boxMinMax(x0, slabTop, zBack - 0.1, x1, railTop, zBack + 0.02));
+      const frameTop = loc.y + node.height_m / 2 - 0.08, zf = zBack - 0.06;
+      const posts = Math.max(2, Math.round((x1 - x0) / 0.9) + 1);
+      for (let k = 0; k < posts; k++) {
+        const x = x0 + 0.03 + (x1 - x0 - 0.06) * k / (posts - 1);
+        fb.add('steelDark', boxMinMax(x - 0.02, railTop, zf - 0.02, x + 0.02, frameTop, zf + 0.02));
+        if (k % 2 === 0) { // diagonal stay from the frame head back to the wall gutter
+          const a = new THREE.Vector3(x, frameTop - 0.05, zf - 0.02), b = new THREE.Vector3(x, slabTop + 0.05, WALL_Z + 0.12);
+          const d = b.clone().sub(a); const g = cylGeo(0.014, 0.014, 0, d.length(), 6, true);
+          g.applyQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize())); g.translate(a.x, a.y, a.z);
+          fb.add('steelDark', g);
+        }
+      }
+      fb.add('steelDark', boxMinMax(x0, frameTop - 0.03, zf - 0.02, x1, frameTop + 0.01, zf + 0.02));
     } else {
       fb.letters(node, { depth: 0.075, stroke: 4 });
     }
@@ -178,7 +200,8 @@ export function buildKoma(ctx, kit) {
   const g = new THREE.Group(); g.name = 'koma-theatre';
   g.add(fb.build(mats, 'koma-lower'));
   g.add(ufb.build(mats, 'koma-upper'));
-  ctx.tag({ id: 'koma-theatre-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Koma west front: lower front 8.5 m, canopy 3.1/1.8 m, 7 bays, window rows 4.8/6.3 m x 9, joints 3.2 m, wall/metal/glass colours from kabukicho-koma-plaza-1976 (1957 motifs carried to 1976 by assumption).' });
+  ctx.tag({ id: 'koma-theatre-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Koma west front: lower front 8.5 m, canopy 3.1/1.8 m, 7 bays, window rows 4.8/6.3 m x 9, joints 3.2 m, wall/metal/glass colours from kabukicho-koma-plaza-1976 (1957 motifs carried to 1976 by assumption). r05: the コマ劇場 / コマ東宝 letters stand on the canopy (revision r05-koma-name-canopy).' });
+  ctx.tag({ id: 'koma-name-supports', module: 'landmarks', tier: 'period-plausible-generic', note: 'Rail, frame posts and back-stays carrying the canopy-mounted letters are authored after the frame seen behind the 1957 canopy letters; dimensions are not measured.' });
   ctx.tag({ id: 'koma-theatre-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Ticket windows, service doors, poster showcases (neutral abstract panels, no programmes), lobby interior, downpipes, louvre band, ribs and rooftop plant are authored detail.' });
   return g;
 }

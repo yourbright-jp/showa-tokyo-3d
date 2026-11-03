@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-context-massing-1976",
+  "status": "adopted-with-inference",
+  "target_year": 1976,
+  "decision_complete": true,
+  "historical_confidence": "inferred",
+  "authored_at": "2026-11-03",
+  "authorization": "User decision of 2026-11-03: revisit the unresolved adopted-data items as revisions of the adoption decisions; inference allowed under the instruction of 2026-11-02.",
+  "scope": "Parameters of period-background-context-rule (r03, previously inline in scripts/build_period_scene.py) and its r05 revision. Applies to the modern building footprints used as inferred period context; it certifies no building's 1976 survival.",
+  "rule_id": "period-background-context-rule",
+  "parameters": {
+    "storey_height_m": 3.2,
+    "minimum_height_m": 6.4,
+    "near_route_radius_m": 38,
+    "near_height_cap_m": 24,
+    "far_height_cap_m": 28,
+    "low_structure_exception": {
+      "source_height_below_m": 5.0,
+      "applies_at_route_distance_m_or_more": 38,
+      "adopted_height": "modern source height, unrounded",
+      "reason": "Single-storey or smaller modern structures away from the route are not raised to the two-storey minimum."
+    },
+    "omitted_feature_ids": [
+      "bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76"
+    ]
+  },
+  "evidence": [
+    {
+      "id": "plateau-13104-shinjuku-ku-2025",
+      "url": "https://www.mlit.go.jp/plateau/open-data/",
+      "year": 2025,
+      "what_supports": "Modern footprints and heights used as the spatial scaffold; not evidence of 1976 buildings.",
+      "source_kind": "modern 3D city model",
+      "evidence_only": true,
+      "license": null,
+      "year_role": "data release year"
+    },
+    {
+      "id": "gsi-gazo1-1974-1978",
+      "url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "year": [
+        1974,
+        1978
+      ],
+      "what_supports": "Re-inspected 2026-11-03 with footprints overlaid: at bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 (aerial pixels about x 219-223, y 213-219, about 13.6 m west of the adopted Toho Kaikan front) the mosaic shows the light street in front of the Toho Kaikan and no separate roof. Absence on the mosaic is not proof of absence. The modern footprint shares two vertices with the modern Toho building (bldg_7506fc9f), which suggests a modern appendage of that building.",
+      "source_kind": "historical aerial imagery",
+      "evidence_only": true,
+      "license": "CC-BY-4.0",
+      "year_role": "captioned capture year or capture-year range"
+    }
+  ],
+  "assumptions": [
+    "Storey scale, caps and the two-storey minimum are production rules, not measured 1976 heights.",
+    "26 modern footprints are lower than 5 m. 24 lie 38 m or more from the route and keep their modern height (3.0-4.9 m); bldg_1ddffcee (11.7 m from the route, 66 m2) keeps the 6.4 m minimum because the near-route storefront needs an upper storey; bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 is omitted.",
+    "An object of about 3 x 3 m is about 3 x 3 aerial pixels; absence on the mosaic is not proof of absence."
+  ],
+  "contradictions": [
+    {
+      "issue": "Small modern structures turned into windowless 6.4 m boxes (r04 history critique, round c)",
+      "resolution": "r05 low-structure exception and one omission (see revisions)."
+    }
+  ],
+  "alternatives": [
+    {
+      "variant": "keep the 6.4 m minimum everywhere",
+      "adopted": false,
+      "reason": "Turns kiosks, sheds and stair hoods (2-30 m2) into blank two-storey boxes."
+    },
+    {
+      "variant": "omit every low structure",
+      "adopted": false,
+      "reason": "The aerial cannot show most of them either way; omission would remove scaffold without evidence."
+    },
+    {
+      "variant": "rebuild them as period kiosks",
+      "adopted": false,
+      "reason": "No source identifies their 1976 use; the background is beyond the route's detailed facade radius."
+    },
+    {
+      "variant": "keep the modern height for low background structures and omit the forecourt one",
+      "adopted": true,
+      "reason": "Least invention; the omission follows the aerial at the one site inside the theatre forecourt."
+    }
+  ],
+  "revisions": [
+    {
+      "id": "r05-low-structure-exception",
+      "date": "2026-11-03",
+      "resolves": "r04 unresolved item 4 (small modern plaza structures)",
+      "issue": "The two-storey minimum raised 26 modern footprints lower than 5 m to 6.4 m; bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 (3.1 m, about 10 m2, survey year unrecorded) became a windowless box in the theatre forecourt.",
+      "previous": {
+        "minimum_height_m": 6.4,
+        "low_structure_exception": null,
+        "omitted_feature_ids": []
+      },
+      "adopted": {
+        "low_structure_exception": "source height kept for footprints lower than 5 m and 38 m or more from the route",
+        "omitted_feature_ids": [
+          "bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76"
+        ]
+      },
+      "counter_evidence": [
+        "The modern height of a small structure is not its 1976 height; it is only the least-invented scaffold.",
+        "Some small footprints in Kabukicho were two-storey buildings in 1976 (e.g. narrow bar plots); keeping a 3 m modern height may understate them."
+      ],
+      "inferred_parameters": [
+        "5.0 m source-height threshold",
+        "38 m route distance (same as the near-route facade radius)"
+      ],
+      "checks": "tests/test_adopted_data_review.py: no background building under 5 m source height is raised; the omitted feature is classified 'omitted' with this decision and kept in the modern baseline.",
+      "historical_fact_certification": false
+    }
+  ],
+  "redistribution": "No aerial raster is embedded in this decision file."
+}

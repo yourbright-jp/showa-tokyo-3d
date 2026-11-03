@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-r05-data-review-plaza-reveal-toho-before-after",
+  "path": "docs/previews/r05-data-review/plaza-reveal-toho-before-after.jpg",
+  "type": "rendered-reconstruction-comparison",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-03",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html"
+  ],
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "scope": "Modern building footprints, road polygons and DEM used as the spatial underlay; not evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Inherited through the adopted r03 layout (theatre roof outlines, plaza); raw tiles are not embedded."
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_scope": "Project-derived render/configuration; keep the PLATEAU and GSI attribution. Does not license cited archival photographs or the approved colour masters.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 / 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工 / showa-tokyo-3d project によるコード生成",
+  "source_years": [
+    2025,
+    {
+      "from": 1974,
+      "to": 1978,
+      "exact_capture_date": null
+    }
+  ],
+  "source_years_scope": "Underlay data years. The adopted landmark decisions cite 1957-1979 sources; see the linked decision records for each year's role.",
+  "target_year": 1976,
+  "dependencies": [
+    "kabukicho-period-features",
+    "kabukicho-gate-1976",
+    "kabukicho-koma-plaza-1976",
+    "kabukicho-milano-1976",
+    "kabukicho-context-massing-1976",
+    "kabukicho-route-surfaces-1976",
+    "kabukicho-adopted-walk",
+    "plateau-13104-2025-terrain-crop",
+    "kabukicho-r01-kabukicho-layout-features",
+    "kabukicho-r05-data-review-manifest"
+  ],
+  "sha256": "31c0ac257b1e376a3922b09b3cd77985a3cf5efabe500335f19fb74aafd512a1",
+  "size_bytes": 243004,
+  "geographic_confidence": "approximate",
+  "historical_confidence": "inferred",
+  "adoption_status": "adopted-with-inference",
+  "historical_fact_certification": false,
+  "redistribution_review": "Only code-generated output is published. No photograph, scanned texture, external 3D model or HDR is embedded; the approved colour masters were used only for side-by-side comparison outside these images.",
+  "source_photographs_embedded": false,
+  "processing": "scripts/publish_r05_data_review.py: two scripts/render_stills.mjs --gpu --batch --spp 64 renders (before: commit c2fb75a; after: commit 0852807) resized to 1280 px wide and stacked with captions, cropped to [60, 560, 760, 760]; JPEG.",
+  "format": "jpeg",
+  "units": "pixels",
+  "coordinate_system": null,
+  "inferred_elements": "Both images are code-generated reconstructions. Revised items follow the r05 decision revisions (kabukicho-koma-plaza-1976, kabukicho-milano-1976, kabukicho-context-massing-1976); every other element keeps the r04 tiers (period-plausible-generic shopfronts, fictional names, people, light).",
+  "comparison_change": "crop: Toho Kaikan front, クラブハイツ band and the omitted forecourt box",
+  "camera_id": "plaza-reveal",
+  "font_provenance": {
+    "fonts": [
+      {
+        "family": "IPAGothic",
+        "package": "fonts-ipafont-gothic 00303",
+        "license": "IPA Font License Agreement v1.0",
+        "license_url": "https://moji.or.jp/ipafont/license/",
+        "font_binary_redistributed": false
+      },
+      {
+        "family": "WenQuanYi Zen Hei (fallback only)",
+        "package": "fonts-wqy-zenhei 0.9.45",
+        "license": "GPL-2.0 with font embedding exception",
+        "license_url": "http://wenq.org/wqy2/index.cgi?ZenHei",
+        "font_binary_redistributed": false
+      }
+    ],
+    "scope": "Sign text is rasterised from fonts into generated textures; captions use IPA Gothic when present locally. No font binary is redistributed."
+  },
+  "render_manifest": "docs/previews/r05-data-review/manifest.json"
+}

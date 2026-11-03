@@ -4,25 +4,25 @@
   "status": "r04-diagnostic-view",
   "role": "supplementary review camera for the adopted Milano-za front; not a route station",
   "position_m": [
-    -58.6133,
-    0.0639,
-    -125.253
+    -60.7594,
+    0.2029,
+    -119.3365
   ],
   "look_at_m": [
-    -86.8154,
-    4.6063,
-    -135.4827
+    -88.9614,
+    4.7064,
+    -129.5661
   ],
   "height_m": 1.6,
   "height_reference": "above modern DEM TIN surface",
-  "ground_height_local_m": -1.5361,
+  "ground_height_local_m": -1.3971,
   "focal_length_35mm_equivalent_mm": 35,
-  "camera_pitch_degrees": 8.61,
+  "camera_pitch_degrees": 8.537,
   "derivation": {
     "text_node": "milano-name-0 (data/derived/kabukicho-period-features.json)",
     "front_point_xz_m": [
-      -86.8154,
-      -135.4827
+      -88.9614,
+      -129.5661
     ],
     "distance_along_front_normal_m": 30.0,
     "look_height_above_front_ground_m": 6.0,
