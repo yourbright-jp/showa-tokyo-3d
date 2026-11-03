@@ -6,8 +6,10 @@
 //        [--channel chrome] [--angle d3d11|gl|vulkan|metal]
 // Always uses the GPU (hardware WebGL); a run that lands on SwiftShader stops with an error.
 // Output: <out>/frames/frame-000000.png ... and <out>/walk-report.json (world log, environment,
-// per-frame times). --resume keeps frames that already exist (the world is deterministic, so a
-// resumed run draws the same frames). Encode with: py -3 scripts/encode_frames.py <out>
+// per-frame times), <out>/walk-config.json (the settings every frame depends on). --resume keeps
+// frames that already exist (the world is deterministic, so a resumed run draws the same frames); it
+// stops unless walk-config.json matches the new settings and code exactly, and an output directory
+// that already has frames is refused without --resume. Encode with: py -3 scripts/encode_frames.py <out>
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,6 +30,25 @@ const out = path.resolve(ROOT, opt('out', 'renders/walk'));
 const framesDir = path.join(out, 'frames');
 const resume = args.includes('--resume');
 fs.mkdirSync(framesDir, { recursive: true });
+
+const git = (cmd) => { try { return execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return null; } };
+// Everything a frame depends on. Frames are only reused when all of it is unchanged, so a resumed
+// render never mixes frames of different times, sizes, looks, sampling or code.
+const config = {
+  from, to, fps, spp, w, h, look, shutter, shadow: opt('shadow') ?? null,
+  source_commit: git('git rev-parse HEAD'), worktree_dirty: git('git status --porcelain -- viewer scripts data scenes') ? true : false,
+};
+const configPath = path.join(out, 'walk-config.json');
+const existing = fs.readdirSync(framesDir).filter((f) => /^frame-\d{6}\.png$/.test(f));
+if (existing.length) {
+  if (!resume) throw new Error(`${framesDir} already has ${existing.length} frames; pass --resume to continue that render, or use another --out`);
+  if (!fs.existsSync(configPath)) throw new Error(`--resume: ${configPath} is missing, so the existing frames cannot be checked`);
+  const prev = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const changed = Object.keys(config).filter((k) => JSON.stringify(prev[k]) !== JSON.stringify(config[k]));
+  if (changed.length) throw new Error(`--resume: settings differ from the existing frames (${changed.map((k) => `${k}: ${JSON.stringify(prev[k])} -> ${JSON.stringify(config[k])}`).join(', ')})`);
+  if (config.worktree_dirty) throw new Error('--resume: uncommitted changes in viewer/scripts/data/scenes, so the existing frames cannot be shown to come from the same code; commit first');
+}
+fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
 
 const count = Math.floor((to - from) * fps + 1e-9) + 1;
 const frames = Array.from({ length: count }, (_, n) => ({ n, t: +(from + n / fps).toFixed(6), file: path.join(framesDir, `frame-${String(n).padStart(6, '0')}.png`) }));
@@ -81,7 +102,6 @@ for (const f of frames) {
 await browser.close();
 server.close();
 
-const git = (cmd) => { try { return execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return null; } };
 const ms = perFrame.map((p) => p.ms).sort((a, b) => a - b);
 const report = {
   from, to, fps, frames: frames.length, rendered: perFrame.length, w, h, look, spp, shutter,
@@ -90,7 +110,7 @@ const report = {
   environment: {
     mode: 'gpu', webgl_renderer: world.gpu, launch, browser: browser.version(), node: process.version, platform: process.platform,
     three: JSON.parse(fs.readFileSync(path.join(ROOT, 'node_modules/three/package.json'), 'utf8')).version,
-    source_commit: git('git rev-parse HEAD'), worktree_dirty: git('git status --porcelain -- viewer scripts data scenes') ? true : false,
+    source_commit: config.source_commit, worktree_dirty: config.worktree_dirty,
   },
   fontWarnings: world.fontWarnings, fontSources: world.fontSources,
   world_log: world.log, console: logs.slice(-60), per_frame: perFrame,
