@@ -111,7 +111,8 @@
         "All dimensions and retained 20 m roof height",
         "1957 opening/canopy/window motifs carried forward to 1976",
         "Neutral pale concrete colour and glazing/metal colours",
-        "Canopy-top mounting of the コマ劇場 / コマ東宝 letters, 0.25 m setback and 0.15 m rail (r05 revision after the 1957 mounting motif)"
+        "Canopy-top mounting of the コマ劇場 / コマ東宝 letters, 0.25 m setback and 0.15 m rail (r05 revision after the 1957 mounting motif)",
+        "Which face the 1957 photograph shows (the adopted west/plaza front is assumed); the 3.1 m canopy underside is not taken from that photograph"
       ],
       "excluded_elements": [
         "No undated green facade / Koma Stadium lettering is claimed as verified 1976",
@@ -326,7 +327,7 @@
       "url": "https://www.kanko-shinjuku.jp/special/-/article_1768.html",
       "image_url": "https://www.kanko-shinjuku.jp/images/special/05/photo_history_07.jpg",
       "year": 1957,
-      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "what_supports": "Inspected photograph shows a pale panelled long facade, rows of small windows, a deep canopy, repeated entrances and freestanding box lettering on the canopy that reads コマ東宝 and, on a second ledge, コマシネマ (corrected on r05 re-inspection; earlier records read the second string as コマ劇場). Which face of the theatre it shows is not established. Carrying these motifs into 1976 is an explicit assumption.",
       "source_kind": "tourism association reproduction credited to Shinjuku History Museum",
       "evidence_only": true,
       "license": null,
@@ -348,7 +349,7 @@
       "url": "https://www.kanko-shinjuku.jp/special/-/article_1767.html",
       "image_url": "https://www.kanko-shinjuku.jp/images/special/05/photo_sthb1.jpg",
       "year": 1979,
-      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, stairs, Club Heights sign and setback tower. Right of the stairs, a windowless white wall carries a ring emblem with the latin letters KOMA, poster cases and a cinema banner ending 上映中 コマ東宝, followed by a large freestanding latin K (corrected on r05 re-inspection: the ring belongs to the Koma side, not the Toho Kaikan). Adopted as a nearby-year shape reference; programmes are not carried back.",
       "source_kind": "tourism association reproduction credited to Shinjuku History Museum",
       "evidence_only": true,
       "license": null,
@@ -414,11 +415,15 @@
     },
     {
       "issue": "Ring emblem with KOMA lettering in the 1975/1979 plaza photographs (r05 re-inspection)",
-      "resolution": "Unresolved and not changed in r05. The large ring emblem on the white wall right of the stairs carries the latin letters KOMA, a Koma production banner hangs on the same wall and a large latin K follows to the right. This contradicts reading the ring as the Toho Kaikan emblem (r03 parameters emblem_*, placed at 0.78 of the Toho front by the r03 script). Recorded for a separate revision."
+      "resolution": "Unresolved and not changed in r05. On the white, windowless wall right of the Toho Kaikan stairs the ring emblem carries the latin letters KOMA; poster cases with a band read as コマ東宝劇場 (moderate confidence) and a cinema banner ending 上映中 コマ東宝 hang on the same wall, and a large freestanding latin K follows to the right. This contradicts reading the ring as the Toho Kaikan emblem (r03 parameters emblem_*, placed at 0.78 of the Toho front by the r03 script) and the 1957-style windows/canopy adopted for the Koma north end. Recorded for a separate revision of the Koma west-front segmentation."
     },
     {
       "issue": "Vertical order of the Toho front in the 1975/1979 photographs (r05 re-inspection)",
       "resolution": "Recorded only: the photographs show programme billboards below the プラザ劇場 band and a glazed upper level above it. The r04 viewer's authored billboard above プラザ劇場 is a period-plausible-generic placement, not an adopted value; it is not changed in r05."
+    },
+    {
+      "issue": "Koma north end in the 1975/1979 photographs versus the adopted 1957 motifs (r05 independent history critique)",
+      "resolution": "Unresolved. The two photographs that bracket 1976 show the Koma's plaza-side north end as a windowless white wall with the KOMA ring emblem, poster cases and a コマ東宝 cinema banner, and no canopy-top name letters; the adopted model carries 1957 windows, canopy and the canopy-mounted コマ東宝 there. Splitting the west front into a 1975/1979-based north segment and a 1957-based south segment is the next revision; until then the north end remains a recorded contradiction."
     }
   ],
   "alternatives": [
@@ -487,13 +492,18 @@
       "evidence": [
         {
           "evidence_id": "shinjuku-koma-1957",
-          "observation": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). The building-name letters are three-dimensional box letters standing on top of the deep canopy and on a ledge further along the front, with a light frame behind them and shadows on the wall; the rooftop name letters stand on the parapet the same way. No name is mounted flush on the wall below the canopy line."
+          "observation": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). The large name letters are three-dimensional box letters standing on top of the deep canopy and on a ledge further along the front, with a light frame behind them and shadows on the wall; the rooftop name letters stand on the parapet the same way. Only small name plates (コマ東宝 / コマシネマ) sit on the canopy edge; no large name lettering is mounted flush on the wall below the canopy line."
+        },
+        {
+          "evidence_id": "shinjuku-plaza-1979",
+          "observation": "Supports the position, contradicts the form: a cinema banner ending 上映中 コマ東宝 and poster cases hang on the Koma's plaza-side north end, near the adopted コマ東宝 position (fraction 0.81), but there are no canopy-top letters there. The large latin K further right stands freestanding on a frame, which is the same mounting family as the 1957 letters; its latin form is counter-evidence to the Japanese strings."
         }
       ],
       "counter_evidence": [
-        "The 1957 photograph is about 19 years earlier; carrying the mounting to 1976 is an assumption.",
-        "The 1957 canopy strings read コマ東宝 and コマシネマ, not コマ劇場 (see contradictions); the adopted name string is a production choice.",
-        "The 1975/1979 photographs show a ring emblem with KOMA and large latin letters on the Koma's plaza side, so the 1976 lettering on this side may have differed altogether."
+        "The 1957 photograph is about 19 years earlier, and which face of the theatre it shows is not established; carrying the mounting to the 1976 west front is an assumption.",
+        "The 1957 canopy strings read コマ東宝 and コマシネマ, not コマ劇場 (see contradictions); the adopted name string コマ劇場 is a production choice with no photographic support.",
+        "The 1975 and 1979 photographs, which bracket 1976, show the Koma's plaza-side north end as a windowless white wall with a KOMA ring emblem, poster cases and a コマ東宝 cinema banner, and no canopy-top letters. For that segment the nearest-year evidence contradicts the 1957 motifs the model keeps (see contradictions).",
+        "The 1957 canopy looks higher than the adopted 3.1 m underside relative to pedestrians (impression from one perspective photograph, not a measurement); the canopy dimensions remain r03 inferences."
       ],
       "alternatives": [
         {
@@ -512,9 +522,14 @@
           "reason": "The walk and the six stations are fixed shared cameras."
         },
         {
+          "variant": "follow the 1975/1979 photographs at the north end: windowless white wall, poster cases with a band, banner position, no canopy-top コマ東宝",
+          "adopted": false,
+          "reason": "Not adopted in r05 because it needs a separate revision of the Koma west-front layout (north/south segments, the ring emblem moved from the Toho front, canopy line), beyond the name-mounting problem this revision resolves. Recorded as the next revision; the north end stays a recorded contradiction until then."
+        },
+        {
           "variant": "freestanding letters on the canopy top",
           "adopted": true,
-          "reason": "Matches the mounting seen in the only inspected Koma front photograph and clears every route sightline."
+          "reason": "Matches the mounting in the only inspected photograph that shows a Koma entrance front (1957); the 1975/1979 photographs show only the plaza-side north end. Clears every route sightline."
         }
       ],
       "inferred_parameters": [
@@ -524,7 +539,7 @@
         "glyph centre 3.895 m above grade",
         "support frame (authored detail in the viewer)"
       ],
-      "checks": "tests/test_adopted_data_review.py: sightlines from the walk arrival eye and stations plaza-reveal / koma-front to the glyph bottoms clear the canopy outer edge plus a 0.07 m fascia allowance.",
+      "checks": "tests/test_adopted_data_review.py: sightlines from the walk arrival eye and stations plaza-reveal / koma-front to the glyph bottoms clear the canopy outer edge plus a 0.07 m fascia allowance. The independent history critique of 2026-11-03 judged the mounting acceptable as an inference for the south segment and asked for the north-end revision above.",
       "historical_fact_certification": false
     },
     {
@@ -639,7 +654,10 @@
         }
       ],
       "counter_evidence": [
-        "Moving a prop to improve a fixed view is a composition choice, not new positional evidence."
+        "Moving a prop to improve a fixed view is a composition choice, not new positional evidence.",
+        "In the 1975/1979 photographs multi-globe lamps stand in front of the Toho Kaikan front, its stairs and the Koma emblem wall and overlap lettering; keeping poles off the name sightlines is a camera-driven choice that runs against that observation. Further moves for this reason are not to be stacked.",
+        "The 2 m placement uncertainty is itself an assumption; no source fixes any pole position.",
+        "r03 kept the fountain in place rather than move it for the walk; this revision moves lamps for fixed cameras, which is recorded here as a composition exception, not a change of that principle."
       ],
       "alternatives": [
         {

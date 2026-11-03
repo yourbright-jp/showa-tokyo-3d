@@ -72,7 +72,7 @@
       "id": "tokyu-milano-1971",
       "url": "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
       "year": 1971,
-      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 626 x 460 web preview) The barrel gable's arc is cut off by the taller building on its right (north) before it descends to its springing; the MILANO letters and the emblem are centred left (south) of the gable crown.",
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser (watermarked 626 x 460 preview; no pixels copied). The taller north neighbour meets the gable's right end; at this resolution the arc is already low there, so how much of the gable it hides cannot be told. The MILANO letters and the emblem are centred left (south) of the gable crown.",
       "source_kind": "owner photograph catalogue",
       "evidence_only": true,
       "license": null,
@@ -82,7 +82,7 @@
       "id": "tokyu-milano-1972",
       "url": "https://tokyu.shibuyaphotomuseum.jp/detail/1402/",
       "year": 1972,
-      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown.",
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown. This is the main photographic support for the hidden north part.",
       "source_kind": "owner photograph catalogue",
       "evidence_only": true,
       "license": null,
@@ -95,7 +95,7 @@
         1974,
         1978
       ],
-      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip about 1.5-2 px (about 1.5-2 m) wide; the southern two thirds face open street.",
+      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip read as about 1.5-4 px (about 1.5-4 m) depending on where it is measured; projecting the neighbour roof's south end onto the Milano edge gives a fraction of about 0.63-0.66. The southern part faces open street.",
       "source_kind": "historical aerial imagery",
       "evidence_only": true,
       "license": "CC-BY-4.0",
@@ -116,6 +116,10 @@
     {
       "issue": "Photograph resolution",
       "resolution": "The photographs are small watermarked previews in perspective; the 0.66 span comes from the aerial footprints, and the photographs are used only for the qualitative arrangement."
+    },
+    {
+      "issue": "Appearance of the north neighbour (r05 independent history critique)",
+      "resolution": "Recorded only: the 1971/1972 photographs show a light-coloured tall building with stacked horizontal window bands; the model's generic period facade for this inferred context building does not follow them. Not changed in r05."
     }
   ],
   "alternatives": [
@@ -160,7 +164,8 @@
       "counter_evidence": [
         "The neighbour outline is the modern (2021 survey) footprint; the 1976 south face may differ by metres.",
         "Perspective and preview resolution prevent measuring how much of the gable the neighbour hid.",
-        "A narrower front changes the spacing of doors/windows; those modules remain inferred."
+        "A narrower front changes the spacing of doors/windows; those modules remain inferred.",
+        "The review camera r04-milano-front now faces the centre of the public front, so the junction with the north neighbour is only at the right edge of the frame; an oblique diagnostic view of that junction does not exist yet."
       ],
       "inferred_parameters": [
         "public span 0.66 (0.5 m short of the neighbour's footprint)",

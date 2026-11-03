@@ -54,7 +54,7 @@
       "source_url": "https://tokyu.shibuyaphotomuseum.jp/detail/954/",
       "source_year": 1971,
       "publication_year": null,
-      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 626 x 460 web preview) The barrel gable's arc is cut off by the taller building on its right (north) before it descends to its springing; the MILANO letters and the emblem are centred left (south) of the gable crown.",
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser (watermarked 626 x 460 preview; no pixels copied). The taller north neighbour meets the gable's right end; at this resolution the arc is already low there, so how much of the gable it hides cannot be told. The MILANO letters and the emblem are centred left (south) of the gable crown.",
       "evidence_only": true,
       "license": null,
       "license_url": null,
@@ -69,7 +69,7 @@
       "source_url": "https://tokyu.shibuyaphotomuseum.jp/detail/1402/",
       "source_year": 1972,
       "publication_year": null,
-      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown.",
+      "what_supports": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). (watermarked 362 x 460 web preview, view from the plaza) The north neighbour stands forward of the Milano front and covers the right part of the gable; MILANO is again left of the gable crown. This is the main photographic support for the hidden north part.",
       "evidence_only": true,
       "license": null,
       "license_url": null,
@@ -87,7 +87,7 @@
         1978
       ],
       "publication_year": null,
-      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip about 1.5-2 px (about 1.5-2 m) wide; the southern two thirds face open street.",
+      "what_supports": "Re-inspected 2026-11-03 with the footprints overlaid: a separate darker roof lies east of the northern third of the bright Milano roof, separated from it by a dark strip read as about 1.5-4 px (about 1.5-4 m) depending on where it is measured; projecting the neighbour roof's south end onto the Milano edge gives a fraction of about 0.63-0.66. The southern part faces open street.",
       "evidence_only": true,
       "license": null,
       "license_url": null,
@@ -117,8 +117,8 @@
   "dependencies": [
     "kabukicho-r01-kabukicho-layout-hypothesis"
   ],
-  "sha256": "8fbfa70fca0d923cb7a2506f8aca774ba112faff65333834a9f43d61e98fb2b9",
-  "size_bytes": 8340,
+  "sha256": "2a43253cd6e5bdd90a1424989c75c5d073ca7be04ef5c9597835ca16daf47db1",
+  "size_bytes": 9079,
   "format": "json",
   "units": "metres",
   "coordinate_system": {

@@ -43,7 +43,7 @@
         1974,
         1978
       ],
-      "what_supports": "Re-inspected 2026-11-03 with footprints overlaid: at bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 (aerial pixel about [221, 216], about 13.6 m west of the adopted Toho Kaikan front) the mosaic shows the light paved street/forecourt north of the plaza and no separate roof.",
+      "what_supports": "Re-inspected 2026-11-03 with footprints overlaid: at bldg_cef4146e-ec6f-4ba5-b496-2f93f8791e76 (aerial pixels about x 219-223, y 213-219, about 13.6 m west of the adopted Toho Kaikan front) the mosaic shows the light street in front of the Toho Kaikan and no separate roof. Absence on the mosaic is not proof of absence. The modern footprint shares two vertices with the modern Toho building (bldg_7506fc9f), which suggests a modern appendage of that building.",
       "source_kind": "historical aerial imagery",
       "evidence_only": true,
       "license": "CC-BY-4.0",

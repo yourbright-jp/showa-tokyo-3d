@@ -698,7 +698,7 @@ class Builder:
                     decision = self.koma["id"] if f["id"] in removed else "period-background-context-rule"
                     evidence = ["gsi-gazo1-1974-1978", "shinjuku-plaza-1975"] if f["id"] in removed else ["plateau-13104-shinjuku-ku-2025", "gsi-gazo1-1974-1978"]
                 reason = ("Replaced by adopted historical theatre masses and authored period facade details."
-                          if disposition == "replaced" else "Omitted from adopted period space: the 1974-1978 aerial shows paved theatre forecourt and no separate roof here (r05, kabukicho-context-massing-1976); baseline retains the modern feature."
+                          if disposition == "replaced" else "Omitted from adopted period space: the 1974-1978 aerial shows the light street in front of the Toho Kaikan and no separate roof here; absence on the mosaic is not proof of absence (r05, kabukicho-context-massing-1976). Baseline retains the modern feature."
                           if f["id"] in self.context_omitted else "Omitted from adopted period space because aerial/near-year plaza evidence supports paving here; baseline retains the modern feature."
                           if disposition == "omitted" else "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use."
                           if f["id"] in self.low_kept else "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.")

@@ -112,8 +112,8 @@ def main():
     manifest = {
         "schema_version": 1, "id": "kabukicho-r05-data-review-manifest", "round": "r05 adopted-data review", "date": a.date,
         "renders": {side: {"folder": dirs[side], "environment": envs[side], "look": reps[side][0]["look"],
-                           "accumulation": reps[side][0].get("accumulation"),
-                           "views": {v: {"ms": reps[side][1][v]["ms"], "webgl_renderer": (reps[side][1][v].get("gpu") or {}).get("renderer")}
+                           "spp": reps[side][0].get("spp"), "accumulation_params": reps[side][0].get("accumulation_params"),
+                           "views": {v: {"ms": reps[side][1][v]["ms"], "webgl_renderer": reps[side][1][v].get("gpu")}
                                      for v in VIEWS}} for side in reps},
         "images": [{"path": rel, "sha256": sha256(rel), **meta} for rel, meta in published],
         "note": "Full-resolution PNGs remain in git-ignored renders/. Changes outside the revised items (distant sign texts, shop contents, people) come from the viewer's world-wide sign-name uniqueness pass, which depends on building order (r04 unresolved item 9), not from data changes at those places.",

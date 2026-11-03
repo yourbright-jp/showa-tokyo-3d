@@ -52,7 +52,8 @@
       "terrain_member": "udx/dem/533945_dem_6697_op.gml",
       "terrain_asset_id": "plateau-13104-2025-terrain-crop",
       "decision_records": [
-        "kabukicho-route-surfaces-1976"
+        "kabukicho-route-surfaces-1976",
+        "kabukicho-context-massing-1976"
       ]
     },
     {
@@ -111,7 +112,9 @@
       "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
       "decision_records": [
         "kabukicho-koma-plaza-1976",
-        "kabukicho-route-surfaces-1976"
+        "kabukicho-route-surfaces-1976",
+        "kabukicho-milano-1976",
+        "kabukicho-context-massing-1976"
       ],
       "year_range": [
         1974,
@@ -127,7 +130,10 @@
       "catalogue_number": "02088000954",
       "author": "Tokyu Corporation",
       "status": "primary-catalogue-date-confirmed",
-      "redistribution_review": "Original image not redistributed"
+      "redistribution_review": "Original image not redistributed",
+      "decision_records": [
+        "kabukicho-milano-1976"
+      ]
     },
     {
       "id": "tokyu-milano-1972",
@@ -137,7 +143,10 @@
       "catalogue_number": "02088001402",
       "author": "Tokyu Corporation",
       "status": "primary-catalogue-date-confirmed",
-      "redistribution_review": "Original image not redistributed"
+      "redistribution_review": "Original image not redistributed",
+      "decision_records": [
+        "kabukicho-milano-1976"
+      ]
     },
     {
       "id": "shinjuku-plaza-1975",
@@ -318,7 +327,7 @@
       ],
       "source_year": 1957,
       "year_role": "captioned capture year or capture-year range",
-      "what_supports": "Inspected photograph shows pale panelled long facade, two rows of small windows, canopy, repeated entrances and separate コマ劇場 / コマ東宝 lettering. Carrying these motifs into 1976 is an explicit assumption.",
+      "what_supports": "Inspected photograph shows a pale panelled long facade, rows of small windows, a deep canopy, repeated entrances and freestanding box lettering on the canopy that reads コマ東宝 and, on a second ledge, コマシネマ (corrected on r05 re-inspection; earlier records read the second string as コマ劇場). Which face of the theatre it shows is not established. Carrying these motifs into 1976 is an explicit assumption.",
       "limitations": null
     },
     {
@@ -338,7 +347,7 @@
       ],
       "source_year": 1979,
       "year_role": "captioned capture year or capture-year range",
-      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, circle emblem, stairs, Club Heights sign and setback tower from the partial Koma side. Adopted as a nearby-year shape reference; programmes are not carried back.",
+      "what_supports": "Inspected photograph distinguishes the low Plaza Theatre front, stairs, Club Heights sign and setback tower. Right of the stairs, a windowless white wall carries a ring emblem with the latin letters KOMA, poster cases and a cinema banner ending 上映中 コマ東宝, followed by a large freestanding latin K (corrected on r05 re-inspection: the ring belongs to the Koma side, not the Toho Kaikan). Adopted as a nearby-year shape reference; programmes are not carried back.",
       "limitations": null
     },
     {
