@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "r04-gate-rear",
+  "status": "r04-diagnostic-view",
+  "role": "supplementary review camera for the inferred rear face of the adopted gate; not a route station",
+  "position_m": [
+    -82.8316,
+    1.8216,
+    53.2638
+  ],
+  "look_at_m": [
+    -88.0251,
+    6.5055,
+    70.4983
+  ],
+  "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": 0.2216,
+  "focal_length_35mm_equivalent_mm": 35,
+  "camera_pitch_degrees": 14.586,
+  "derivation": {
+    "gate_decision": "data/decisions/kabukicho-gate-1976.json",
+    "gate_centre_xz_m": [
+      -88.0251,
+      70.4983
+    ],
+    "ahead_distance_along_gate_forward_m": 18.0,
+    "look_height_above_gate_ground_m": 5.6,
+    "script": "scripts/make_r04_views.py"
+  },
+  "composition_reference": "none (no source shows the gate's rear face); light/material R01, R08",
+  "historical_confidence": "not-applicable: review camera; no source photograph's camera position is reconstructed",
+  "source": "r04-review-camera"
+}

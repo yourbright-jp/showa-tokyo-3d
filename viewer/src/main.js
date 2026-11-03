@@ -9,10 +9,16 @@ import { analyseFacades } from './core/facades.js';
 //   station=<station id>   camera from scenes/.../cameras/<id>.json (default entrance-approach)
 //   still=1                offline-quality single frame; sets window.__renderDone when finished
 //   w, h                   output size (default window size; stills default 1920x1080)
+//   walk=<seconds>         camera from the adopted long-take walk (overrides station)
+//   view=<camera id>       supplementary review camera scenes/.../cameras/<id>.json that is not a
+//                          route station (e.g. r04-gate-establishing); overrides station
 //   look=<preset>          lighting preset from core/look.js
 //   only=<a,b>             build only the listed world modules (debugging)
+//   decor=1972             optional layer: the 1972 temporary street decoration on Ichibangai lamps
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
+const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
+const viewId = params.get('view');
 const stationId = params.get('station') || 'entrance-approach';
 const width = Number(params.get('w')) || (still ? 1920 : window.innerWidth);
 const height = Number(params.get('h')) || (still ? 1080 : window.innerHeight);
@@ -60,6 +66,7 @@ async function main() {
     rng: makeRng(1976),
     still,
     stationId,
+    options: { decor1972: params.get('decor') === '1972' },
     quality: { still, shadowMap: still ? 4096 : 2048, msaa: still ? 4 : 2, detailRadius: 140 },
     provenance: [],
     /** Record the evidence tier of generated content. tier: source-derived | period-plausible-generic | placeholder */
@@ -67,6 +74,22 @@ async function main() {
     log,
   };
   window.__ctx = ctx;
+  // Which WebGL implementation is drawing (SwiftShader = CPU; otherwise the GPU), and whether the
+  // sign fonts are installed (a missing family silently falls back and changes the lettering).
+  try {
+    const gl = renderer.getContext();
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    window.__gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+  } catch (e) { window.__gpu = `unknown (${e.message})`; }
+  log(`webgl renderer: ${window.__gpu}`);
+  {
+    const probe = document.createElement('canvas').getContext('2d');
+    const w = (f) => { probe.font = `64px ${f}`; return probe.measureText('喫茶歌舞伎町一番街ABC123').width; };
+    const missing = ['IPAGothic', 'IPAMincho', 'MotoyaLMaru', 'MotoyaLCedar', 'WenQuanYi Zen Hei']
+      .filter((f) => w(`"${f}", monospace`) === w('monospace') && w(`"${f}", serif`) === w('serif'));
+    window.__fontWarnings = missing;
+    if (missing.length) log(`WARNING fonts not installed (fallbacks used): ${missing.join(', ')}`);
+  }
   applyLook(ctx, lookName);
   const tf = performance.now();
   analyseFacades(ctx);
@@ -86,13 +109,31 @@ async function main() {
     }
   }
 
-  const cam = data.cameras[stationId];
-  if (!cam) throw new Error(`unknown station ${stationId}`);
-  setStationCamera(cam);
+  if (walkT !== null) {
+    const pose = data.walkPose(walkT);
+    setStationCamera({ position_m: pose.position_m, look_at_m: pose.look_at_m, focal_length_35mm_equivalent_mm: data.walk.focal_length_35mm_equivalent_mm });
+  } else {
+    let cam = data.cameras[stationId];
+    if (viewId) {
+      cam = data.reviewCameras[viewId];
+      if (!cam) throw new Error(`unknown review view ${viewId} (add it to REVIEW_VIEWS in core/data.js)`);
+    }
+    if (!cam) throw new Error(`unknown station ${stationId}`);
+    setStationCamera(cam);
+  }
   focusShadow(ctx, camera, 90);
 
   const composer = makeComposer(ctx, camera, width, height);
-  scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; if (o.castShadow === undefined) o.castShadow = true; } });
+  scene.traverse((o) => { if (o.isMesh && o.userData.noShadow !== true) { o.receiveShadow = true; } /* castShadow is opt-in: three.js defaults it to false, so each module sets it explicitly */ });
+  // three.js (r163+) replaces material.envMapIntensity with scene.environmentIntensity whenever a
+  // material has no envMap of its own. Bind the scene environment explicitly to materials that ask
+  // for a non-default intensity so recesses/interiors that dim their sky fill keep that choice.
+  scene.traverse((o) => {
+    if (!o.isMesh) return;
+    for (const m of Array.isArray(o.material) ? o.material : [o.material]) {
+      if (m && m.isMeshStandardMaterial && !m.envMap && m.envMapIntensity !== 1 && scene.environment) { m.envMap = scene.environment; m.needsUpdate = true; }
+    }
+  });
 
   window.__stats = () => {
     let meshes = 0, tris = 0;

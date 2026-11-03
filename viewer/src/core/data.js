@@ -1,6 +1,9 @@
 // Loads the repository's scene data (no new geometry is invented here).
 // Coordinates: metres, right-handed, x=east, y=up (orthometric - 32 m datum), z=south.
 const SCENE_DIR = '/scenes/shinjuku/kabukicho/1976';
+// Supplementary review cameras (not route stations). Loaded for every render so that modules
+// which keep camera foregrounds clear (people) build the same world whichever camera is used.
+export const REVIEW_VIEWS = ['r04-gate-establishing', 'r04-gate-rear', 'r04-milano-front'];
 
 async function getJSON(path) {
   const res = await fetch(path);
@@ -73,37 +76,61 @@ function buildTerrain(t) {
   return { vertices: V, triangles: T, bounds: { minX, maxX, minZ, maxZ }, heightAt };
 }
 
+function pointSegDist(x, z, ax, az, bx, bz) {
+  const dx = bx - ax, dz = bz - az;
+  const L = dx * dx + dz * dz;
+  const t = L > 0 ? Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / L)) : 0;
+  return Math.hypot(x - (ax + t * dx), z - (az + t * dz));
+}
+
 export async function loadData() {
-  const [sceneDef, layout, terrainRaw, hypothesis, refIndex] = await Promise.all([
+  // The adopted 1976 reconstruction (PR #7) is the canonical world: adopted massing heights,
+  // landmark forms, fixtures, stable sign text, obstacles and the long walk. The R01 layout
+  // features are still loaded for the road polygons used by facade analysis.
+  const [sceneDef, layout, terrainRaw, period, walk, gateDecision, komaDecision, surfaceDecision, refIndex] = await Promise.all([
     getJSON(`${SCENE_DIR}/scene.json`),
     getJSON('/data/derived/kabukicho-layout-features.json'),
     getJSON('/data/derived/kabukicho-terrain.json'),
-    getJSON('/data/kabukicho-layout-hypothesis.json'),
+    getJSON('/data/derived/kabukicho-period-features.json'),
+    getJSON(`${SCENE_DIR}/cameras/adopted-walk.json`),
+    getJSON('/data/decisions/kabukicho-gate-1976.json'),
+    getJSON('/data/decisions/kabukicho-koma-plaza-1976.json'),
+    getJSON('/data/decisions/kabukicho-route-surfaces-1976.json'),
     getJSON(`${SCENE_DIR}/references/approved-colour-index.json`),
   ]);
   const stationIds = sceneDef.route.stations.map((s) => s.id);
   const cameras = Object.fromEntries(await Promise.all(stationIds.map(async (id) => [id, await getJSON(`${SCENE_DIR}/cameras/${id}.json`)])));
+  const reviewCameras = Object.fromEntries(await Promise.all(REVIEW_VIEWS.map(async (id) => [id, await getJSON(`${SCENE_DIR}/cameras/${id}.json`)])));
 
   const terrain = buildTerrain(terrainRaw);
   const buildings = [];
-  const roads = [];
-  for (const f of layout.features) {
-    if (f.kind === 'building') {
-      // Every building feature carries both footprint_xz and LOD1 polygons; vertical extent comes
-      // from the polygons (common 32 m datum). Proxies are the aerial-interpreted theatre roofs.
-      const proxy = f.historical_status === 'inferred-roof-proxy';
-      const fp = f.polygons ? bottomFootprint(f.polygons) : null;
+  const fixtures = [];
+  const facadeFeatures = [];
+  let ground = null;
+  for (const f of period.features) {
+    if (f.kind === 'building' && f.role !== 'stable-sign-lettering' && f.polygons) {
+      const fp = bottomFootprint(f.polygons);
       let footprint = f.footprint_xz || (fp && fp.ring);
-      if (!footprint) continue;
+      if (!footprint || !fp) continue;
       if (footprint.length > 3) {
         const a = footprint[0], z = footprint[footprint.length - 1];
         if (Math.abs(a[0] - z[0]) < 1e-6 && Math.abs(a[1] - z[1]) < 1e-6) footprint = footprint.slice(0, -1);
       }
-      const baseY = fp ? fp.minY : (f.base_orthometric_height_m_assumption ?? 32) - 32;
-      const topY = fp ? fp.maxY : baseY + f.height_m;
-      buildings.push({ id: f.id, name: f.name, footprint, baseY, topY, height: topY - baseY, status: f.historical_status, proxy, heightVerified: !!f.height_verified, surveyYear: f.source_survey_year ?? null });
-    } else if (f.kind === 'road' && f.polygons) {
-      for (const poly of f.polygons) roads.push({ id: f.id, polygon: poly });
+      const landmark = !!f.adopted_identity;
+      buildings.push({
+        id: f.id, name: f.name, footprint, baseY: fp.minY, topY: fp.maxY, height: fp.maxY - fp.minY,
+        status: f.historical_status, truth: f.historical_truth_status, decisionId: f.decision_id,
+        // `proxy` kept for compatibility: true for landmark masses owned by the landmarks module
+        proxy: landmark, landmark, adoptedIdentity: f.adopted_identity || null,
+        materialKey: f.material_key, near: f.periodization === 'massing-and-near-route-facade',
+        sourceHeight: f.source_height_m ?? null, feature: f,
+      });
+    } else if (f.kind === 'fixture') {
+      fixtures.push(f);
+    } else if (f.kind === 'facade') {
+      facadeFeatures.push(f);
+    } else if (f.kind === 'terrain') {
+      ground = f;
     }
   }
   for (const b of buildings) {
@@ -112,30 +139,57 @@ export async function loadData() {
     for (const [x, z] of b.footprint) { cx += x; cz += z; }
     b.centroid = [cx / b.footprint.length, cz / b.footprint.length];
   }
-
-  const routePts = sceneDef.route.geometry.coordinates;
-  function routeDistance(x, z) {
-    let best = Infinity;
-    for (let i = 0; i < routePts.length - 1; i++) {
-      const [ax, , az] = routePts[i];
-      const [bx, , bz] = routePts[i + 1];
-      const dx = bx - ax, dz = bz - az;
-      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / (dx * dx + dz * dz)));
-      best = Math.min(best, Math.hypot(x - (ax + t * dx), z - (az + t * dz)));
-    }
-    return best;
+  const roads = [];
+  for (const f of layout.features) {
+    if (f.kind === 'road' && f.polygons) for (const poly of f.polygons) roads.push({ id: f.id, polygon: poly });
   }
 
+  // Walk path (adopted long take) as the route for distance/LOD queries; stations kept separately.
+  const route = [];
+  let last = null;
+  for (const s of walk.samples) {
+    const g = s.ground_position_m;
+    if (!last || Math.hypot(g[0] - last[0], g[2] - last[2]) > 2) { route.push(g); last = g; }
+  }
+  const lastG = walk.samples[walk.samples.length - 1].ground_position_m;
+  if (route[route.length - 1] !== lastG) route.push(lastG);
+  function routeDistance(x, z) {
+    let best = Infinity;
+    for (let i = 0; i < route.length - 1; i++) best = Math.min(best, pointSegDist(x, z, route[i][0], route[i][2], route[i + 1][0], route[i + 1][2]));
+    return best;
+  }
+  function walkPose(t) {
+    const S = walk.samples;
+    if (t <= S[0].time_s) return S[0];
+    if (t >= S[S.length - 1].time_s) return S[S.length - 1];
+    let lo = 0, hi = S.length - 1;
+    while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (S[mid].time_s <= t) lo = mid; else hi = mid; }
+    const a = S[lo], b = S[hi];
+    const u = (t - a.time_s) / Math.max(1e-9, b.time_s - a.time_s);
+    const lerp = (p, q) => p.map((v, i) => v + (q[i] - v) * u);
+    return { time_s: t, position_m: lerp(a.position_m, b.position_m), look_at_m: lerp(a.look_at_m, b.look_at_m), quaternion_xyzw: [a.quaternion_xyzw, b.quaternion_xyzw, u] };
+  }
+
+  const plazaBoundary = (period.plaza && period.plaza.boundary_m) || (layout.plaza && layout.plaza.boundary_m);
   return {
     sceneDef,
     cameras,
+    reviewCameras,
     stations: sceneDef.route.stations,
-    route: routePts,
+    route,
     routeDistance,
+    walk,
+    walkPose,
     buildings,
+    fixtures,
+    facadeFeatures,
+    textNodes: period.text_nodes,
+    obstacles: period.obstacles,
+    ground, // period terrain feature: polygons + polygon_material_keys (ground/asphalt/paving)
+    decisions: { gate: gateDecision, komaPlaza: komaDecision, routeSurfaces: surfaceDecision, list: period.decisions },
     roads,
-    plaza: layout.plaza,
-    hypothesis,
+    plaza: { ...(layout.plaza || {}), ...(period.plaza || {}), boundary_m: plazaBoundary },
+    hypothesis: null,
     references: refIndex.references,
     terrain,
     heightAt: terrain.heightAt,

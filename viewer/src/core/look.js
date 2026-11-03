@@ -11,12 +11,16 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 export const LOOK_PRESETS = {
   'clear-afternoon': {
     note: 'Visual working choice matched to R01/R02/R08 daylight; not a historical time-of-day claim.',
-    sunElevationDeg: 38, sunAzimuthDeg: 222, // azimuth measured clockwise from north
-    turbidity: 6.5, rayleigh: 1.6, mieCoefficient: 0.006, mieDirectionalG: 0.82,
-    sunIntensity: 3.4, sunColor: 0xfff1dc, skyFill: 0.85, groundFill: 0x6b6355,
-    exposure: 0.92, fogColor: 0xc9d3dc, fogDensity: 0.0032,
-    bloom: { strength: 0.18, radius: 0.5, threshold: 0.92 },
-    grade: { lift: [0.012, 0.012, 0.018], gain: [1.02, 1.0, 0.97], saturation: 1.06, contrast: 1.04, vignette: 0.22, grain: 0.022 },
+    // r04 revision: the r02 values (turbidity 6.5, AgX, fog 0.0032, sky fill 0.85) washed every
+    // station towards a pale grey and turned the adopted gate red (#A92B1D) salmon. The approved
+    // references read as saturated reversal film with a deep blue sky and dark-ish shadows.
+    sunElevationDeg: 40, sunAzimuthDeg: 222, // azimuth measured clockwise from north
+    turbidity: 3.0, rayleigh: 2.4, mieCoefficient: 0.0035, mieDirectionalG: 0.8,
+    sunIntensity: 3.7, sunColor: 0xfff0d8, skyFill: 0.56, groundFill: 0x5e564a,
+    exposure: 0.95, fogColor: 0xb4c3d2, fogDensity: 0.0019,
+    toneMapping: 'neutral',
+    bloom: { strength: 0.12, radius: 0.4, threshold: 0.97 },
+    grade: { lift: [0.004, 0.0, 0.004], gain: [1.03, 0.995, 0.975], saturation: 1.07, contrast: 1.17, vignette: 0.24, grain: 0.022 }, // round d: less olive shadows, less warm ground, ~7% less saturation (signs/clothes read as pure paint)
   },
   'neon-night': {
     note: 'Visual working choice matched to R04; not a historical claim.',
@@ -24,6 +28,7 @@ export const LOOK_PRESETS = {
     turbidity: 2, rayleigh: 0.4, mieCoefficient: 0.002, mieDirectionalG: 0.7,
     sunIntensity: 0.0, sunColor: 0x8899bb, skyFill: 0.06, groundFill: 0x221d1a,
     exposure: 1.25, fogColor: 0x1a1c24, fogDensity: 0.006,
+    toneMapping: 'agx',
     bloom: { strength: 0.75, radius: 0.55, threshold: 0.55 },
     grade: { lift: [0.01, 0.008, 0.016], gain: [1.03, 0.98, 0.98], saturation: 1.1, contrast: 1.06, vignette: 0.3, grain: 0.03 },
   },
@@ -108,7 +113,9 @@ export function applyLook(ctx, presetName = 'clear-afternoon') {
   ctx.sun = sun;
 
   scene.fog = new THREE.FogExp2(P.fogColor, P.fogDensity);
-  renderer.toneMapping = THREE.AgXToneMapping;
+  // Khronos PBR Neutral keeps hue and saturation of paint colours (adopted reds, enamel signs) far
+  // better than AgX, which desaturates mid-tones; night keeps AgX for its graceful neon roll-off.
+  renderer.toneMapping = P.toneMapping === 'neutral' ? THREE.NeutralToneMapping : P.toneMapping === 'aces' ? THREE.ACESFilmicToneMapping : THREE.AgXToneMapping;
   renderer.toneMappingExposure = P.exposure;
 }
 

@@ -7,7 +7,7 @@
 - 地区：新宿・歌舞伎町
 - 目標年代：1976年前後
 - 最初の経路：歌舞伎町一番街入口から旧コマ劇場前
-- 現在の成果：制作採用版の3D街区、全地物の分類、歩行軌道と確認静止画
+- 現在の成果：制作採用版の3D街区、全地物の分類、歩行軌道、three.jsのコード生成による1080pの確認静止画（r04）
 
 1976年前後の**制作採用版**を作成しました。門・コマ劇場・隣接する東宝会館・広場の形を決め、取り込んだ建物423件・道路176件・地形1件の全600地物に、置換・省略・推定背景などの扱いを記録しています。資料で決まらない寸法・色・配置は、根拠と反証を残した推定として採用しました。
 
@@ -21,11 +21,37 @@
 
 元の[現代の下敷き](scenes/shinjuku/kabukicho/1976/models/modern-baseline.gltf)、[R01配置検討モデル](scenes/shinjuku/kabukicho/1976/models/layout-study.gltf)、[取り込み・修正記録](docs/DATA_INTAKE_R01.md)も保持しています。
 
+## コード生成の静止画（r04）
+
+採用版と同じ世界を、three.jsのコード生成で作り込みました。地面・建物419棟・看板約1,090枚・人物約580人・門と劇場・街路の小物を、外部の画像や3Dモデルを使わずにコードだけで生成し、GPUのない環境で1920×1080の静止画を1枚約40〜60秒で描きます。
+
+![r04の固定6地点](docs/previews/r04/station-contact-sheet.jpg)
+
+[r04のラウンド記録](docs/rounds/shinjuku-kabukicho-1976-r04.md)に、独立批評の採点・指摘・修正、未解決の事項を記録しています。
+
+- 見た目の合格条件（独立した映像批評担当2人がそれぞれ全項目8点以上）には、まだ達していません。最大の弱点は人物の造形です。
+- 静止画のユーザー承認と動画（15秒の試写）は、まだです。
+- 看板の店名は架空の名前と一般的な業種名です。服装・光・季節（10月上旬の晴れた午後）は、見た目の作業上の選択です。
+
+描画の手順：
+
+```sh
+npm ci
+node scripts/render_stills.mjs --out renders/r04 --w 1920 --h 1080
+node scripts/render_stills.mjs --out renders/r04 --views r04-gate-establishing,r04-gate-rear,r04-milano-front
+node scripts/render_stills.mjs --out renders/r04-walk --walk 0,60,120,184,257
+npm run serve
+```
+
+`npm run serve`を実行すると、ブラウザで歩いて見られます（WASDで移動、1〜6で地点を切り替え）。GPUつきのPCでは`--gpu`を付けて描きます（[準備手順](docs/SETUP_GPU_PC.md)）。次の段階の計画は[r05作業計画](docs/rounds/shinjuku-kabukicho-1976-r05-plan.md)にあります。フォントは端末に入れたものを使います：`fonts-ipafont-gothic fonts-ipafont-mincho fonts-motoya-l-maruberi fonts-motoya-l-cedar fonts-wqy-zenhei`。
+
 ## 構成
 
 | パス | 内容 |
 | --- | --- |
 | `scenes/<ward>/<district>/<year>/` | 地区・年代ごとのシーン、モデル、テクスチャ、カメラ |
+| `viewer/` | three.jsのコード生成ビューア（地面・建物・看板・人物・ランドマーク・小物の生成処理） |
+| `scripts/render_stills.mjs` | ヘッドレスChromiumで静止画を描き、描画記録（根拠の段階・架空店名・環境）を書く |
 | `data/sources.json` | 外部データ・史料の出典と確認状況 |
 | `data/decisions/` | 門・劇場・広場・舗装の採用値、根拠、反証、推定範囲 |
 | `data/derived/kabukicho-feature-classification.json` | 全600地物の採用・置換・省略の分類 |
@@ -39,7 +65,7 @@
 ## 制作方針
 
 1. PLATEAUやOpenStreetMapを現在の位置関係の下敷きにし、当時の地図・航空写真・実写に沿って復元する。
-2. Blender等で建物・看板・店舗・カメラを制作し、Three.jsで歩行と見通しを確認する構成を想定する。
+2. 静止画・試写はthree.jsとヘッドレスChromiumで、すべてコードから生成する（2026-11-02にユーザーが承認）。Blender等は、導入手順と版を記録した場合だけ使う。
 3. 承認したカラー参考画の光・素材感を目標にする。写真ごとの年代差や、白黒資料から推定した色は記録する。
 4. 一つの街区と時間軸を共通の土台にし、曲がる前後や遮蔽物の前後でも建物・看板・人物が連続するようにする。
 5. 地理の整合性、歴史考証、制作上の採用判断、映像の自然さを分けて評価する。資料で決まらない部分は明示した推定を採用し、未確認の細部を「99%正確」と認定しない。
