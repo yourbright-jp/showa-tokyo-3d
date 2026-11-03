@@ -380,5 +380,13 @@
   "sheet_paths": [
     "docs/previews/r03/period-contact-sheet.png",
     "docs/previews/r03/walk-contact-sheet.png"
-  ]
+  ],
+  "archived_study": {
+    "status": "superseded",
+    "model_path": "scenes/shinjuku/kabukicho/1976/models/reconstruction-adopted.gltf",
+    "model_commit": "c2fb75a6f0ec003e0848b25370d444241973f0a9",
+    "model_sha256": "46687c706d2514155e6a7879d4d9c6a2f8dc87e1198a64d5f5cc8ade211428db",
+    "superseded_by": "r05 adopted-data review (2026-11-03): docs/rounds/shinjuku-kabukicho-1976-r05-data-review.md",
+    "note": "These Blender previews depict the r03 adopted model as committed at model_commit. The current model carries the r05 decision revisions (Koma names on the canopy, narrower Milano public front, two plaza lamp positions, low background structures kept at modern height, one forecourt structure omitted). They are kept as an earlier study for comparison; regenerate them with scripts/render_period_scene.py (Blender 4.5 LTS) to show the current model."
+  }
 }

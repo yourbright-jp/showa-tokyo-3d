@@ -24,21 +24,28 @@ export function buildMilano(ctx, kit) {
   const fb = new FacadeBuilder(ctx, kit, b, [ea, eb]);
   const W = fb.W;
   const chk = fb.local(name0);
-  ctx.log(`landmarks/milano: frontage ${W.toFixed(2)} m, name local x ${chk.x.toFixed(2)} (adopted fraction 0.5 -> ${fb.x(0.5).toFixed(2)}), z ${chk.z.toFixed(3)}, y ${chk.y.toFixed(2)}`);
+  // r05 (kabukicho-milano-1976, r05-milano-public-frontage): the public front (doors, canopy, windows, names)
+  // occupies only the southern part of the roof edge; the rest of the gable wall stands behind the retained
+  // north neighbour and stays plain. pt(t) maps a fraction of the public front to local x on the whole edge.
+  const pub = D.decisions.milano.building.public_frontage_span_fraction;
+  const pt = (t) => fb.x(pub[0] + (pub[1] - pub[0]) * t);
+  const [X0, X1] = [pt(0), pt(1)].sort((p, q) => p - q);
+  const PC = (X0 + X1) / 2, PW = X1 - X0;
+  ctx.log(`landmarks/milano: edge ${W.toFixed(2)} m, public front ${PW.toFixed(2)} m centred at ${PC.toFixed(2)}, name local x ${chk.x.toFixed(2)} (adopted fraction 0.5 -> ${pt(0.5).toFixed(2)}), z ${chk.z.toFixed(3)}, y ${chk.y.toFixed(2)}`);
   // r03 adopted construction values for Milano (scripts/build_period_scene.py defaults)
   const canopyY = 3.1, canopyT = 0.22, canopyD = 1.5, stepH = 0.3, doorH = 2.6, doorW = 1.8, bays = 7;
   const span = [0.15, 0.85];
-  const sx = span.map((t) => fb.x(t)).sort((p, q) => p - q);
+  const sx = span.map((t) => pt(t)).sort((p, q) => p - q);
   const springY = 13.75, crownY = b.topY - b.baseY; // 16.0
   const loggiaZ = -1.0;
-  const bayX = []; for (let i = 0; i < bays; i++) bayX.push(fb.x(span[0] + (span[1] - span[0]) * (i + 0.5) / bays)); bayX.sort((p, q) => p - q);
+  const bayX = []; for (let i = 0; i < bays; i++) bayX.push(pt(span[0] + (span[1] - span[0]) * (i + 0.5) / bays)); bayX.sort((p, q) => p - q);
   const pitch = (sx[1] - sx[0]) / bays;
 
   // ---------------- front wall (pink tile) with loggia opening and end openings
   const loggia = { x0: sx[0], x1: sx[1], y0: 0, y1: canopyY };
-  const ticket = { x0: -W / 2 + 1.6, x1: -W / 2 + 3.4, y0: 0.95, y1: 2.1 };
-  const shop = { x0: sx[1] + 0.9, x1: W / 2 - 0.9, y0: 0.1, y1: 2.85 };
-  const shop2 = { x0: -W / 2 + 3.9, x1: sx[0] - 0.7, y0: 0.1, y1: 2.85 };
+  const ticket = { x0: X0 + 1.6, x1: X0 + 3.4, y0: 0.95, y1: 2.1 };
+  const shop = { x0: sx[1] + 0.9, x1: X1 - 0.9, y0: 0.1, y1: 2.85 };
+  const shop2 = { x0: X0 + 3.9, x1: sx[0] - 0.7, y0: 0.1, y1: 2.85 };
   const tileRgb = [204, 160, 143];
   const gx = []; for (let x = -Math.floor(W / 2 / 1.6) * 1.6; x <= W / 2; x += 1.6) gx.push(x);
   const gy = []; for (let y = 3.76; y < 12.0; y += 1.6) gy.push(y);
@@ -103,14 +110,14 @@ export function buildMilano(ctx, kit) {
     fb.add('shopGlass', quadGeo([h.x0, h.y0, -0.29], [h.x1, h.y0, -0.29], [h.x1, h.y1, -0.29], [h.x0, h.y1, -0.29], 1 / 8, 1 / 2, [0.125, 0.5]));
   }
   // canopy with tall yellow fascia (R05/R09 cue)
-  fb.canopy(-0.48 * W, 0.48 * W, canopyY, canopyT, canopyD, { fasciaKey: 'yellow', fasciaH: 0.68, lights: 2 });
+  fb.canopy(PC - 0.48 * PW, PC + 0.48 * PW, canopyY, canopyT, canopyD, { fasciaKey: 'yellow', fasciaH: 0.68, lights: 2 });
   // steps (r03: 2 x 0.15 m, 1.6 m out, entrance-span width), extended back into the loggia
-  fb.steps(0, W * 0.7, stepH, 2, 1.6, { backTo: loggiaZ - 0.05 });
+  fb.steps(PC, PW * 0.7, stepH, 2, 1.6, { backTo: loggiaZ - 0.05 });
 
   // ---------------- billboards (neutral abstract panels), name panel, MILANO letters
   // round b: authored boards sit above the adopted window rows (r02: 4.05-7.55 m, over the windows)
   const bbY0 = 8.05, bbY1 = 11.35;
-  const boards = [[-W / 2 + 2.0, -4.6], [4.6, W / 2 - 2.0]]; // clear of the MILANO letters (|x| < ~3.8 m)
+  const boards = [[X0 + 2.0, PC - 4.6], [PC + 4.6, X1 - 2.0]]; // clear of the MILANO letters (|x - PC| < ~3.8 m)
   let cell = 1;
   for (const [x0, x1] of boards) {
     fb.add('steelDark', boxMinMax(x0 - 0.1, bbY0 - 0.1, WALL_Z, x1 + 0.1, bbY1 + 0.1, WALL_Z + 0.2));
@@ -143,7 +150,7 @@ export function buildMilano(ctx, kit) {
   // MILANO (latin letters per R03/R09, 1971-72): red channel letters with cream returns
   {
     const ML = letterGeometry('MILANO', 1.45, 0.16, { px: 170, weight: 'bold', stroke: 16, spacing: 0.34 });
-    const m = new THREE.Matrix4().makeTranslation(0, 9.85, WALL_Z + 0.2).premultiply(fb.F.matrix);
+    const m = new THREE.Matrix4().makeTranslation(PC, 9.85, WALL_Z + 0.2).premultiply(fb.F.matrix);
     if (ML.face) fb.B.add('milanoFace', ML.face, m);
     if (ML.side) fb.B.add('milanoSide', ML.side, m);
     ctx.tag({ id: 'milano-latin-letters', module: 'landmarks', tier: 'period-plausible-generic', note: 'MILANO latin letters after the 1971-1972 owner photographs (tokyu-milano-1971, tokyu-milano-1972, read via the generated colour masters R09/R03); presence in 1976 assumed (year gap 4-5 years). Position, size and letterform authored; the letterform is not matched to the photographs.' });
@@ -151,8 +158,8 @@ export function buildMilano(ctx, kit) {
   // wall studs (small dark square fixtures at panel nodes, R09 cue), skipping signs/boards
   for (const x of gx) for (const y of [8.56, 10.16, 11.76, 6.96, 5.36]) {
     if (y < 8) continue; // adopted window rows and the name panel occupy this band
-    if (y > 7.9 && y < 11.5 && Math.abs(x) > 4.4 && Math.abs(x) < W / 2 - 1.8) continue; // billboards
-    if (Math.abs(y - 9.85) < 1.0 && Math.abs(x) < 7.5) continue;
+    if (y > 7.9 && y < 11.5 && Math.abs(x - PC) > 4.4 && x > X0 + 1.8 && x < X1 - 1.8) continue; // billboards
+    if (Math.abs(y - 9.85) < 1.0 && Math.abs(x - PC) < 7.5) continue;
     if (Math.abs(x) > W / 2 - 0.3) continue;
     fb.add('stud', boxMinMax(x - 0.06, y - 0.06, WALL_Z, x + 0.06, y + 0.06, WALL_Z + 0.05));
   }
@@ -258,7 +265,7 @@ export function buildMilano(ctx, kit) {
   };
   const g = new THREE.Group(); g.name = 'milano-za';
   g.add(fb.build(mats, 'milano'));
-  ctx.tag({ id: 'milano-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Milano-za east front: stable name ミラノ座 / 入口 at adopted text nodes, 7 entrance bays, canopy 3.1/1.5 m and 2-step threshold as adopted in r03; dimensions/colours authored assumptions (milano-facade-adoption-rule).' });
+  ctx.tag({ id: 'milano-front', module: 'landmarks', tier: 'adopted-inferred', note: 'Milano-za east front: stable name ミラノ座 / 入口 at adopted text nodes, 7 entrance bays, canopy 3.1/1.5 m and 2-step threshold as adopted in r03; r05: public front limited to the southern 0.66 of the roof edge beside the retained north neighbour (kabukicho-milano-1976); dimensions/colours authored assumptions.' });
   ctx.tag({ id: 'milano-detail', module: 'landmarks', tier: 'period-plausible-generic', note: 'Pink tile wall, lattice band, barrel roof, yellow fascia, studs, columns are authored after the generated colour masters R03/R09 (of 1971-72 sources tokyu-milano-1971/1972) carried to 1976 by assumption; billboards are neutral abstract panels placed above the adopted 2 x 10 upper windows (restored in r04 round b); no corporate emblem (TR mark omitted), no film titles.' });
   return g;
 }

@@ -18,10 +18,13 @@ DECISIONS = {
     "gate": "data/decisions/kabukicho-gate-1976.json",
     "koma": "data/decisions/kabukicho-koma-plaza-1976.json",
     "surfaces": "data/decisions/kabukicho-route-surfaces-1976.json",
+    "milano": "data/decisions/kabukicho-milano-1976.json",
+    "context": "data/decisions/kabukicho-context-massing-1976.json",
 }
 IDS = {
     "gate": "kabukicho-gate-1976", "koma": "kabukicho-koma-plaza-1976",
-    "surfaces": "kabukicho-route-surfaces-1976", "features": "kabukicho-period-features",
+    "surfaces": "kabukicho-route-surfaces-1976", "milano": "kabukicho-milano-1976",
+    "context": "kabukicho-context-massing-1976", "features": "kabukicho-period-features",
     "classification": "kabukicho-feature-classification", "model": "kabukicho-reconstruction-adopted",
     "spec": "kabukicho-period-scene-spec", "walk": "kabukicho-adopted-walk",
     "report": "kabukicho-route-completion", "text_meshes": "kabukicho-sign-text-meshes",
@@ -203,21 +206,27 @@ def main():
         "Independently locates the original unclassified R01 route samples, adopts explicit connecting-paving polygons and records their evidence and inferred status rather than silently reclassifying them as modern surveyed road.",
         ["kabukicho-route-proposal", IDS["koma"], "plateau-13104-2025-terrain-crop"],
         decisions=("surfaces", "koma"), geospatial=True, authored=True)
+    add(PATHS["milano"], "milano", "historical-adoption-decision",
+        "Adopts the Milano-za east front from the 1971/1972 owner photographs and the 1974-1978 aerial (moved out of the r03 inline rule of scripts/build_period_scene.py) and records the r05 revision that limits the public front to the part not covered by the retained north neighbour, with evidence, counter-evidence and rejected alternatives. No source image is embedded.",
+        ["kabukicho-r01-kabukicho-layout-hypothesis"], decisions=("milano",), geospatial=True, authored=True)
+    add(PATHS["context"], "context", "context-massing-decision",
+        "Records the parameters of the inferred period-context massing rule (storey scale, minimum, caps) used by scripts/build_period_scene.py and the r05 revision: low background structures keep their modern height and one theatre-forecourt structure is omitted after the aerial. No building's 1976 survival is certified.",
+        ["kabukicho-r01-kabukicho-modern-features", "kabukicho-route-proposal"], decisions=("context",), geospatial=True, authored=True)
     add(PATHS["spec"], "spec", "scene-generation-specification",
         "Records all procedural reconstruction rules and adopted decision references used by scripts/build_period_scene.py, including inferred context-building treatments, physical facade/fixture generation and common-datum coordinates.",
-        [*BASE_DEPS, IDS["gate"], IDS["koma"], IDS["surfaces"]],
-        decisions=("gate", "koma", "surfaces"), geospatial=True, authored=True)
+        [*BASE_DEPS, IDS["gate"], IDS["koma"], IDS["surfaces"], IDS["milano"], IDS["context"]],
+        decisions=("gate", "koma", "surfaces", "milano", "context"), geospatial=True, authored=True)
     add(PATHS["classification"], "classification", "complete-feature-classification",
         "scripts/build_period_scene.py enumerates every selected modern source feature exactly once, records its adopted disposition, reason, evidence/decision IDs and generated output feature IDs. Inferred period context is not a claim of verified 1976 survival.",
-        [BASE_DEPS[0], IDS["spec"]], decisions=("gate", "koma", "surfaces"), geospatial=True,
+        [BASE_DEPS[0], IDS["spec"]], decisions=("gate", "koma", "surfaces", "milano", "context"), geospatial=True,
         units="feature identifiers and classification records")
     add(PATHS["features"], "features", "adopted-period-geometry-data",
         "scripts/build_period_scene.py generates the adopted terrain-based ground, period-context masses, physical gate, facade depth and plaza fixtures from explicit decision parameters. Geometry remains world-referenced in metres; historical assumptions are retained per feature and decision.",
-        [IDS["spec"], IDS["classification"], *BASE_DEPS], decisions=("gate", "koma", "surfaces"), geospatial=True)
+        [IDS["spec"], IDS["classification"], *BASE_DEPS], decisions=("gate", "koma", "surfaces", "milano", "context"), geospatial=True)
     model_dependencies = [IDS["features"], IDS["spec"]]
     add(PATHS["model"], "model", "3d-model",
         "scripts/build_period_scene.py triangulates the adopted period features into self-contained glTF, assigns study materials, embeds fixed diagnostic cameras and preserves PLATEAU/GSI attribution. Explicit sign strings are materialized as extruded world-space glyph meshes from kabukicho-sign-text-meshes; the text recipe is retained for reproducibility. Neither photographic billboards nor a font binary are embedded.",
-        model_dependencies, decisions=("gate", "koma", "surfaces"), geospatial=True)
+        model_dependencies, decisions=("gate", "koma", "surfaces", "milano", "context"), geospatial=True)
     add(PATHS["walk"], "walk", "adopted-camera-walk",
         "scripts/complete_route.py densifies the adopted walk over source terrain, places eye positions above that terrain, assigns surface categories and records a continuous time/orientation plan. Film lens and motion settings are explicit, separately from the six R01 diagnostic viewpoints.",
         [IDS["surfaces"], IDS["features"], "kabukicho-route-proposal"],
@@ -238,8 +247,8 @@ def main():
         "scope": "Specific sign-text outlines or rasterized glyphs only, rather than a redistributed font binary. Preserve font provenance separately from the scene's geographic-data license.",
     }
     add(PATHS["text_meshes"], "text_meshes", "sign-text-meshes",
-        "scripts/render_period_scene.py uses the official Blender-bundled Noto Sans CJK SC Regular font to extrude the explicit sign strings from the period scene's text-node recipe into world-space triangles. Visible glyph bounds, rather than font-em dimensions, are fitted to the requested physical height and centered at each sign position. The recorded text-node input hash ties the glyph meshes to their placement recipe; scripts/build_period_scene.py appends the resulting glyph geometry to the distributable glTF. No source photograph or font binary is embedded.",
-        [IDS["spec"], IDS["gate"], IDS["koma"]], decisions=("gate", "koma"), geospatial=True,
+        "scripts/render_period_scene.py uses the official Blender-bundled Noto Sans CJK SC Regular font to extrude the explicit sign strings from the period scene's text-node recipe into world-space triangles. Visible glyph bounds, rather than font-em dimensions, are fitted to the requested physical height and centered at each sign position. The recorded text-node input hash ties the glyph meshes to their placement recipe; when a revised decision only moves a sign, scripts/retarget_text_meshes.py translates the unchanged Blender glyphs and records each move in the file's retargeting history. scripts/build_period_scene.py appends the resulting glyph geometry to the distributable glTF. No source photograph or font binary is embedded.",
+        [IDS["spec"], IDS["gate"], IDS["koma"], IDS["milano"]], decisions=("gate", "koma", "milano"), geospatial=True,
         extra={"font_provenance": font_notice})
     add(PATHS["render_manifest"], "render_manifest", "render-provenance-manifest",
         "scripts/render_period_scene.py records actual Blender/runtime, font, renderer settings, shared fixed-camera transforms and sparse adopted-walk frame times for the period-scene previews. Sparse frames validate selected views, not every frame of a completed long-take movie.",

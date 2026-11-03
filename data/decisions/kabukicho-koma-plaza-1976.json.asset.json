@@ -201,8 +201,8 @@
   "dependencies": [
     "kabukicho-r01-kabukicho-layout-hypothesis"
   ],
-  "sha256": "1d370181d26e2d568433091433924167e640aecdf50048745fb82476c6c42105",
-  "size_bytes": 17090,
+  "sha256": "0c229ceca696084a7f05dfaf9b95db82772c7862cd4ffff752da782f39b7069c",
+  "size_bytes": 29679,
   "format": "json",
   "units": "metres",
   "coordinate_system": {

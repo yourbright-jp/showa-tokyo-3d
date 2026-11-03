@@ -77,13 +77,16 @@ export function analyseFacades(ctx) {
     // Adopted period rule (data/derived/kabukicho-period-features.json): 3.2 m storey scale.
     // Fascia band sits on the 2F spandrel, matching the adopted storefront sign (≈3.3–4.1 m).
     const storeyH = 3.2;
-    const floors = Math.max(1, Math.round(b.height / storeyH));
-    const groundFloorH = b.landmark ? 6 : storeyH;
+    // r05 (kabukicho-context-massing-1976): low background structures keep their modern height, below the
+    // two-storey minimum; they are one storey with no shop fascia (signage skips them).
+    const minor = !b.landmark && b.height < 2 * storeyH - 0.05;
+    const floors = minor ? 1 : Math.max(1, Math.round(b.height / storeyH));
+    const groundFloorH = b.landmark ? 6 : minor ? b.height : storeyH;
     plans.set(b.id, {
       floors, storeyH, groundFloorH, upperFloorH: floors > 1 ? (b.height - groundFloorH) / (floors - 1) : storeyH,
-      parapetH: 0.6, baseY: b.baseY, topY: b.topY,
-      fasciaY0: b.baseY + groundFloorH + 0.08, fasciaY1: b.baseY + groundFloorH + 0.92,
-      assumption: 'adopted 3.2 m storey scale (inferred), not surveyed',
+      parapetH: 0.6, baseY: b.baseY, topY: b.topY, minor,
+      fasciaY0: minor ? b.topY : b.baseY + groundFloorH + 0.08, fasciaY1: minor ? b.topY : b.baseY + groundFloorH + 0.92,
+      assumption: minor ? 'r05 low background structure at its modern height (inferred), not surveyed' : 'adopted 3.2 m storey scale (inferred), not surveyed',
     });
     const fp = b.footprint; // CCW in (x,z) as stored by data.js
     for (let i = 0; i < fp.length; i++) {

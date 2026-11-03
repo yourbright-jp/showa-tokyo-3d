@@ -26,6 +26,8 @@ MODEL_PATH = SCENE / "models/reconstruction-adopted.gltf"
 GATE_PATH = ROOT / "data/decisions/kabukicho-gate-1976.json"
 KOMA_PATH = ROOT / "data/decisions/kabukicho-koma-plaza-1976.json"
 SURFACE_PATH = ROOT / "data/decisions/kabukicho-route-surfaces-1976.json"
+MILANO_PATH = ROOT / "data/decisions/kabukicho-milano-1976.json"
+CONTEXT_PATH = ROOT / "data/decisions/kabukicho-context-massing-1976.json"
 TEXT_MESH_PATH = ROOT / "data/derived/kabukicho-sign-text-meshes.json"
 
 PALETTE = {
@@ -54,8 +56,11 @@ def xz_distance_to_path(point, path):
 
 
 class Builder:
-    def __init__(self, modern, layout, gate, koma, surfaces):
+    def __init__(self, modern, layout, gate, koma, surfaces, milano, context):
         self.modern, self.layout = modern, layout
+        self.milano, self.context = milano, context
+        self.context_omitted = set(context["parameters"]["omitted_feature_ids"])
+        self.low_kept = set()
         self.config = modern["config"]
         self.origin = self.config["origin_jgd2011"]
         self.terrain = load_terrain(self.config)
@@ -190,8 +195,10 @@ class Builder:
             processing="Source TIN preserved exactly; road/plaza surface colours are centroid-mask interpretations, not historical surveyed pavement boundaries.")
 
     def build_context(self):
-        removed = set(self.hypothesis["replace_modern_feature_ids"])
+        removed = set(self.hypothesis["replace_modern_feature_ids"]) | self.context_omitted
         palette = ["context-gray", "context-cream", "context-brick", "context-blue-gray"]
+        rule = self.context["parameters"]
+        low = rule["low_structure_exception"]
         for source in self.modern["features"]:
             if source["kind"] != "building" or source["id"] in removed:
                 continue
@@ -199,11 +206,21 @@ class Builder:
             ring = footprint(f)
             centroid = [sum(p[a] for p in ring) / len(ring) for a in (0, 2)]
             distance = xz_distance_to_path(centroid, self.path)
-            near = distance < 38
+            near = distance < rule["near_route_radius_m"]
             base_y = min(p[1] for r in f["polygons"] for p in r)
             source_h = max(p[1] for r in f["polygons"] for p in r) - base_y
-            cap = 24 if near else 28
-            adopted_h = min(cap, max(6.4, round(source_h / 3.2) * 3.2))
+            cap = rule["near_height_cap_m"] if near else rule["far_height_cap_m"]
+            storey = rule["storey_height_m"]
+            height_processing = (f"Inferred period storey scale: {storey:g} m; minimum {rule['minimum_height_m']:g} m; near-route cap {rule['near_height_cap_m']:g} m, "
+                                 f"other context cap {rule['far_height_cap_m']:g} m. Modern surveyed height is retained separately, not asserted for 1976.")
+            if source_h < low["source_height_below_m"] and distance >= low["applies_at_route_distance_m_or_more"]:
+                # r05 (kabukicho-context-massing-1976): low background structures keep the modern height.
+                adopted_h = source_h
+                self.low_kept.add(source["id"])
+                height_processing = ("Low background structure: modern source height kept (r05 low-structure exception of "
+                                     + self.context["id"] + "); not asserted for 1976.")
+            else:
+                adopted_h = min(cap, max(rule["minimum_height_m"], round(source_h / storey) * storey))
             seed = int(hashlib.sha256(source["id"].encode()).hexdigest()[:8], 16)
             colour = palette[seed % len(palette)]
             for polygon in f["polygons"]:
@@ -214,7 +231,7 @@ class Builder:
             extra = {k: v for k, v in f.items() if k not in {"polygons", "id", "name", "kind", "historical_status", "height_m"}}
             self.add(f["id"], f["polygons"], colour, kind="building", name=f.get("name") or "Inferred period context",
                 source_feature_ids=[f["id"]], source_height_m=round(source_h, 4), height_m=round(adopted_h, 4),
-                height_processing="Inferred period storey scale: 3.2 m; minimum 6.4 m; near-route cap 24 m, other context cap 28 m. Modern surveyed height is retained separately, not asserted for 1976.",
+                height_processing=height_processing,
                 distance_to_route_m=round(distance, 3), periodization="massing-and-near-route-facade" if near else "conservative-background-massing", **extra)
             if near:
                 self.context_facade(source, ring, adopted_h, seed)
@@ -443,10 +460,15 @@ class Builder:
         if len(points) < 3: raise ValueError("Adopted tower setback leaves no footprint")
         return points
 
-    def facade(self, proxy, edge_pixels, parameters, label, tower=False):
+    def facade(self, proxy, edge_pixels, parameters, label, tower=False, span_fraction=(0.0, 1.0)):
         a, b = [self.xy(p) for p in edge_pixels]
+        edge_width = math.dist(a, b)
+        u = ((b[0] - a[0]) / edge_width, (b[1] - a[1]) / edge_width)
+        # A public front may occupy only part of the traced roof edge (fractions from the first pixel);
+        # the direction stays that of the whole traced edge.
+        if tuple(span_fraction) != (0.0, 1.0):
+            a, b = [(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t) for t in span_fraction]
         width = math.dist(a, b)
-        u = ((b[0] - a[0]) / width, (b[1] - a[1]) / width)
         mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
         footprint_ring = footprint(proxy)
         center = [sum(p[k] for p in footprint_ring) / len(footprint_ring) for k in (0, 2)]
@@ -490,9 +512,20 @@ class Builder:
                          [parameters.get("upper_window_width_m", .75), parameters.get("upper_window_height_m", 1.0), .06], glass_material, u, out, kind="facade")
         baseline = u if out == (-u[1], u[0]) else (-u[0], -u[1])
         signs = parameters.get("signs", [{"text": label, "fraction": .5, "height_m": 5.5}])
+        mounting = parameters.get("sign_mounting")
         for i, sign in enumerate(signs):
-            self.text(identifier + f"-name-{i}", sign["text"], at(sign["fraction"], .27, sign["height_m"]), baseline,
-                      .85 if len(sign["text"]) < 7 else .72, "letter-dark")
+            glyph_h = .85 if len(sign["text"]) < 7 else .72
+            offset = .27
+            if mounting and sign["text"] in mounting["applies_to"]:
+                if mounting["mode"] != "freestanding-letters-on-canopy-top":
+                    raise ValueError("Unhandled adopted sign mounting: " + mounting["mode"])
+                # Letters stand on the canopy slab: face set back from its outer edge, bottom on a support rail.
+                offset = canopy_depth + .12 - mounting["face_setback_from_canopy_outer_edge_m"]
+                rail_top = canopy_clearance + canopy_thickness + mounting["support_rail_height_m"]
+                if sign["height_m"] - glyph_h / 2 < rail_top - 1e-6:
+                    raise ValueError(f"Canopy-mounted sign {sign['text']} must sit on its rail ({rail_top:.3f} m)")
+            self.text(identifier + f"-name-{i}", sign["text"], at(sign["fraction"], offset, sign["height_m"]), baseline,
+                      glyph_h, "letter-dark")
         self.text(identifier + "-entrance-label", "入口", at(.5, .32, canopy_clearance - .50), baseline, .30, "sign-white")
         # Physical threshold / central staircase, not a painted decal.
         steps_n = parameters.get("entry_steps_count", parameters.get("threshold_step_count", 2))
@@ -526,9 +559,13 @@ class Builder:
                         pts.append([c[0] + baseline[0] * r * math.cos(t), c[1] + r * math.sin(t), c[2] + baseline[1] * r * math.cos(t)])
                     faces.append(pts)
                 self.add(identifier + f"-round-emblem-{i}", faces, "plaza-emblem", kind="facade")
-        return {"id": proxy["id"], "frontage_edge_pixels": edge_pixels, "frontage_width_m": round(width, 3),
-                "outward_direction_xz": list(out), "baseline_direction_xz": list(baseline), "base_y_m": base,
-                "adopted_parameters": parameters}
+        record = {"id": proxy["id"], "frontage_edge_pixels": edge_pixels, "frontage_width_m": round(width, 3),
+                  "outward_direction_xz": list(out), "baseline_direction_xz": list(baseline), "base_y_m": base,
+                  "adopted_parameters": parameters}
+        if tuple(span_fraction) != (0.0, 1.0):
+            record.update({"edge_width_m": round(edge_width, 3), "public_frontage_span_fraction": list(span_fraction),
+                           "public_frontage_endpoints_xz": [[round(a[0], 5), round(a[1], 5)], [round(b[0], 5), round(b[1], 5)]]})
+        return record
 
     def build_theatres(self):
         self.current_decision = self.koma["id"]
@@ -543,13 +580,15 @@ class Builder:
             f = copy.deepcopy(source)
             source_id = proxy_sources[f["id"]]
             if f["id"] not in adopted:
-                self.current_decision = "milano-facade-adoption-rule"
-                self.current_evidence = ["tokyu-milano-1971", "tokyu-milano-1972", "gsi-gazo1-1974-1978"]
+                milano = self.milano["building"]
+                if f["id"] != milano["proxy_id"] or f["height_m"] != milano["height_assumption_m"]:
+                    raise ValueError("Milano decision does not match the layout proxy " + f["id"])
+                self.current_decision = self.milano["id"]
+                self.current_evidence = [e["id"] for e in self.milano["evidence"]]
                 self.add(f["id"], f["polygons"], "theatre-pale", kind="building", name="ミラノ座・採用復元",
-                         source_feature_ids=[source_id], height_m=f["height_m"], adopted_identity="ミラノ座")
-                records.append(self.facade(f, [[146, 217], [159, 181]], {"lower_front_height_m": 10, "canopy_depth_m": 1.5,
-                    "upper_window_rows_m": [5, 7.0], "upper_window_columns": 10,
-                    "signs": [{"text": "ミラノ座", "fraction": .5, "height_m": 5.4}]}, "ミラノ座"))
+                         source_feature_ids=[source_id], height_m=f["height_m"], adopted_identity=milano["adopted_identity"])
+                records.append(self.facade(f, milano["frontage_edge_pixels"], milano["parameters"], milano["adopted_identity"],
+                                           span_fraction=tuple(milano["public_frontage_span_fraction"])))
                 continue
             self.current_decision = self.koma["id"]
             self.current_evidence = [e["id"] for e in self.koma["evidence"]]
@@ -644,10 +683,14 @@ class Builder:
         replacements = {"bldg_159ebc0b-e5cd-4de8-a027-e924ee337964", "bldg_7506fc9f-1045-4cdc-9f35-9de5a01de82d"}
         for f in self.modern["features"]:
             if f["kind"] == "building":
-                disposition = "replaced" if f["id"] in replacements else "omitted" if f["id"] in removed else "inferred-period-context"
+                disposition = ("replaced" if f["id"] in replacements else "omitted" if f["id"] in removed | self.context_omitted
+                               else "inferred-period-context")
                 if f["id"] == "bldg_159ebc0b-e5cd-4de8-a027-e924ee337964":
-                    decision = "milano-facade-adoption-rule"
-                    evidence = ["tokyu-milano-1971", "tokyu-milano-1972", "gsi-gazo1-1974-1978"]
+                    decision = self.milano["id"]
+                    evidence = [e["id"] for e in self.milano["evidence"]]
+                elif f["id"] in self.context_omitted:
+                    decision = self.context["id"]
+                    evidence = ["gsi-gazo1-1974-1978"]
                 elif disposition == "omitted":
                     decision = "period-site-omission-rule"
                     evidence = ["gsi-gazo1-1974-1978", "shinjuku-plaza-1975"]
@@ -655,8 +698,10 @@ class Builder:
                     decision = self.koma["id"] if f["id"] in removed else "period-background-context-rule"
                     evidence = ["gsi-gazo1-1974-1978", "shinjuku-plaza-1975"] if f["id"] in removed else ["plateau-13104-shinjuku-ku-2025", "gsi-gazo1-1974-1978"]
                 reason = ("Replaced by adopted historical theatre masses and authored period facade details."
-                          if disposition == "replaced" else "Omitted from adopted period space because aerial/near-year plaza evidence supports paving here; baseline retains the modern feature."
-                          if disposition == "omitted" else "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.")
+                          if disposition == "replaced" else "Omitted from adopted period space: the 1974-1978 aerial shows paved theatre forecourt and no separate roof here (r05, kabukicho-context-massing-1976); baseline retains the modern feature."
+                          if f["id"] in self.context_omitted else "Omitted from adopted period space because aerial/near-year plaza evidence supports paving here; baseline retains the modern feature."
+                          if disposition == "omitted" else "Explicit inferred background: modern footprint used as spatial scaffold; a low background structure keeps its modern height (r05 low-structure exception) and gets no authored facade. This is not a claim of historical survival or use."
+                          if f["id"] in self.low_kept else "Explicit inferred background: modern footprint used as spatial scaffold; source height is transformed to capped period storey massing and near-route facades are authored. This is not a claim of historical survival or tenant identification.")
                 truth = "inferred"
             else:
                 disposition = "adopted-road-alignment-reference" if f["kind"] == "road" else "adopted-terrain-reference"
@@ -764,7 +809,11 @@ def main():
     surfaces = json.loads(SURFACE_PATH.read_text(encoding="utf-8"))
     if not surfaces.get("decision_complete"):
         raise ValueError("Route surface decision is incomplete")
-    builder = Builder(modern, layout, gate, koma, surfaces)
+    milano, context = [json.loads(p.read_text(encoding="utf-8")) for p in (MILANO_PATH, CONTEXT_PATH)]
+    for decision in (milano, context):
+        if not decision.get("decision_complete"):
+            raise ValueError("Adopted decision is incomplete: " + decision["id"])
+    builder = Builder(modern, layout, gate, koma, surfaces, milano, context)
     builder.build_ground(); builder.build_context(); builder.build_gate()
     facades = builder.build_theatres(); builder.build_plaza_props()
     fonts = []
@@ -787,7 +836,8 @@ def main():
     classification = builder.finish_classification()
     decisions = [{"id": "period-background-context-rule", "historical_truth_status": "inferred",
         "rule": "Retain modern footprints only as spatial scaffolds, replace height with capped period massing, add near-route authored storefronts. No inferred source building is certified to have survived in 1976.",
-        "evidence_ids": ["plateau-13104-shinjuku-ku-2025", "gsi-gazo1-1974-1978"]},
+        "evidence_ids": ["plateau-13104-shinjuku-ku-2025", "gsi-gazo1-1974-1978"],
+        "parameters_path": CONTEXT_PATH.relative_to(ROOT).as_posix()},
         {"id": "period-ground-adoption-rule", "historical_truth_status": "modern-reference",
          "rule": "Source TIN retained with one 32 m datum; roads/plaza form material masks. Target-year ground continuity and colours are inferred.",
          "evidence_ids": ["plateau-13104-shinjuku-ku-2025", "gsi-gazo1-1974-1978"]},
@@ -795,11 +845,10 @@ def main():
          "rule": "The thin modern strip and modern volume over the adopted plaza are omitted only in the period reconstruction, following the R01 aerial-led reversible removal decisions; baseline preserves both.",
          "path": "data/kabukicho-layout-hypothesis.json",
          "evidence_ids": ["gsi-gazo1-1974-1978", "shinjuku-plaza-1975"]},
-        {"id": "milano-facade-adoption-rule", "historical_truth_status": "inferred",
-         "rule": "Retain aerial roof mass and adopt the east-facing public facade with repeated doors/windows and stable Milano name; dimensions/colours remain authored assumptions.",
-         "evidence_ids": ["tokyu-milano-1971", "tokyu-milano-1972", "gsi-gazo1-1974-1978"]},
         {"id": gate["id"], "path": GATE_PATH.relative_to(ROOT).as_posix()},
-        {"id": koma["id"], "path": KOMA_PATH.relative_to(ROOT).as_posix()}]
+        {"id": koma["id"], "path": KOMA_PATH.relative_to(ROOT).as_posix()},
+        {"id": milano["id"], "path": MILANO_PATH.relative_to(ROOT).as_posix(), "supersedes": milano["supersedes"]},
+        {"id": context["id"], "path": CONTEXT_PATH.relative_to(ROOT).as_posix(), "rule_id": context["rule_id"]}]
     if surfaces:
         decisions.append({"id": surfaces["id"], "path": SURFACE_PATH.relative_to(ROOT).as_posix()})
     spec = {"schema_version": 1, "id": "kabukicho-period-scene-spec", "status": "complete-adopted-with-inference",
@@ -807,7 +856,8 @@ def main():
         "completion_scope": "All imported features have adopted dispositions; gate, theatres, plaza fixtures and street context are modelled. Documentary certainty is not implied.",
         "coordinate_system": {"axes": ["east", "up", "south"], "units": "metres", "origin_jgd2011": modern["config"]["origin_jgd2011"]},
         "decisions": decisions, "facades": facades, "gate_adopted_variant": gate["adopted_variant"],
-        "context_rules": {"storey_height_m": 3.2, "near_route_radius_m": 38, "near_height_cap_m": 24, "far_height_cap_m": 28,
+        "context_rules": {**{k: v for k, v in context["parameters"].items() if k != "omitted_feature_ids"},
+            "omitted_feature_ids": context["parameters"]["omitted_feature_ids"], "low_structure_exception_feature_count": len(builder.low_kept),
             "generic_shop_types": ["喫茶", "食堂", "理容", "写真", "レコード", "麻雀"],
             "material_authoring_color_space": "sRGB; glTF baseColorFactor RGB is converted once to linear, alpha unchanged",
             "tenancy_status": "Generic shop types are authored period-compatible categories, not historical named tenants."},

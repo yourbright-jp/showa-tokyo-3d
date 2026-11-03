@@ -78,18 +78,28 @@
           {
             "text": "コマ劇場",
             "fraction": 0.38,
-            "height_m": 3.8
+            "height_m": 3.895
           },
           {
             "text": "コマ東宝",
             "fraction": 0.81,
-            "height_m": 3.9
+            "height_m": 3.895
           }
         ],
         "threshold_steps_total_height_m": 0.3,
         "threshold_step_count": 2,
         "threshold_steps_outward_depth_m": 1.6,
-        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height."
+        "sign_height_reference": "Visible glyph bounding-box centre above adopted plaza grade; glyphs are fitted to their declared physical height.",
+        "sign_mounting": {
+          "mode": "freestanding-letters-on-canopy-top",
+          "face_setback_from_canopy_outer_edge_m": 0.25,
+          "support_rail_height_m": 0.15,
+          "applies_to": [
+            "コマ劇場",
+            "コマ東宝"
+          ],
+          "reference": "Glyph faces stand 0.25 m behind the canopy's outer edge (canopy_depth_m + 0.12 m from the frontage line); glyph bottoms sit on a 0.15 m support rail on the canopy top. Sign height_m remains the visible-glyph bounding-box centre above plaza grade."
+        }
       },
       "evidence_ids": [
         "toho-kabukicho-site-history",
@@ -100,7 +110,8 @@
         "Exact facade axis/entrance fractions",
         "All dimensions and retained 20 m roof height",
         "1957 opening/canopy/window motifs carried forward to 1976",
-        "Neutral pale concrete colour and glazing/metal colours"
+        "Neutral pale concrete colour and glazing/metal colours",
+        "Canopy-top mounting of the コマ劇場 / コマ東宝 letters, 0.25 m setback and 0.15 m rail (r05 revision after the 1957 mounting motif)"
       ],
       "excluded_elements": [
         "No undated green facade / Koma Stadium lettering is claimed as verified 1976",
@@ -159,7 +170,7 @@
           {
             "text": "クラブハイツ",
             "fraction": 0.5,
-            "height_m": 8.0
+            "height_m": 8.4
           }
         ],
         "entry_steps_total_height_m": 1.2,
@@ -180,7 +191,8 @@
         "Aerial northern roof is assigned to Toho Kaikan rather than merged with Koma",
         "Low front + setback tower interpreted from 1975/1979 photos",
         "Exact heights, setback, staircase, sign placement and colours",
-        "1979 Plaza Theatre sign carried back three years; no 1979 film advertisement used"
+        "1979 Plaza Theatre sign carried back three years; no 1979 film advertisement used",
+        "クラブハイツ lettering on the top (parapet) band of the 9 m front, centre 8.4 m (r05 revision; band height and glyph size not measured)"
       ],
       "excluded_elements": [
         "Do not equate 1957 コマ東宝 with the building completed in 1969",
@@ -216,7 +228,7 @@
       "id": "plaza-lamp-north",
       "type": "multi-globe-streetlamp",
       "center_pixel": [
-        194,
+        192,
         246
       ],
       "height_m": 5.0,
@@ -230,14 +242,15 @@
         "shinjuku-plaza-1975",
         "shinjuku-plaza-1979"
       ],
-      "historical_status": "observed-style-inferred-placement"
+      "historical_status": "observed-style-inferred-placement",
+      "placement_revision": "r05-plaza-lamp-sightlines"
     },
     {
       "id": "plaza-lamp-middle",
       "type": "multi-globe-streetlamp",
       "center_pixel": [
         197,
-        260
+        261
       ],
       "height_m": 5.0,
       "post_radius_m": 0.18,
@@ -250,7 +263,8 @@
         "shinjuku-plaza-1975",
         "shinjuku-plaza-1979"
       ],
-      "historical_status": "observed-style-inferred-placement"
+      "historical_status": "observed-style-inferred-placement",
+      "placement_revision": "r05-plaza-lamp-sightlines"
     },
     {
       "id": "plaza-lamp-south",
@@ -373,7 +387,9 @@
     "Current DEM supplies a continuous ground datum. It is a modern terrain reference rather than a verified 1976 pavement elevation.",
     "The seven-globe count and crown dimensions are an adopted procedural simplification of the multi-globe lamp style; no exact pole inventory or measured globe count is claimed.",
     "Toho canopy underside is adopted at 4.15 m above plaza grade so the 1.2 m stair rise and 2.7 m door opening do not intersect it; Plaza lettering baseline 4.55 m is an authored placement.",
-    "After fitting actual CJK glyph bounds, place Koma Toho lettering centre at 3.9 m and Plaza Theatre lettering centre at 4.95 m so their 0.85 m glyph bounds clear the canopy tops; these are authored layout dimensions."
+    "After fitting actual CJK glyph bounds, the Plaza Theatre lettering centre stays at 4.95 m so its 0.85 m glyph bounds clear the Toho canopy top; this is an authored layout dimension.",
+    "r05: the two Koma canopy names stand on the canopy top (glyph centre 3.895 m = 3.1 m underside + 0.22 m slab + 0.15 m rail + half of 0.85 m) following the 1957 mounting motif; carrying that mounting to 1976 is an assumption.",
+    "r05: two lamp positions moved by one or two aerial pixels (about 1.9 m and 1.0 m), inside the recorded 2 m prop-placement uncertainty, so that no pole stands in the fixed stations' sightlines to the theatre names. This is a composition-driven placement choice, not new positional evidence."
   ],
   "contradictions": [
     {
@@ -391,6 +407,18 @@
     {
       "issue": "Museum 9073 image not accessible",
       "resolution": "Attempted primary catalogue access returned 502. Adopt visible 1957/1975/1979 photographs instead; do not claim unviewed 1977 pixels were verified."
+    },
+    {
+      "issue": "1957 canopy strings versus the adopted コマ劇場 canopy name (r05 re-inspection)",
+      "resolution": "Unresolved. On re-inspection the 1957 canopy letters read コマ東宝 and, on the second ledge, コマシネマ (r02 transcribed the second as コマ劇場; the r02-listed museum catalogue 5295 title also names コマ東宝 and コマシネマ). The adopted west-front name コマ劇場 is kept as the facility name; no photograph shows that string on the plaza front in 1976."
+    },
+    {
+      "issue": "Ring emblem with KOMA lettering in the 1975/1979 plaza photographs (r05 re-inspection)",
+      "resolution": "Unresolved and not changed in r05. The large ring emblem on the white wall right of the stairs carries the latin letters KOMA, a Koma production banner hangs on the same wall and a large latin K follows to the right. This contradicts reading the ring as the Toho Kaikan emblem (r03 parameters emblem_*, placed at 0.78 of the Toho front by the r03 script). Recorded for a separate revision."
+    },
+    {
+      "issue": "Vertical order of the Toho front in the 1975/1979 photographs (r05 re-inspection)",
+      "resolution": "Recorded only: the photographs show programme billboards below the プラザ劇場 band and a glazed upper level above it. The r04 viewer's authored billboard above プラザ劇場 is a period-plausible-generic placement, not an adopted value; it is not changed in r05."
     }
   ],
   "alternatives": [
@@ -410,5 +438,232 @@
       "reason": "User authorizes reasoned adoption; distinct Toho/Plaza identity and historically supported furniture make a complete, traceable scene possible."
     }
   ],
-  "redistribution": "No historical photograph pixels, protected film artwork or museum raster are embedded in this decision file or licensed by its citations."
+  "redistribution": "No historical photograph pixels, protected film artwork or museum raster are embedded in this decision file or licensed by its citations.",
+  "revisions": [
+    {
+      "id": "r05-koma-name-canopy",
+      "date": "2026-11-03",
+      "resolves": "r04 unresolved item 1 (コマ劇場 name and canopy)",
+      "issue": "The Koma name glyph bottoms (3.375 m) sat at the canopy top (3.32 m, about 3.39 m with the authored fascia), so the canopy hid the lower part of the letters at every viewing distance; about half at the 9 m walk arrival point.",
+      "previous": {
+        "signs": [
+          {
+            "text": "コマ劇場",
+            "fraction": 0.38,
+            "height_m": 3.8
+          },
+          {
+            "text": "コマ東宝",
+            "fraction": 0.81,
+            "height_m": 3.9
+          }
+        ],
+        "mounting": "flush on the front wall, 0.27 m proud of the frontage line"
+      },
+      "adopted": {
+        "signs": [
+          {
+            "text": "コマ劇場",
+            "fraction": 0.38,
+            "height_m": 3.895
+          },
+          {
+            "text": "コマ東宝",
+            "fraction": 0.81,
+            "height_m": 3.895
+          }
+        ],
+        "sign_mounting": {
+          "mode": "freestanding-letters-on-canopy-top",
+          "face_setback_from_canopy_outer_edge_m": 0.25,
+          "support_rail_height_m": 0.15,
+          "applies_to": [
+            "コマ劇場",
+            "コマ東宝"
+          ],
+          "reference": "Glyph faces stand 0.25 m behind the canopy's outer edge (canopy_depth_m + 0.12 m from the frontage line); glyph bottoms sit on a 0.15 m support rail on the canopy top. Sign height_m remains the visible-glyph bounding-box centre above plaza grade."
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "shinjuku-koma-1957",
+          "observation": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). The building-name letters are three-dimensional box letters standing on top of the deep canopy and on a ledge further along the front, with a light frame behind them and shadows on the wall; the rooftop name letters stand on the parapet the same way. No name is mounted flush on the wall below the canopy line."
+        }
+      ],
+      "counter_evidence": [
+        "The 1957 photograph is about 19 years earlier; carrying the mounting to 1976 is an assumption.",
+        "The 1957 canopy strings read コマ東宝 and コマシネマ, not コマ劇場 (see contradictions); the adopted name string is a production choice.",
+        "The 1975/1979 photographs show a ring emblem with KOMA and large latin letters on the Koma's plaza side, so the 1976 lettering on this side may have differed altogether."
+      ],
+      "alternatives": [
+        {
+          "variant": "raise flush wall letters to a centre of at least 4.3 m",
+          "adopted": false,
+          "reason": "Overlaps the adopted lower window row (4.3-5.3 m) and still departs from the 1957 mounting."
+        },
+        {
+          "variant": "shallower canopy",
+          "adopted": false,
+          "reason": "The glyph bottom (3.375 m) is below the canopy top, so any depth still hides it."
+        },
+        {
+          "variant": "raise the walk arrival eye or move stations",
+          "adopted": false,
+          "reason": "The walk and the six stations are fixed shared cameras."
+        },
+        {
+          "variant": "freestanding letters on the canopy top",
+          "adopted": true,
+          "reason": "Matches the mounting seen in the only inspected Koma front photograph and clears every route sightline."
+        }
+      ],
+      "inferred_parameters": [
+        "face setback 0.25 m from the canopy outer edge",
+        "support rail 0.15 m",
+        "glyph height 0.85 m (unchanged)",
+        "glyph centre 3.895 m above grade",
+        "support frame (authored detail in the viewer)"
+      ],
+      "checks": "tests/test_adopted_data_review.py: sightlines from the walk arrival eye and stations plaza-reveal / koma-front to the glyph bottoms clear the canopy outer edge plus a 0.07 m fascia allowance.",
+      "historical_fact_certification": false
+    },
+    {
+      "id": "r05-club-heights-parapet",
+      "date": "2026-11-03",
+      "resolves": "r04 unresolved item 7 (クラブハイツ lettering position)",
+      "issue": "The r02 field notes describe クラブハイツ 'on the tall block at back left' (1979) and 'in the background centre, low cinema front and the taller block above it' (1975); the adopted lettering sat on the low front at 8.0 m without that counter-evidence recorded.",
+      "previous": {
+        "signs": [
+          {
+            "text": "プラザ劇場",
+            "fraction": 0.45,
+            "height_m": 4.95
+          },
+          {
+            "text": "クラブハイツ",
+            "fraction": 0.5,
+            "height_m": 8.0
+          }
+        ]
+      },
+      "adopted": {
+        "signs": [
+          {
+            "text": "プラザ劇場",
+            "fraction": 0.45,
+            "height_m": 4.95
+          },
+          {
+            "text": "クラブハイツ",
+            "fraction": 0.5,
+            "height_m": 8.4
+          }
+        ],
+        "position": "top (parapet) band of the adopted 9 m low front, glyph top 8.825 m"
+      },
+      "evidence": [
+        {
+          "evidence_id": "shinjuku-plaza-1979",
+          "observation": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). The クラブハイツ box letters run along the top band of the front volume. Below them is a glazed upper level, below that the プラザ劇場 band; above them a roof railing and a rooftop sign; the windowed high block rises behind and above."
+        },
+        {
+          "evidence_id": "shinjuku-plaza-1975",
+          "observation": "Re-inspected on 2026-11-03 in a web browser from the publisher's reproduction (enlarged on screen; no pixels copied into the repository). Same order: プラザ劇場 band, glazed level, クラブハイツ band, a rooftop sign above, windowed block behind."
+        }
+      ],
+      "counter_evidence": [
+        "The r02 field notes can be read as placing the letters on the tower; they are kept as recorded counter-evidence.",
+        "Both photographs are single oblique views: band height, depth and glyph size cannot be measured; the lettered band may belong to an intermediate block rather than the adopted 9 m front."
+      ],
+      "alternatives": [
+        {
+          "variant": "move the letters to the set-back 28 m tower",
+          "adopted": false,
+          "reason": "In both photographs the windowed tower is above and behind the lettered band."
+        },
+        {
+          "variant": "keep the 8.0 m centre",
+          "adopted": false,
+          "reason": "The letters sit in the band directly under the roof railing, i.e. at the top of the front."
+        },
+        {
+          "variant": "parapet band of the low front",
+          "adopted": true,
+          "reason": "Closest reading of both photographs within the adopted massing."
+        }
+      ],
+      "inferred_parameters": [
+        "glyph centre 8.4 m",
+        "glyph height 0.85 m (unchanged)",
+        "fraction 0.5 (unchanged)"
+      ],
+      "historical_fact_certification": false
+    },
+    {
+      "id": "r05-plaza-lamp-sightlines",
+      "date": "2026-11-03",
+      "resolves": "r04 unresolved item 5 (street lamp hiding a character of コマ劇場)",
+      "issue": "From plaza-reveal the middle lamp pole, and from koma-front the north lamp pole, stood in front of one character of コマ劇場.",
+      "previous": {
+        "center_pixel": {
+          "plaza-lamp-north": [
+            194,
+            246
+          ],
+          "plaza-lamp-middle": [
+            197,
+            260
+          ]
+        }
+      },
+      "adopted": {
+        "center_pixel": {
+          "plaza-lamp-north": [
+            192,
+            246
+          ],
+          "plaza-lamp-middle": [
+            197,
+            261
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "evidence_id": "shinjuku-plaza-1975",
+          "observation": "Multi-globe lamps stand in the plaza; no source fixes their pole positions."
+        },
+        {
+          "evidence_id": "shinjuku-plaza-1979",
+          "observation": "Same lamp style; positions not measurable."
+        }
+      ],
+      "counter_evidence": [
+        "Moving a prop to improve a fixed view is a composition choice, not new positional evidence."
+      ],
+      "alternatives": [
+        {
+          "variant": "move the camera stations",
+          "adopted": false,
+          "reason": "The R01 stations are fixed for comparison."
+        },
+        {
+          "variant": "move the letters",
+          "adopted": false,
+          "reason": "Letter positions follow the adopted front layout."
+        },
+        {
+          "variant": "smallest integer-pixel lamp moves that clear all theatre-name sightlines",
+          "adopted": true,
+          "reason": "North lamp 2 px west (about 1.9 m), middle lamp 1 px south (about 1.0 m): within the recorded 2 m prop-placement uncertainty."
+        }
+      ],
+      "inferred_parameters": [
+        "north lamp [192, 246]",
+        "middle lamp [197, 261]"
+      ],
+      "checks": "tests/test_adopted_data_review.py: no lamp pole within 0.6 m of the sightlines from towards-koma-corner, plaza-reveal, koma-front and walk times 184 / 230 / 257.8 s to the four theatre name strings; scripts/complete_route.py re-runs the continuous body-clearance audit.",
+      "historical_fact_certification": false
+    }
+  ]
 }

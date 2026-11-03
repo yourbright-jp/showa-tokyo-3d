@@ -36,7 +36,7 @@ INPUTS = [
     f"{SCENE}/scene.json", "data/derived/kabukicho-layout-features.json", "data/derived/kabukicho-terrain.json",
     "data/derived/kabukicho-period-features.json", f"{SCENE}/cameras/adopted-walk.json",
     "data/decisions/kabukicho-gate-1976.json", "data/decisions/kabukicho-koma-plaza-1976.json",
-    "data/decisions/kabukicho-route-surfaces-1976.json",
+    "data/decisions/kabukicho-route-surfaces-1976.json", "data/decisions/kabukicho-milano-1976.json",
 ] + list(CAMERAS.values()) + [f"{SCENE}/cameras/{s}.json" for s in STATION_IDS]
 FONTS = [
     {"family": "IPAGothic", "package": "fonts-ipafont-gothic 00303", "license": "IPA Font License Agreement v1.0",

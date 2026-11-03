@@ -314,8 +314,8 @@
     "kabukicho-sign-text-meshes",
     "kabukicho-route-proposal"
   ],
-  "sha256": "d613134a4dbbe64e23b385b8e6ac7ee808ad2a017c41eb47fbc6e487d362650b",
-  "size_bytes": 9491,
+  "sha256": "0e441002660e31364a24817943186be1942a4e175677fb9f80f278f029a1c461",
+  "size_bytes": 10364,
   "format": "json",
   "units": "render settings, camera metres, seconds and file hashes",
   "coordinate_system": null,
