@@ -63,8 +63,8 @@
     "kabukicho-r04-camera-gate-rear",
     "kabukicho-r04-camera-milano-front"
   ],
-  "sha256": "d56017b84bc06690254d7a6e105655b9011cd68eae7d98f97845b23ec2d99cc4",
-  "size_bytes": 23772,
+  "sha256": "307f382a022ef67c5ad849924d76616ada4ea3e00ded10c78f39ddc42cf8021f",
+  "size_bytes": 23379,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",

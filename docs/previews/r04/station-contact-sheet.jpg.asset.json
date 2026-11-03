@@ -61,8 +61,8 @@
     "kabukicho-r01-kabukicho-layout-features",
     "kabukicho-r04-render-manifest"
   ],
-  "sha256": "31416578af932afd69cd545a0e8eb23418d09474c45b27ddec1aa62a1f22a445",
-  "size_bytes": 493459,
+  "sha256": "101ce3816009560e27a2eff9ef2f50e5a0fa208f83ea227228002506d00567ad",
+  "size_bytes": 491717,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",

@@ -61,8 +61,8 @@
     "kabukicho-r01-kabukicho-layout-features",
     "kabukicho-r04-render-manifest"
   ],
-  "sha256": "89edb1d090dd34936f44dd7413444fa4a5fa0aca91cf177bbc0cc8ed681aac5c",
-  "size_bytes": 812076,
+  "sha256": "62441ccc911604f87470fa172b725a277eed0f279c6b87c58383748208e761be",
+  "size_bytes": 806366,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -97,7 +97,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "ichibangai-middle",

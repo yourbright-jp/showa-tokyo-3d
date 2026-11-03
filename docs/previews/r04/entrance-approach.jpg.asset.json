@@ -61,8 +61,8 @@
     "kabukicho-r01-kabukicho-layout-features",
     "kabukicho-r04-render-manifest"
   ],
-  "sha256": "0911b8072474a98d6a9cd026289be423f90baaeb42be9dc3e9af7d15d395254b",
-  "size_bytes": 889095,
+  "sha256": "84e7f753c640210f33ffcbf030d4abdc9019c4fc7c6bc88a28f1212d6265fcfb",
+  "size_bytes": 879435,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -97,7 +97,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "entrance-approach",

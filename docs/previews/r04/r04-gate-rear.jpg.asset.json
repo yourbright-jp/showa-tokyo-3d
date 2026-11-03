@@ -62,8 +62,8 @@
     "kabukicho-r04-render-manifest",
     "kabukicho-r04-camera-gate-rear"
   ],
-  "sha256": "0a582c3ad30429cc45e668a67a695f8fb8232fe3e6547ad331fe6496c41bd9a1",
-  "size_bytes": 888139,
+  "sha256": "10154f3db0383fccc89903c12f9b09ce7fcd06d71b89114f8d70f1f4547d75c8",
+  "size_bytes": 880566,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -98,7 +98,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "r04-gate-rear",

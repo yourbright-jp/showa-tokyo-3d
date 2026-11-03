@@ -62,8 +62,8 @@
     "kabukicho-r04-render-manifest",
     "kabukicho-r04-camera-gate-establishing"
   ],
-  "sha256": "205af689ba0febebdc1e3027f56b0148485dda32ab795e8d5c12faa42f3609ae",
-  "size_bytes": 847176,
+  "sha256": "af3ade0f846e1d28b5d86902ad8dbf695f25898dd9c044982d7b85e5f0e5b9a2",
+  "size_bytes": 844496,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -98,7 +98,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "r04-gate-establishing",

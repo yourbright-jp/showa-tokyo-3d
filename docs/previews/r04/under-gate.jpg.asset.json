@@ -61,8 +61,8 @@
     "kabukicho-r01-kabukicho-layout-features",
     "kabukicho-r04-render-manifest"
   ],
-  "sha256": "ba2bc6a373e8c32ebc629a6b84bd5906ee7d49f1f66d0b0dff40181773514e2f",
-  "size_bytes": 857839,
+  "sha256": "3b403a70e7b1529e605009d00568c85db133032ed540d0b46fcf24bda6d5d8b2",
+  "size_bytes": 855833,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -97,7 +97,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "under-gate",

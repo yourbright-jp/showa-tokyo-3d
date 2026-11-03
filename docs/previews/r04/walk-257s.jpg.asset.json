@@ -61,8 +61,8 @@
     "kabukicho-r01-kabukicho-layout-features",
     "kabukicho-r04-render-manifest"
   ],
-  "sha256": "fe0b67de26d585978e2dd61c5c2e9cb66e455652a5f1a2bcb3c3bef282560b65",
-  "size_bytes": 205635,
+  "sha256": "6a63c33261b0fbd240eed831f9e5abe228e632bb262420201c7bebc81d6445da",
+  "size_bytes": 203234,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -97,7 +97,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "kabukicho-adopted-walk",

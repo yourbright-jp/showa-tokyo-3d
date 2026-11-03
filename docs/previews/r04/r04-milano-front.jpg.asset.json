@@ -62,8 +62,8 @@
     "kabukicho-r04-render-manifest",
     "kabukicho-r04-camera-milano-front"
   ],
-  "sha256": "988b80196003ef7c3877cab8137e6bdd5b2e29d9d728cd174bab80d94b3a064a",
-  "size_bytes": 720330,
+  "sha256": "ace0f764ec6d4da2c3a9a06a97b3b4a2b1693ca0972d5b2ec2d54732f93c5e40",
+  "size_bytes": 713397,
   "geographic_confidence": "approximate",
   "historical_confidence": "inferred",
   "adoption_status": "adopted-with-inference",
@@ -98,7 +98,7 @@
   "renderer": {
     "engine": "three.js 0.170.0 + headless Chromium 153.0.8010.12 (SwiftShader CPU WebGL2)",
     "look": "clear-afternoon",
-    "source_commit": "dfeca1a32b1a438d50ea1db0de523d1e473f972e",
+    "source_commit": "050a8864cb842db0f08b6d12cb70ccbbd5856a6e",
     "worktree_dirty": false
   },
   "camera_id": "r04-milano-front",
