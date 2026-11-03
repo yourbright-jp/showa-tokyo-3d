@@ -1,5 +1,9 @@
 // Headless still renderer for the six route stations (three.js + Chromium SwiftShader, CPU only).
 // Usage: node scripts/render_stills.mjs [--out renders/r04] [--walk 0,60,120] [--views r04-gate-establishing] [--stations a,b] [--w 1920 --h 1080] [--look clear-afternoon] [--only terrain,buildings]
+//        GPU machine: add --gpu (hardware WebGL instead of SwiftShader). Optional --channel chrome|chromium|msedge
+//        (default chromium = Playwright's full Chromium in new headless mode) and --angle d3d11|gl|vulkan|metal
+//        (default per OS). The report records the WebGL renderer string; a --gpu run that still lands on
+//        SwiftShader is reported as a failure.
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -29,7 +33,12 @@ fs.mkdirSync(out, { recursive: true });
 
 const server = await startServer(0);
 const port = server.address().port;
-const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-gpu-sandbox'] });
+const useGpu = args.includes('--gpu');
+const defaultAngle = process.platform === 'win32' ? 'd3d11' : process.platform === 'darwin' ? 'metal' : 'gl';
+const launchOpts = useGpu
+  ? { headless: true, channel: opt('channel', 'chromium'), args: ['--ignore-gpu-blocklist', '--enable-gpu', `--use-angle=${opt('angle', defaultAngle)}`, '--disable-gpu-sandbox'] }
+  : { args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-gpu-sandbox'] };
+const browser = await chromium.launch(launchOpts);
 const browserVersion = browser.version();
 const report = [];
 let failed = false;
@@ -50,6 +59,7 @@ for (const id of stations) {
   const state = await page.evaluate(() => ({
     error: window.__error || null, moduleErrors: window.__moduleErrors || [], done: !!window.__renderDone, stats: window.__stats ? window.__stats() : null, log: window.__log,
     // provenance tags of everything generated, and the fictional shop-name list (production plan: keep a list)
+    gpu: window.__gpu || null, fontWarnings: window.__fontWarnings || [],
     provenance: window.__ctx ? window.__ctx.provenance : null,
     fictionalNames: window.__ctx && window.__ctx.signage ? window.__ctx.signage.fictionalNames : null,
   }));
@@ -69,6 +79,8 @@ for (const id of stations) {
   const entry = { station: id, file: path.relative(ROOT, file), ms, ...state, console: logs.slice(-40) };
   report.push(entry);
   if (!state.done || state.error || state.moduleErrors.length) failed = true;
+  if (useGpu && /swiftshader/i.test(state.gpu || '')) { failed = true; console.log(`  --gpu requested but WebGL renderer is ${state.gpu}`); }
+  if (state.fontWarnings.length) console.log(`  WARNING missing fonts: ${state.fontWarnings.join(', ')}`);
   console.log(`${id}: ${state.done ? 'ok' : 'FAILED'} ${ms} ms ${state.error || ''} ${state.moduleErrors.join('; ')}`);
   if (state.stats) console.log('  ', JSON.stringify(state.stats));
   await page.close();
@@ -79,6 +91,7 @@ const git = (cmd) => { try { return execSync(cmd, { cwd: ROOT, stdio: ['ignore',
 const environment = {
   three: JSON.parse(fs.readFileSync(path.join(ROOT, 'node_modules/three/package.json'), 'utf8')).version,
   browser: browserVersion, node: process.version, cpus: (await import('node:os')).cpus().length,
+  platform: process.platform, mode: useGpu ? 'gpu' : 'swiftshader', launch: launchOpts, webgl_renderer: report.length ? report[0].gpu : null,
   source_commit: git('git rev-parse HEAD'), worktree_dirty: git('git status --porcelain -- viewer scripts data scenes') ? true : false,
 };
 for (const e of report) e.environment = environment;

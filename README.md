@@ -43,7 +43,7 @@ node scripts/render_stills.mjs --out renders/r04-walk --walk 0,60,120,184,257
 npm run serve
 ```
 
-`npm run serve`を実行すると、ブラウザで歩いて見られます（WASDで移動、1〜6で地点を切り替え）。フォントは端末に入れたものを使います：`fonts-ipafont-gothic fonts-ipafont-mincho fonts-motoya-l-maruberi fonts-motoya-l-cedar fonts-wqy-zenhei`。
+`npm run serve`を実行すると、ブラウザで歩いて見られます（WASDで移動、1〜6で地点を切り替え）。GPUつきのPCでは`--gpu`を付けて描きます（[準備手順](docs/SETUP_GPU_PC.md)）。次の段階の計画は[r05作業計画](docs/rounds/shinjuku-kabukicho-1976-r05-plan.md)にあります。フォントは端末に入れたものを使います：`fonts-ipafont-gothic fonts-ipafont-mincho fonts-motoya-l-maruberi fonts-motoya-l-cedar fonts-wqy-zenhei`。
 
 ## 構成
 

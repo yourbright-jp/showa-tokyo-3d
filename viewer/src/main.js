@@ -74,6 +74,22 @@ async function main() {
     log,
   };
   window.__ctx = ctx;
+  // Which WebGL implementation is drawing (SwiftShader = CPU; otherwise the GPU), and whether the
+  // sign fonts are installed (a missing family silently falls back and changes the lettering).
+  try {
+    const gl = renderer.getContext();
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    window.__gpu = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+  } catch (e) { window.__gpu = `unknown (${e.message})`; }
+  log(`webgl renderer: ${window.__gpu}`);
+  {
+    const probe = document.createElement('canvas').getContext('2d');
+    const w = (f) => { probe.font = `64px ${f}`; return probe.measureText('喫茶歌舞伎町一番街ABC123').width; };
+    const missing = ['IPAGothic', 'IPAMincho', 'MotoyaLMaru', 'MotoyaLCedar', 'WenQuanYi Zen Hei']
+      .filter((f) => w(`"${f}", monospace`) === w('monospace') && w(`"${f}", serif`) === w('serif'));
+    window.__fontWarnings = missing;
+    if (missing.length) log(`WARNING fonts not installed (fallbacks used): ${missing.join(', ')}`);
+  }
   applyLook(ctx, lookName);
   const tf = performance.now();
   analyseFacades(ctx);
