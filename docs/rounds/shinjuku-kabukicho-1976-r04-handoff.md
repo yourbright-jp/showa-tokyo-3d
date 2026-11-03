@@ -1,5 +1,7 @@
 # r04 引き継ぎメモ (2026-11-02)
 
+> 2026-11-03：このメモの「次にやること」1〜6は実施した。結果・採点・未解決の事項は[r04ラウンド記録](shinjuku-kabukicho-1976-r04.md)を参照。7（動画）は、静止画のユーザー承認の前なので未着手。以下は前セッション終了時点の記録として残す。
+
 r04 = three.js + headless Chromium による手続き的な高精細化ラウンド（Cook Loop 方式）。
 ルールは `docs/rounds/shinjuku-kabukicho-1976-r04-rules.md`。正となる世界は #7 の r03 adopted world。
 
