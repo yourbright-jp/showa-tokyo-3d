@@ -494,11 +494,15 @@ function emitTopAndBottom(w, P, D, S, q) {
     const rings = torsoRings(D, S, hem, D.topY, inf, { hemFlare: !tucked && kind !== 'blouson' ? 0.003 * H : 0, hemTight: kind === 'blouson' ? 0.004 * H : 0, fit: legR });
     sweepRings(w, rings, seg, T, { ptx: S.ptx, capTop: true });
     if (kind === 'cardigan') {
-      const innerCol = top.inner || lin(0xe8e4dc);
+      // r04: the open cardigan front read as a flat white sticker (visual review): narrower, a
+      // touch darker towards the hem, with a placket line and shirt buttons
+      const innerCol = (top.inner || lin(0xe8e4dc)).map((c) => c * 0.86);
       surfStrip(w, D, S, [
-        { y: 0.82 * H, x0: -0.036 * H, x1: 0.036 * H }, { y: 0.74 * H, x0: -0.024 * H, x1: 0.024 * H },
-        { y: 0.62 * H, x0: -0.018 * H, x1: 0.018 * H }, { y: 0.5 * H, x0: -0.02 * H, x1: 0.02 * H },
+        { y: 0.82 * H, x0: -0.032 * H, x1: 0.032 * H }, { y: 0.74 * H, x0: -0.02 * H, x1: 0.02 * H },
+        { y: 0.62 * H, x0: -0.015 * H, x1: 0.015 * H }, { y: 0.5 * H, x0: -0.016 * H, x1: 0.016 * H },
       ], inf, 0.003 * H, { col: innerCol, rough: 0.85 });
+      surfStrip(w, D, S, [{ y: 0.79 * H, x0: -0.0022 * H, x1: 0.0022 * H }, { y: 0.5 * H, x0: -0.0022 * H, x1: 0.0022 * H }], inf, 0.0036 * H, { col: innerCol.map((c) => c * 0.62), rough: 0.85 });
+      emitButtons(w, D, S, inf + 0.0012 * H, [0.765 * H, 0.705 * H, 0.645 * H, 0.585 * H], innerCol.map((c) => c * 0.8), 0.0035);
       emitCollar(w, D, S, { col: innerCol, rough: 0.85 }, 'shirt');
       emitButtons(w, D, S, inf, [0.7 * H, 0.64 * H, 0.58 * H], T.col.map((c) => c * 0.5), 0.005);
     } else if (kind === 'sailor') {
@@ -620,11 +624,13 @@ function emitShoe(w, P, D, f, ankle, s) {
   const rx = D.footW * (low ? 0.47 : 0.53), ry = D.ankleH * (low ? 0.5 : 0.64), rz = D.footL * (sh.kind === 'pump' ? 0.53 : 0.54);
   const c = madd(madd(ankle, ez, 0.26 * D.footL), ey, -0.42 * D.ankleH);
   ellipsoid(w, c, B, rx, ry, rz, 10, 6, st, {
-    rfn: (lx, ly, lz) => (ly < 0 ? 1 - 0.25 * (-ly) ** 3 : 1) * (lz > 0.5 && sh.kind === 'pump' ? 1 - (lz - 0.5) * 0.25 : 1),
+    // r04: flatter underside and a lower, longer toe (the r02 shoe read as an upturned bowl)
+    rfn: (lx, ly, lz) => (ly < 0 ? Math.max(0.8, 1 - 0.5 * (-ly) ** 1.6) : 1 - 0.18 * Math.max(0, lz) * ly) * (lz > 0.5 && sh.kind === 'pump' ? 1 - (lz - 0.5) * 0.25 : 1),
   });
-  // sole/welt band: slightly wider, darker (or white rubber for sneakers)
+  // sole/welt: a flat slab, slightly wider than the upper, darker (or white rubber for sneakers)
   const soleCol = sh.kind === 'sneaker' ? lin(0xd8d4c8) : col.map((x) => x * 0.55 + 0.004);
-  ellipsoid(w, madd(c, ey, -ry * 0.62), B, rx * 1.05, ry * 0.32, rz * 1.03, 10, 4, { col: soleCol, rough: 0.6 });
+  // the r02 sole ellipsoid reached c - 0.94 ry (the ground); the slab spans c - 0.94 ry .. c - 0.78 ry
+  box(w, madd(madd(c, ey, -ry * 0.86), ez, rz * 0.04), B, rx * 1.04, ry * 0.08, rz * 1.04, { col: soleCol, rough: 0.6 });
   if (sh.kind === 'pump' || f.heelH > 0.02) {
     const hc = madd(madd(c, ez, -rz * 0.72), ey, -ry * 0.55 - f.heelH * 0.5);
     box(w, hc, B, rx * 0.4, f.heelH * 0.5 + 0.004, rz * 0.13, { col: col.map((x) => x * 0.6), rough: 0.5 });
