@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "r04-gate-establishing",
+  "status": "r04-diagnostic-view",
+  "role": "supplementary review camera for the adopted gate; not a route station",
+  "position_m": [
+    -100.1433,
+    2.6641,
+    110.7121
+  ],
+  "look_at_m": [
+    -88.0251,
+    6.1055,
+    70.4983
+  ],
+  "height_m": 1.6,
+  "height_reference": "above modern DEM TIN surface",
+  "ground_height_local_m": 1.0641,
+  "focal_length_35mm_equivalent_mm": 35,
+  "camera_pitch_degrees": 4.684,
+  "derivation": {
+    "gate_decision": "data/decisions/kabukicho-gate-1976.json",
+    "gate_centre_xz_m": [
+      -88.0251,
+      70.4983
+    ],
+    "back_distance_along_gate_forward_m": 42.0,
+    "look_height_above_gate_ground_m": 5.2,
+    "script": "scripts/make_r04_views.py"
+  },
+  "composition_reference": "R01 (approved colour reference; composition target only, not evidence)",
+  "historical_confidence": "not-applicable: review camera; the R01 source photograph's camera position is not reconstructed",
+  "source": "r04-review-camera"
+}

@@ -778,8 +778,9 @@ export function plan(ctx, env) {
     if (w < 3) return null;
     const h = Math.max(1.8, Math.min(5.0, w * r.range(0.3, 0.55)));
     const lift = r.range(0.7, 1.8);
-    const roofY = b.topY;
-    const y0 = roofY + lift, y1 = y0 + h;
+    // stand on the roof slab published by the buildings module (b.topY is the parapet coping)
+    const roofY = (ctx.buildingsInfo && ctx.buildingsInfo.roofY.get(b.id)) ?? b.topY;
+    const y0 = Math.max(roofY + lift, b.topY + 0.4), y1 = y0 + h;
     const uc = f.length / 2 + r.range(-0.3, 0.3) * (f.length - w) ;
     const dBoard = -r.range(0.35, 1.0), D = r.range(1.0, 1.8);
     for (const [uu, dd] of [[uc - w / 2, dBoard], [uc + w / 2, dBoard], [uc - w / 2, dBoard - D], [uc + w / 2, dBoard - D]]) {
@@ -834,7 +835,8 @@ export function plan(ctx, env) {
     const atEnd = r.chance(0.5);
     const u = atEnd ? f.length - r.range(0.5, 1.0) : r.range(0.5, 1.0);
     const dA = -r.range(0.2, 0.5), dB = dA - w;
-    const roofY = b.topY, y0 = roofY + r.range(0.6, 1.4), y1 = y0 + h;
+    const roofY = (ctx.buildingsInfo && ctx.buildingsInfo.roofY.get(b.id)) ?? b.topY;
+    const y0 = Math.max(roofY + r.range(0.6, 1.4), b.topY + 0.3), y1 = y0 + h;
     for (const dd of [dA, dB, (dA + dB) / 2]) for (const du of [-0.4, 0.4]) {
       const p = W(fr, u + du, 0, dd);
       if (!space.insideBuilding(b, p[0], p[2])) return null;

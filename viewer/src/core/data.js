@@ -1,6 +1,9 @@
 // Loads the repository's scene data (no new geometry is invented here).
 // Coordinates: metres, right-handed, x=east, y=up (orthometric - 32 m datum), z=south.
 const SCENE_DIR = '/scenes/shinjuku/kabukicho/1976';
+// Supplementary review cameras (not route stations). Loaded for every render so that modules
+// which keep camera foregrounds clear (people) build the same world whichever camera is used.
+export const REVIEW_VIEWS = ['r04-gate-establishing'];
 
 async function getJSON(path) {
   const res = await fetch(path);
@@ -97,6 +100,7 @@ export async function loadData() {
   ]);
   const stationIds = sceneDef.route.stations.map((s) => s.id);
   const cameras = Object.fromEntries(await Promise.all(stationIds.map(async (id) => [id, await getJSON(`${SCENE_DIR}/cameras/${id}.json`)])));
+  const reviewCameras = Object.fromEntries(await Promise.all(REVIEW_VIEWS.map(async (id) => [id, await getJSON(`${SCENE_DIR}/cameras/${id}.json`)])));
 
   const terrain = buildTerrain(terrainRaw);
   const buildings = [];
@@ -170,6 +174,7 @@ export async function loadData() {
   return {
     sceneDef,
     cameras,
+    reviewCameras,
     stations: sceneDef.route.stations,
     route,
     routeDistance,

@@ -22,6 +22,8 @@ STATION_REFS = {
     "towards-koma-corner": ["R01", "R02"],
     "plaza-reveal": ["R02", "R09"],
     "koma-front": ["R02"],
+    # r04 supplementary review camera (not a route station)
+    "r04-gate-establishing": ["R01", "R08"],
 }
 FONT_PATHS = ["/usr/share/fonts/opentype/ipafont-gothic/ipag.ttf", "/usr/share/fonts/truetype/fonts-japanese-gothic.ttf"]
 
@@ -50,7 +52,7 @@ def main():
     out = Path(a.out) if a.out else rdir / "review"
     out.mkdir(parents=True, exist_ok=True)
     scene = json.loads((SCENE / "scene.json").read_text(encoding="utf-8"))
-    ids = [s["id"] for s in scene["route"]["stations"]]
+    ids = [s["id"] for s in scene["route"]["stations"]] + ["r04-gate-establishing"]
     H = 540
     tiles = []
     for sid in ids:

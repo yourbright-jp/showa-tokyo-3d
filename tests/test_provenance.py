@@ -20,6 +20,78 @@ def sidecars():
                 yield path, json.loads(path.read_text())
 
 
+# Directories whose non-code, non-document payloads must carry an adjacent *.asset.json
+# (docs/PRODUCTION_PLAN.md, 出典記録とファイル管理). data/raw/ is ignored and never published.
+SIDECAR_ROOTS = ("scenes", "data", "docs/previews", "assets/shared")
+# Files that are exempt, each with its reason. Keep this list short and explicit.
+SIDECAR_EXEMPT = {
+    "data/sources.json": "the source registry itself; every entry carries its own provider, URL, licence and year",
+    "scenes/shinjuku/kabukicho/1976/scene.json": "scene definition (configuration); it references asset IDs whose sidecars hold provenance",
+    "scenes/shinjuku/kabukicho/1976/references/README.md": "document describing the approved colour masters",
+    "scenes/shinjuku/kabukicho/1976/references/approved-colour-index.json": "index of the approved masters; each master PNG has its own sidecar",
+}
+EXEMPT_NAMES = {".gitkeep": "empty directory placeholder"}
+# Fields every sidecar must carry (present on all records since R01; values may be null where unknown).
+REQUIRED_FIELDS = (
+    "schema_version", "id", "path", "type", "provider", "source_urls", "license", "target_year",
+    "processing", "sha256", "format", "units", "coordinate_system", "geographic_confidence",
+    "historical_confidence", "redistribution_review",
+)
+# Source year must be recorded separately from the reconstruction (target) year (AGENTS.md).
+SOURCE_YEAR_FIELDS = ("source_years", "source_year_label", "source_periods")
+GEOGRAPHIC_LEVELS = {"verified", "approximate", "unverified", None}
+
+
+class ProvenanceCoverage(unittest.TestCase):
+    def test_every_published_payload_has_a_sidecar_or_a_recorded_exemption(self):
+        missing = []
+        for root in SIDECAR_ROOTS:
+            base = ROOT / root
+            if not base.exists():
+                continue
+            for path in base.rglob("*"):
+                rel = path.relative_to(ROOT)
+                if path.is_dir() or path.name.endswith(".asset.json") or "raw" in rel.parts[:2]:
+                    continue
+                if path.name in EXEMPT_NAMES or rel.as_posix() in SIDECAR_EXEMPT:
+                    continue
+                if not path.with_name(path.name + ".asset.json").is_file():
+                    missing.append(rel.as_posix())
+        self.assertEqual(missing, [], "payloads without *.asset.json; add a sidecar or an exemption with a reason")
+
+    def test_exemptions_point_at_existing_files(self):
+        for rel, reason in SIDECAR_EXEMPT.items():
+            with self.subTest(path=rel):
+                self.assertTrue((ROOT / rel).is_file())
+                self.assertTrue(reason.strip())
+
+    def test_sidecars_carry_required_fields(self):
+        for sidecar, record in sidecars():
+            with self.subTest(sidecar=sidecar.relative_to(ROOT).as_posix()):
+                for field in REQUIRED_FIELDS:
+                    self.assertIn(field, record)
+                self.assertTrue(any(field in record for field in SOURCE_YEAR_FIELDS),
+                                "record the source year(s) separately from target_year")
+                self.assertEqual(sidecar.name, Path(record["path"]).name + ".asset.json")
+                self.assertIn(record["geographic_confidence"], GEOGRAPHIC_LEVELS)
+                self.assertTrue(record["provider"])
+                self.assertIsInstance(record["source_urls"], list)
+                if record["license"] is not None:
+                    self.assertTrue(record.get("license_url"), "licensed records need license_url")
+                else:
+                    self.assertTrue(record.get("rights_review") or record.get("rights_note"),
+                                    "a null licence needs a recorded rights review")
+
+    def test_inferred_records_do_not_claim_verified_history(self):
+        for sidecar, record in sidecars():
+            if record.get("historical_fact_certification") is not None:
+                with self.subTest(sidecar=sidecar.relative_to(ROOT).as_posix()):
+                    self.assertFalse(record["historical_fact_certification"])
+            if record.get("adoption_status") == "adopted-with-inference":
+                with self.subTest(sidecar=sidecar.relative_to(ROOT).as_posix()):
+                    self.assertNotEqual(record["historical_confidence"], "verified")
+
+
 class ProvenanceContracts(unittest.TestCase):
     def test_published_asset_paths_and_hashes_match_payloads(self):
         records = list(sidecars())

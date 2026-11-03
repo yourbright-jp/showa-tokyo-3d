@@ -10,11 +10,14 @@ import { analyseFacades } from './core/facades.js';
 //   still=1                offline-quality single frame; sets window.__renderDone when finished
 //   w, h                   output size (default window size; stills default 1920x1080)
 //   walk=<seconds>         camera from the adopted long-take walk (overrides station)
+//   view=<camera id>       supplementary review camera scenes/.../cameras/<id>.json that is not a
+//                          route station (e.g. r04-gate-establishing); overrides station
 //   look=<preset>          lighting preset from core/look.js
 //   only=<a,b>             build only the listed world modules (debugging)
 const params = new URLSearchParams(location.search);
 const still = params.get('still') === '1';
 const walkT = params.has('walk') ? Number(params.get('walk')) : null; // seconds on cameras/adopted-walk.json
+const viewId = params.get('view');
 const stationId = params.get('station') || 'entrance-approach';
 const width = Number(params.get('w')) || (still ? 1920 : window.innerWidth);
 const height = Number(params.get('h')) || (still ? 1080 : window.innerHeight);
@@ -92,7 +95,11 @@ async function main() {
     const pose = data.walkPose(walkT);
     setStationCamera({ position_m: pose.position_m, look_at_m: pose.look_at_m, focal_length_35mm_equivalent_mm: data.walk.focal_length_35mm_equivalent_mm });
   } else {
-    const cam = data.cameras[stationId];
+    let cam = data.cameras[stationId];
+    if (viewId) {
+      cam = data.reviewCameras[viewId];
+      if (!cam) throw new Error(`unknown review view ${viewId} (add it to REVIEW_VIEWS in core/data.js)`);
+    }
     if (!cam) throw new Error(`unknown station ${stationId}`);
     setStationCamera(cam);
   }

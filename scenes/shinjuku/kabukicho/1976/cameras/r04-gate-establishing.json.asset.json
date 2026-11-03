@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "kabukicho-r04-camera-gate-establishing",
+  "path": "scenes/shinjuku/kabukicho/1976/cameras/r04-gate-establishing.json",
+  "type": "camera-review-view",
+  "provider": "yourbright-jp/showa-tokyo-3d contributors",
+  "creator": "yourbright-jp/showa-tokyo-3d contributors",
+  "retrieved_at": "2026-11-03",
+  "source_urls": [
+    "https://github.com/yourbright-jp/showa-tokyo-3d",
+    "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+    "https://maps.gsi.go.jp/development/ichiran.html"
+  ],
+  "source_components": [
+    {
+      "source_id": "plateau-13104-shinjuku-ku-2025",
+      "provider": "東京都・新宿区 / Project PLATEAU",
+      "source_url": "https://assets.cms.plateau.reearth.io/assets/84/48ebed-93d8-4196-bdda-e1db9590d3d1/13104_shinjuku-ku_pref_2025_citygml_1_op.zip",
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成",
+      "source_release_year": 2025,
+      "scope": "Modern building footprints, road polygons and DEM used as the spatial underlay; not evidence of 1976 conditions."
+    },
+    {
+      "source_id": "gsi-gazo1-1974-1978",
+      "provider": "国土地理院 / Geospatial Information Authority of Japan",
+      "source_url": "https://maps.gsi.go.jp/development/ichiran.html",
+      "source_period": [
+        1974,
+        1978
+      ],
+      "exact_capture_date": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工し、showa-tokyo-3d project が配置仮説を作成。",
+      "scope": "Inherited through the adopted r03 layout (theatre roof outlines, plaza); raw tiles are not embedded."
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "license_scope": "Project-derived render/configuration; keep the PLATEAU and GSI attribution. Does not license cited archival photographs or the approved colour masters.",
+  "attribution": "東京都・新宿区 3D都市モデル（Project PLATEAU）2025年度を加工して作成 / 国土地理院 地理院タイル gazo1（1974〜1978年）を参照・加工 / showa-tokyo-3d project によるコード生成",
+  "source_years": [
+    2025,
+    {
+      "from": 1974,
+      "to": 1978,
+      "exact_capture_date": null
+    }
+  ],
+  "source_years_scope": "Underlay data years. The adopted landmark decisions cite 1957-1979 sources; see the linked decision records for each year's role.",
+  "target_year": 1976,
+  "dependencies": [
+    "kabukicho-gate-1976",
+    "plateau-13104-2025-terrain-crop"
+  ],
+  "sha256": "f530b94e7f0644f03fd7a4db3e9662284dd660717ddcc7a073241681c316b1ef",
+  "size_bytes": 1026,
+  "geographic_confidence": "approximate",
+  "historical_confidence": "not-applicable",
+  "adoption_status": "review-camera",
+  "historical_fact_certification": false,
+  "redistribution_review": "Only code-generated output is published. No photograph, scanned texture, external 3D model or HDR is embedded; the approved colour masters were used only for side-by-side comparison outside these images.",
+  "processing": "scripts/make_r04_views.py: gate centre from data/decisions/kabukicho-gate-1976.json, 42 m back along the adopted gate forward axis on the modern road polygon, eye 1.6 m above the modern DEM TIN, looking at 5.2 m above the gate ground; 35 mm equivalent.",
+  "format": "json",
+  "units": "metres",
+  "coordinate_system": "local east-up-south metres; origin JGD2011 35.6945, 139.702, 32.0 m (scene.json)",
+  "inferred_elements": "Review camera only. It does not reconstruct the R01 source photograph's camera position and is not a route station; the six R01 stations and the adopted walk are unchanged."
+}

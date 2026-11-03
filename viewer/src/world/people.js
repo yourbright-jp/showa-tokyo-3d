@@ -58,7 +58,8 @@ export function build(ctx) {
     }
     return inside;
   };
-  const camPts = Object.values(data.cameras || {}).map((c) => c.position_m);
+  const fixedCams = [...Object.values(data.cameras || {}), ...Object.values(data.reviewCameras || {})];
+  const camPts = fixedCams.map((c) => c.position_m);
   // View cones: nobody stands right in front of a diagnostic camera or of the walk camera
   // (the walk turns and looks around, so the 1.2 m corridor alone does not keep its view clear).
   const cones = [];
@@ -67,7 +68,7 @@ export function build(ctx) {
     const l = Math.hypot(dx, dz) || 1;
     cones.push({ x: pos[0], z: pos[2], dx: dx / l, dz: dz / l, cos: Math.cos(Math.atan(18 / (focal || 35)) + 0.2), reach });
   };
-  for (const c of Object.values(data.cameras || {})) addCone(c.position_m, c.look_at_m, c.focal_length_35mm_equivalent_mm, 6.0);
+  for (const c of fixedCams) addCone(c.position_m, c.look_at_m, c.focal_length_35mm_equivalent_mm, 6.0);
   if (data.walk && data.walk.samples) {
     const S = data.walk.samples;
     for (let i = 0; i < S.length; i += 4) addCone(S[i].position_m, S[i].look_at_m, data.walk.focal_length_35mm_equivalent_mm, 2.9);

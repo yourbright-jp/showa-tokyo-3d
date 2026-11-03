@@ -1,5 +1,5 @@
 // Headless still renderer for the six route stations (three.js + Chromium SwiftShader, CPU only).
-// Usage: node scripts/render_stills.mjs [--out renders/r04] [--walk 0,60,120] [--stations a,b] [--w 1920 --h 1080] [--look clear-afternoon] [--only terrain,buildings]
+// Usage: node scripts/render_stills.mjs [--out renders/r04] [--walk 0,60,120] [--views r04-gate-establishing] [--stations a,b] [--w 1920 --h 1080] [--look clear-afternoon] [--only terrain,buildings]
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -18,7 +18,8 @@ const opt = (name, dflt) => { const i = args.indexOf(`--${name}`); return i >= 0
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const scene = JSON.parse(fs.readFileSync(path.join(ROOT, 'scenes/shinjuku/kabukicho/1976/scene.json'), 'utf8'));
 const walkTimes = opt('walk') ? opt('walk').split(',').map(Number) : null; // seconds on the adopted walk
-const stations = walkTimes ? walkTimes.map((t) => `walk-${String(t).padStart(6, '0')}`) : (opt('stations') ? opt('stations').split(',') : scene.route.stations.map((s) => s.id));
+const viewIds = opt('views') ? opt('views').split(',') : null; // supplementary review cameras (not route stations)
+const stations = viewIds ? viewIds : walkTimes ? walkTimes.map((t) => `walk-${String(t).padStart(6, '0')}`) : (opt('stations') ? opt('stations').split(',') : scene.route.stations.map((s) => s.id));
 const out = path.resolve(ROOT, opt('out', 'renders/r04'));
 const w = Number(opt('w', 1920)), h = Number(opt('h', 1080));
 const look = opt('look', 'clear-afternoon');
@@ -29,6 +30,7 @@ fs.mkdirSync(out, { recursive: true });
 const server = await startServer(0);
 const port = server.address().port;
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-gpu-sandbox'] });
+const browserVersion = browser.version();
 const report = [];
 let failed = false;
 for (const id of stations) {
@@ -38,6 +40,7 @@ for (const id of stations) {
   page.on('pageerror', (e) => logs.push(`[pageerror] ${e.message}`));
   const q = new URLSearchParams({ station: id, still: '1', w, h, look });
   if (walkTimes) { q.delete('station'); q.set('walk', String(walkTimes[stations.indexOf(id)])); }
+  if (viewIds) { q.delete('station'); q.set('view', id); }
   if (only) q.set('only', only);
   const t0 = Date.now();
   await page.goto(`http://127.0.0.1:${port}/viewer/index.html?${q}`);
@@ -67,5 +70,11 @@ for (const id of stations) {
 }
 await browser.close();
 server.close();
-fs.writeFileSync(path.join(out, 'render-report.json'), JSON.stringify({ look, w, h, stations: report }, null, 2));
+const git = (cmd) => { try { return execSync(cmd, { cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim(); } catch { return null; } };
+const environment = {
+  three: JSON.parse(fs.readFileSync(path.join(ROOT, 'node_modules/three/package.json'), 'utf8')).version,
+  browser: browserVersion, node: process.version, cpus: (await import('node:os')).cpus().length,
+  source_commit: git('git rev-parse HEAD'), worktree_dirty: git('git status --porcelain -- viewer scripts data scenes') ? true : false,
+};
+fs.writeFileSync(path.join(out, 'render-report.json'), JSON.stringify({ look, w, h, environment, stations: report }, null, 2));
 process.exit(failed ? 1 : 0);
